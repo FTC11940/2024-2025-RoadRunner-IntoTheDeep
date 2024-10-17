@@ -7,9 +7,9 @@ slides-alex
 drive-all
 road runner-joel
 
-Servvo that gose 90 degree
+Servo that goes 90 degree
 Hex motor
-Motor from gobuilda
+Motor from GoBuilda
 Servo for bucket dump
-winch/climbergobuilda
-1 motor mabey2
+winch/climber gobuilda
+1 motor maybe 2
