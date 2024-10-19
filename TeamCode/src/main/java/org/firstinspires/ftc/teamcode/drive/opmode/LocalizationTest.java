@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystems.FakeSubsystem;
 
 /**
  * This is a simple teleop routine for testing localization. Drive the robot around like a normal
@@ -16,9 +17,17 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @TeleOp(group = "drive")
 public class LocalizationTest extends LinearOpMode {
+
     @Override
     public void runOpMode() throws InterruptedException {
+        // FIXME
+        // Create an instance
+        FakeSubsystem fake = new FakeSubsystem();
+        fake.init(hardwareMap);
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -32,6 +41,16 @@ public class LocalizationTest extends LinearOpMode {
                             -gamepad1.right_stick_x
                     )
             );
+
+            // Raise arm with gamepad A button
+            if (gamepad1.a) {
+                fake.raiseArm(0.5); // Raise arm with 0.5 power
+            } else if (gamepad1.b) {
+                fake.lowerArm(0.5); // Lower arm with 0.5 power
+            } else {
+                fake.stopArm(); // Stop arm if neither button is pressed
+            }
+
 
             drive.update();
 
