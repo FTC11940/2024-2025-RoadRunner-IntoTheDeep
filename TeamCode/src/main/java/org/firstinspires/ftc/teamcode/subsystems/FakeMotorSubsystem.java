@@ -3,22 +3,23 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.Servo.Direction;
 
-public class FakeSubsystem {
+public class FakeMotorSubsystem {
     private DcMotor armMotor;
+
+    public FakeMotorSubsystem(HardwareMap hardwareMap) {
+//    }
 //    private Servo gripperServo;
 
     // Constants for servo positions
-    private static final double GRIPPER_OPEN = 0.0;
-    private static final double GRIPPER_CLOSED = 1.0;
+//    private static final double GRIPPER_OPEN = 0.0;
+//    private static final double GRIPPER_CLOSED = 1.0;
 
     /*** Initializes the ArmSubsystem with the necessary hardware.
      *  @param hardwareMap The hardware map from the OpMode.
      *
      */
-    public void init(HardwareMap hardwareMap) {
+//    public void init(HardwareMap hardwareMap) {
         // FIXME: Replace "leftBack" with the correct motor name
         // Borrowing a drive motor
         armMotor = hardwareMap.get(DcMotor.class, "leftBack");
