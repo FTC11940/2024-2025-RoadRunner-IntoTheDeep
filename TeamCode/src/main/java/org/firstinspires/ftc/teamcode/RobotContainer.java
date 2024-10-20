@@ -16,18 +16,22 @@ public class RobotContainer extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // Subsystems
-        /**
-         * These lines of code are creating a new instances of classes and assigning a variable
-        */
+        // Create new instances of classes, including subsystems, and assign to a variable
+        // FIXME RC1. Replace these with the names of actual subsystems
         PracticeServoSubsystem servoSub = new PracticeServoSubsystem(hardwareMap);
         PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
+        // Required to initialize the subsystems when starting the OpMode
         waitForStart();
 
+        // ! negation operator, i.e. the running code is not stopped
+        // alternative -- opModeIsActive() and `isStarted()`
+        // While loop to keep the robot running
         while (!isStopRequested()) {
 
-            /** Calling methods from the subsystems and assign them to button presses **/
+            // Call methods from the subsystems and assign them to button presses
+            // FIXME RC2.Replace these with button presses with current Methods (actions in Subsystems).
             if (gamepad1.a) {
                 motorSub.rotateMotor(0.25); // Run the motor with 0.5 power
             } else if (gamepad1.b) {
