@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class FakeMotorSubsystem {
+public class PracticeMotorSubsystem {
 
     /**
      * Borrowing a drive motor for demonstration purposes. This would be a TERRIBLE
@@ -12,7 +12,7 @@ public class FakeMotorSubsystem {
      */
     private final DcMotor someMotor;
 
-    public FakeMotorSubsystem(HardwareMap hardwareMap) {
+    public PracticeMotorSubsystem(HardwareMap hardwareMap) {
 
         /**
          * Borrowing a drive motor for demonstration purposes.

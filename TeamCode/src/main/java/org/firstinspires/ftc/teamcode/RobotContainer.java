@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystems.FakeMotorSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.FakeServoSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 
 
 @TeleOp(group = "drive", name = "TeleOp")
@@ -19,8 +19,8 @@ public class RobotContainer extends LinearOpMode {
         /**
          * These lines of code are creating a new instances of classes and assigning a variable
         */
-        FakeServoSubsystem servoSub = new FakeServoSubsystem(hardwareMap);
-        FakeMotorSubsystem motorSub = new FakeMotorSubsystem(hardwareMap);
+        PracticeServoSubsystem servoSub = new PracticeServoSubsystem(hardwareMap);
+        PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         waitForStart();

@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class FakeServoSubsystem {
+public class PracticeServoSubsystem {
 
     /**
      * This line of code declares a private, final field named gripperServo of type Servo.
@@ -27,19 +27,19 @@ public class FakeServoSubsystem {
     private static final double SERVO_CLOSED = 1.0;
 
     /**
-     * Initializes the FakeServoSubsystem with the necessary hardware.
+     * Initializes the PracticeServoSubsystem with the necessary hardware.
      *
      * @param hardwareMap The hardware map from the OpMode.
      */
 
     /**
-     * The line of code you provided is the declaration of a constructor for a class named FakeServoSubsystem.
+     * The line of code you provided is the declaration of a constructor for a class named PracticeServoSubsystem.
      * public: This is an access modifier that indicates this constructor can be accessed from any other class.
-     * FakeServoSubsystem: This is the name of the class that the constructor belongs to. This suggests that the class is intended to simulate or mock the behavior of a real servo subsystem, likely for testing or development purposes.
-     * (HardwareMap hardwareMap): This is the constructor's parameter list. It takes a single argument of type HardwareMap. This HardwareMap object likely provides access to the hardware components of a robot or system, allowing the FakeServoSubsystem to interact with them (or simulate interactions) during its operation.
-     * In essence, this constructor initializes a new instance of the FakeServoSubsystem class, taking a HardwareMap object as input to potentially configure or control its behavior.
+     * PracticeServoSubsystem: This is the name of the class that the constructor belongs to. This suggests that the class is intended to simulate or mock the behavior of a real servo subsystem, likely for testing or development purposes.
+     * (HardwareMap hardwareMap): This is the constructor's parameter list. It takes a single argument of type HardwareMap. This HardwareMap object likely provides access to the hardware components of a robot or system, allowing the PracticeServoSubsystem to interact with them (or simulate interactions) during its operation.
+     * In essence, this constructor initializes a new instance of the PracticeServoSubsystem class, taking a HardwareMap object as input to potentially configure or control its behavior.
      */
-    public FakeServoSubsystem(HardwareMap hardwareMap) {
+    public PracticeServoSubsystem(HardwareMap hardwareMap) {
 
         servoZero = hardwareMap.get(Servo.class,"servoZero");
 
