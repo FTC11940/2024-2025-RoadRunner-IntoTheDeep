@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import org.firstinspires.ftc.teamcode.subsystems.intake; // Added by CoPilot
-
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 // Removed the extended LinearOpMode
-public class intake {
+public class IntakeSubsystem {
     //Equation for finding 160 degrees: 0.88889*X and X = what position the servo is in when it is 180 degrees.
     //servoName.setPosition(0.88889);
     
@@ -36,14 +34,7 @@ public class intake {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         intakeTouch = hardwareMap.get(TouchSensor.class, "intakeTouch");
 
-
         //Set the starting position
-
-        waitForStart();
-
-        while (opModeIsActive()) {
-
-        }
 
 
     }
