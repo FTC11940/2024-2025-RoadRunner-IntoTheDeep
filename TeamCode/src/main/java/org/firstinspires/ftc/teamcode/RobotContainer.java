@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.sensors.touchSensor;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 
@@ -21,6 +23,7 @@ public class RobotContainer extends LinearOpMode {
         PracticeServoSubsystem servoSub = new PracticeServoSubsystem(hardwareMap);
         PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        touchSensor touchOne = new touchSensor(hardwareMap);
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
@@ -46,6 +49,19 @@ public class RobotContainer extends LinearOpMode {
             } else if (gamepad1.x) {
                 servoSub.closeServo(); // Close gripper
             } // end of if statement for Y button
+
+
+
+            if (gamepad1.start) {
+                boolean touchOnePressed = touchOne.isTouchOnePressed();
+                telemetry.addData("Touch One", "Pressed");
+            } else {
+                telemetry.addData("Touch One", "Not Pressed");
+            }
+
+
+
+            telemetry.update();
 
         } // end of while loop
 
