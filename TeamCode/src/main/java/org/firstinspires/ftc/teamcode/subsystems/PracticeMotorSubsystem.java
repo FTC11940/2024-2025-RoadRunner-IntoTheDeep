@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class PracticeMotorSubsystem {
 
     /**
+     * In short, this line of code declares a private, constant variable named `someMotor`
+     * that will hold a reference to a DcMotor object.
+     *
      * This code declares a variable named `someMotor` with the following characteristics:
      * private: This is an access modifier that restricts the visibility of the variable.
      * Only code within the same class can access and modify someMotor.
@@ -20,11 +23,9 @@ public class PracticeMotorSubsystem {
      * someMotor: This is the name of the variable.
      * It's a descriptive identifier chosen by the programmer to represent the specific DC motor being controlled.
      *
-     * In essence, this line of code declares a private, constant variable named `someMotor`
-     * that will hold a reference to a DcMotor object.
-     *
-     * Borrowing a drive motor for demonstration purposes. This would be a TERRIBLE variable name!
+     * For demonstration purposes; This would be a TERRIBLE variable name!
      */
+
     private final DcMotor someMotor;
 
     public PracticeMotorSubsystem(HardwareMap hardwareMap) {
@@ -67,7 +68,7 @@ public class PracticeMotorSubsystem {
 
     /** increment the motor with every button press,
      * increase the motor by 10 degrees per button press
-    */
+     */
 
     public void incrementMotor(double rotSomeDegrees) {
         // someMotor.get (+rotSomeDegrees);
