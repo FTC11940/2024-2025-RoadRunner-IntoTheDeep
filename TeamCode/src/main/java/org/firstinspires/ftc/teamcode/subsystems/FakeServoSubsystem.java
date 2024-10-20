@@ -19,12 +19,12 @@ public class FakeServoSubsystem {
      * It is a descriptive name that suggests the servo motor is used for controlling a gripper mechanism.
      * In essence, this line of code declares a private constant field that represents a servo motor used for controlling a gripper.
      */
-    private final Servo gripperServo;
+    private final Servo servoZero;
 
     // Constants for servo positions
     // Another suggestion would be te use an enum for these values
-    private static final double GRIPPER_OPEN = 0.0;
-    private static final double GRIPPER_CLOSED = 1.0;
+    private static final double SERVO_OPEN = 0.0;
+    private static final double SERVO_CLOSED = 1.0;
 
     /**
      * Initializes the FakeServoSubsystem with the necessary hardware.
@@ -41,11 +41,11 @@ public class FakeServoSubsystem {
      */
     public FakeServoSubsystem(HardwareMap hardwareMap) {
 
-        gripperServo = hardwareMap.get(Servo.class,"servoZero");
+        servoZero = hardwareMap.get(Servo.class,"servoZero");
 
         // Set servo direction
-        gripperServo.setDirection(Servo.Direction.FORWARD);
-        gripperServo.setPosition(GRIPPER_OPEN);
+        servoZero.setDirection(Servo.Direction.FORWARD);
+        servoZero.setPosition(SERVO_OPEN);
 
     }
 
@@ -65,14 +65,14 @@ public class FakeServoSubsystem {
     /**
      * Opens the gripper.
      */
-    public void openGripper() {
-        gripperServo.setPosition(GRIPPER_OPEN);
+    public void openServo() {
+        servoZero.setPosition(SERVO_OPEN);
     }
 
     /**
      * Closes the gripper.
      */
-    public void closeGripper() {
-        gripperServo.setPosition(GRIPPER_CLOSED);
+    public void closeServo() {
+        servoZero.setPosition(SERVO_CLOSED);
     }
 }

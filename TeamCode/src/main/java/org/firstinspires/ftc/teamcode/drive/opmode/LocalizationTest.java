@@ -40,22 +40,6 @@ public class LocalizationTest extends LinearOpMode {
                     )
             );
 
-            // Raise arm with gamepad A button
-            if (gamepad1.a) {
-                fake.raiseArm(0.5); // Raise arm with 0.5 power
-            } else if (gamepad1.b) {
-                fake.lowerArm(0.5); // Lower arm with 0.5 power
-            } else {
-                fake.stopArm(); // Stop arm if neither button is pressed
-            }
-
-            // Open gripper with gamepad Y button
-            if (gamepad1.y) {
-                fakeServo.openGripper(); // Open gripper
-            } else if (gamepad1.x) {
-                fakeServo.closeGripper(); // Close gripper
-            }
-
             drive.update();
 
             Pose2d poseEstimate = drive.getPoseEstimate();

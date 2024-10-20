@@ -5,77 +5,56 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class FakeMotorSubsystem {
-    private DcMotor armMotor;
+
+    /**
+     * Borrowing a drive motor for demonstration purposes. This would be a TERRIBLE
+     * variable name.
+     */
+    private final DcMotor someMotor;
 
     public FakeMotorSubsystem(HardwareMap hardwareMap) {
-//    }
-//    private Servo gripperServo;
 
-    // Constants for servo positions
-//    private static final double GRIPPER_OPEN = 0.0;
-//    private static final double GRIPPER_CLOSED = 1.0;
-
-    /*** Initializes the ArmSubsystem with the necessary hardware.
-     *  @param hardwareMap The hardware map from the OpMode.
-     *
-     */
-//    public void init(HardwareMap hardwareMap) {
-        // FIXME: Replace "leftBack" with the correct motor name
-        // Borrowing a drive motor
-        armMotor = hardwareMap.get(DcMotor.class, "leftBack");
-//        gripperServo = hardwareMap.get(Servo.class, "");
+        /**
+         * Borrowing a drive motor for demonstration purposes.
+         * Note that the string name, "leftBack" has to match the name in the Driver
+         * Station & Control Hub setup
+         */
+        someMotor = hardwareMap.get(DcMotor.class, "leftBack");
 
         // Set motor direction
-        armMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        someMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        someMotor.setPower(0);
 
-        // Set servo direction
-//        gripperServo.setDirection(Direction.FORWARD);
-
-        // Initialize arm and gripper to default positions
-        armMotor.setPower(0);
-//        gripperServo.setPosition(GRIPPER_OPEN);
-
-//        telemetry.addData("Arm Subsystem", "Initialized");
-//        telemetry.update();
     }
 
     /**
-     * Raises the arm.
-     *
-     * @param power The power to apply to the arm motor.
+     * Turns the motor in one direction
+     * @param power The power to apply to the motor.
+     * The power can be any value between -1.0 and 1.0 and is generally set in the OpMode.
      */
-    public void raiseArm(double power) {
-        armMotor.setPower(power);
+    public void rotateMotor(double power) {
+        someMotor.setPower(power);
     }
-
-    /*** Lowers the arm.
-     *
-     * @param power The power to apply to the arm motor.
+    /***
+     * Turns the motor in the opposite direction as rotate motor method
+     * @param power The power to apply to the motor.
      */
-    public void lowerArm(double power) {
-
-        armMotor.setPower(-power);
-    }
-
-    /**
-     * Stops the arm motor.
-     */
-    public void stopArm() {
-        armMotor.setPower(0);
+    public void rotateMotorReverse(double power) {
+        someMotor.setPower(-power);
     }
 
     /**
-     * Opens the gripper.
+     * Stops the motor.
      */
-//    public void openGripper() {
-//        gripperServo.setPosition(GRIPPER_OPEN);
-//    }
+    public void stopMotor() {
+        someMotor.setPower(0);
+    }
 
-    /**
-     * Closes the gripper.
-     */
-//    public void closeGripper() {
-//        gripperServo.setPosition(GRIPPER_CLOSED);
-//    }
+    /** increment the motor with every button press,
+     * increase the motor by 10 degrees per button press
+    */
 
+    public void incrementMotor(double rotSomeDegrees) {
+        // someMotor.get (+rotSomeDegrees);
+    }
 }
