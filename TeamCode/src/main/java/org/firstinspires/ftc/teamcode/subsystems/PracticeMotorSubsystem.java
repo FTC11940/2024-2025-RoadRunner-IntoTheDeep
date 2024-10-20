@@ -18,7 +18,7 @@ public class PracticeMotorSubsystem {
      * Once it's assigned a value, it cannot be changed.
      * This ensures that the `someMotor` variable will always refer to the same DcMotor object throughout the lifetime of the enclosing object.
      * DcMotor: This is the data type of the variable.
-     * It indicates that `someMotor` will hold a reference to an object of the DcMotor class.
+     * It indicates that someMotor will hold a reference to an object of the DcMotor class.
      * This class is part of a library that provides functionality for controlling DC motors.
      * someMotor: This is the name of the variable.
      * It's a descriptive identifier chosen by the programmer to represent the specific DC motor being controlled.
