@@ -10,18 +10,22 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class touchSensor {
 
-    private final TouchSensor touchOne;
+    public TouchSensor touchOne;
 
+    // Same name as the class
     public touchSensor(HardwareMap hardwareMap) {
 
+        // Initialize the touchOne sensor here;
+        // DeviceName needs to match name and location in hub (digital 1)
         touchOne = hardwareMap.get(TouchSensor.class, "touchOne");
 
     }
 
-
+    // Modified method to use the class member instead of accessing hardwareMap
     public boolean isTouchOnePressed() {
-        return hardwareMap.get(TouchSensor.class, "touchOne").isPressed();
 
+        // Use the touchOne object initialized in the constructor
+        return touchOne.isPressed();
     }
 
-}
+} // end of class

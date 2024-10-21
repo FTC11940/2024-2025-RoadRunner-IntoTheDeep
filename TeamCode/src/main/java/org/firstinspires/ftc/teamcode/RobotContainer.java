@@ -31,7 +31,7 @@ public class RobotContainer extends LinearOpMode {
         // ! negation operator, i.e. the running code is not stopped
         // alternative -- opModeIsActive() and `isStarted()`
         // While loop to keep the robot running
-        while (!isStopRequested()) {
+        while (opModeIsActive()) {
 
             // Call methods from the subsystems and assign them to button presses
             // FIXME RC2.Replace these with button presses with current Methods (actions in Subsystems).
@@ -50,16 +50,12 @@ public class RobotContainer extends LinearOpMode {
                 servoSub.closeServo(); // Close gripper
             } // end of if statement for Y button
 
-
-
-            if (gamepad1.start) {
-                boolean touchOnePressed = touchOne.isTouchOnePressed();
-                telemetry.addData("Touch One", "Pressed");
+            
+            if (touchOne.isTouchOnePressed()) {
+                telemetry.addData("Touch Sensor", "Pressed");
             } else {
-                telemetry.addData("Touch One", "Not Pressed");
+                telemetry.addData("Touch Sensor", "Not Pressed");
             }
-
-
 
             telemetry.update();
 
