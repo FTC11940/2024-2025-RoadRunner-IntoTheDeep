@@ -1,7 +1,8 @@
 # Coding Tasks
 
 ## Subsystems
-    |   SUB             |   Hardware
+    SUB                 |   HARDWARE
+    ------------------- |   ----------------------
     Sensors             |   REV Color, Touch, Mag
     Vision              |   Limelight or Vision
     Intake-Release      |   DcMotors, Servos
