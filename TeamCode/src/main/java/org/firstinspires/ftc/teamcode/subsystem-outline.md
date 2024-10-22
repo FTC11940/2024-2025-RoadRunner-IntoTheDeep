@@ -1,22 +1,20 @@
 # Coding Tasks
 
-## Subsystems
-    SUB                 |   HARDWARE
-    ------------------- |   ----------------------
-    Sensors             |   REV Color, Touch, Mag
-    Vision              |   Limelight or Vision
-    Intake-Release      |   DcMotors, Servos
-    Slides              |   DcMotors, Servos
-    Drive               |   DcMotors (GoBilda)
+## Subsystems, Hardware and Assigned
 
-## Programming Assignments
-    Touch Sensor    |   Mia
-    Color Sensor    |   Maddie
-    Vision          |   Michael
-    Intake-Release  |   Isaak
-    Slides          |   Alex
-    Drive           |   ALL
-    RoadRunner      |   Joel
+| SUBSYSTEM        | HARDWARE                  | PEOPLE              |
+| ---------------- | ------------------------- | ------------------- |
+| Color Sensor     | REV Color                 | Maddie              |
+| Distance Sensor  | REV Distance              |                     |
+| Touch Sensor     | REV Touch                 | Mia                 |
+| Mag Sensor       | REV Mag Sensor            | Mia                 |
+| Vision           | Limelight or other Vision | Michael +           |
+| Intake Release   | DcMotors, Servos          | Isaak +             |
+| Slides           | DcMotors, Servos          | Alex                |
+| RoadRunner/Auton | ALL                       | Joel + Mr. Bean     |
+| Drive            | DcMotors (GoBilda)        | ALL                 |
+
+
 
 ## Other Notes
 
