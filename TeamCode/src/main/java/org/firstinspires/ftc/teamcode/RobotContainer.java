@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 @TeleOp(group = "drive", name = "TeleOp")
 
 public class RobotContainer extends LinearOpMode {
-
+    
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -52,7 +52,17 @@ public class RobotContainer extends LinearOpMode {
                 servoSub.closeServo(); // Close gripper
             } // end of if statement for Y button
 
-            
+
+            if (touch.isTouchOnePressed()) {
+                //TRUE - run the motor
+                motorSub.rotateMotor(0.5);
+            } else {
+                motorSub.rotateMotor(0);
+                //FALSE - stop the motor
+
+            } // End of if statement for touch sensor
+
+
             if (touch.isTouchOnePressed()) {
                 telemetry.addData("Touch Sensor", "Pressed");
             } else {
@@ -60,6 +70,7 @@ public class RobotContainer extends LinearOpMode {
             }
             // Get color sensor data
             colorSensors.ColorSensorData colorData = color.getColorSensorData();
+
 
             // Display color sensor data in telemetry
             telemetry.addData("Red", colorData.red);
