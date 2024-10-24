@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.sensors.touchSensors;
+import org.firstinspires.ftc.teamcode.sensors.someTouchSensor;
 import org.firstinspires.ftc.teamcode.sensors.colorSensors;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 @TeleOp(group = "drive", name = "TeleOp")
 
 public class RobotContainer extends LinearOpMode {
-
+    
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -24,7 +24,7 @@ public class RobotContainer extends LinearOpMode {
         PracticeServoSubsystem servoSub = new PracticeServoSubsystem(hardwareMap);
         PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        touchSensors touch = new touchSensors(hardwareMap);
+        someTouchSensor touch = new someTouchSensor(hardwareMap);
         colorSensors color = new colorSensors(hardwareMap);
 
         // Required to initialize the subsystems when starting the OpMode
@@ -52,7 +52,17 @@ public class RobotContainer extends LinearOpMode {
                 servoSub.closeServo(); // Close gripper
             } // end of if statement for Y button
 
-            
+
+            if (touch.isTouchOnePressed()) {
+                //TRUE - run the motor
+                motorSub.rotateMotor(0.5);
+            } else {
+                motorSub.rotateMotor(0);
+                //FALSE - stop the motor
+
+            } // End of if statement for touch sensor
+
+
             if (touch.isTouchOnePressed()) {
                 telemetry.addData("Touch Sensor", "Pressed");
             } else {
@@ -60,6 +70,7 @@ public class RobotContainer extends LinearOpMode {
             }
             // Get color sensor data
             colorSensors.ColorSensorData colorData = color.getColorSensorData();
+
 
             // Display color sensor data in telemetry
             telemetry.addData("Red", colorData.red);
