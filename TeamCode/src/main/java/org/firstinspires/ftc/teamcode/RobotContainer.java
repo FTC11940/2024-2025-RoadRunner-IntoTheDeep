@@ -2,11 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.sensors.touchSensors;
-import org.firstinspires.ftc.teamcode.sensors.colorSensors;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 
