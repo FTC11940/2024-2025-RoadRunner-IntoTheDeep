@@ -1,19 +1,15 @@
 package org.firstinspires.ftc.teamcode.sensors;
 
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-public class touchSensors {
+public class someTouchSensor {
 
     public TouchSensor touchOne;
 
     // Same name as the class
-    public touchSensors(HardwareMap hardwareMap) {
+    public someTouchSensor(HardwareMap hardwareMap) {
 
         // Initialize the touchOne sensor here;
         // DeviceName needs to match name and location in hub (digital 1)
