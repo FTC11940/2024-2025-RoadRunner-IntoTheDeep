@@ -1,42 +1,41 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.robotcore.hardware.Dcmotor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-// FIXME spelling of class name and method
-public class Climbsubsystem {
+public class ClimbSubsystem {
 
-    private final DcMotor someMotor;
+    DcMotor someMotor;
 
-    // FIXME duplicate
-    private final DcMotor someMotor;
+    DcMotor someOtherMotor;
 
-    // FIXME spelling
-    public Climbsubsystem(HardwareMap hardwareMap ) {
+
+
+    public ClimbSubsystem(HardwareMap hardwareMap ) {
 
         someMotor = hardwareMap.get(DcMotor.class, "leftBack");
         someOtherMotor = hardwareMap.get(DcMotor.class, "rightBack");
 
-        // FIXME spelling
-        somemoter.setDirection(DcMotorEx.direction.FORWARD);
+
+        someMotor.setDirection(DcMotorEx.Direction.FORWARD);
         someMotor.setPower(0);
-        someOtherMotor.setDirection(DcMotorEx.Direction.FOWARD);
-        someOthermotor.setPower(0);
+        someOtherMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        someOtherMotor.setPower(0);
 
         // this will move the arm up//
-        public void setMotorpowerup(double power)
-        someMotor.setPower(power);
-        someOtherMotor.setpower(power);
-
+        public void setMotorpowerupdoublepower {
+            someMotor.setPower(double power)
+            someOtherMotor.setPower(power);
+        }
         // this will move the arm down//
-        public void setMotorpowerdown(double power ) {
-            someMotor.setPower(-power);
-            someOtherMotor.setpower(0);
-
+        public void setMotorpowerdown ( double power);
+        someMotor.setPower(-power);
+        someOtherMotor.SetPower(0);
+    }
             // FIXME bracket
-            public void incrementMotor(double rotSomeDegrees) }
-
+            public void incrementMotordouble (RotSomeDegrees)
+]
         }
 
     }
