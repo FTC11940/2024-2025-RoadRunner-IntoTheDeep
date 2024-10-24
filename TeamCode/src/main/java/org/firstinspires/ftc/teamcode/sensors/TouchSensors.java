@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.sensors;
 
+public class touchSensors {
+}
+
+package org.firstinspires.ftc.teamcode.sensors;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -17,5 +21,3 @@ public class TouchSensors {
     }
 
 }
-
-
