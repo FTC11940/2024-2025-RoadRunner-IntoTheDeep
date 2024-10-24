@@ -4,12 +4,12 @@ package org.firstinspires.ftc.teamcode.sensors;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-public class someTouchSensor {
+public class SomeTouchSensors {
 
     public TouchSensor touchOne;
 
     // Same name as the class
-    public someTouchSensor(HardwareMap hardwareMap) {
+    public SomeTouchSensors(HardwareMap hardwareMap) {
 
         // Initialize the touchOne sensor here;
         // DeviceName needs to match name and location in hub (digital 1)

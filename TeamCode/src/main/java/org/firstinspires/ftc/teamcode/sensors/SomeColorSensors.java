@@ -3,10 +3,10 @@ package org.firstinspires.ftc.teamcode.sensors;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class colorSensors {
+public class SomeColorSensors {
     ColorSensor colorOne;
 
-    public colorSensors(HardwareMap hardwareMap) {
+    public SomeColorSensors(HardwareMap hardwareMap) {
         colorOne = hardwareMap.get(ColorSensor.class, "colorOne");
     }
 

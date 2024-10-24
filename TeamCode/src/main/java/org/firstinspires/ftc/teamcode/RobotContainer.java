@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.sensors.someTouchSensor;
-import org.firstinspires.ftc.teamcode.sensors.colorSensors;
+import org.firstinspires.ftc.teamcode.sensors.SomeTouchSensors;
+import org.firstinspires.ftc.teamcode.sensors.SomeColorSensors;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 
@@ -24,8 +24,8 @@ public class RobotContainer extends LinearOpMode {
         PracticeServoSubsystem servoSub = new PracticeServoSubsystem(hardwareMap);
         PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        someTouchSensor touch = new someTouchSensor(hardwareMap);
-        colorSensors color = new colorSensors(hardwareMap);
+        SomeTouchSensors touch = new SomeTouchSensors(hardwareMap);
+        SomeColorSensors color = new SomeColorSensors(hardwareMap);
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
@@ -69,7 +69,7 @@ public class RobotContainer extends LinearOpMode {
                 telemetry.addData("Touch Sensor", "Not Pressed");
             }
             // Get color sensor data
-            colorSensors.ColorSensorData colorData = color.getColorSensorData();
+            SomeColorSensors.ColorSensorData colorData = color.getColorSensorData();
 
 
             // Display color sensor data in telemetry
