@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.sensors.SomeMagSensors;
 import org.firstinspires.ftc.teamcode.sensors.SomeTouchSensors;
 import org.firstinspires.ftc.teamcode.sensors.SomeColorSensors;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
@@ -25,7 +26,9 @@ public class RobotContainer extends LinearOpMode {
         PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         SomeTouchSensors touch = new SomeTouchSensors(hardwareMap);
+        SomeMagSensors mag = new SomeMagSensors(hardwareMap);
         SomeColorSensors color = new SomeColorSensors(hardwareMap);
+//        SomeDistanceSensor distance = new SomeDistanceSensor(hardwareMap);
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
@@ -68,9 +71,20 @@ public class RobotContainer extends LinearOpMode {
             } else {
                 telemetry.addData("Touch Sensor", "Not Pressed");
             }
+
             // Get color sensor data
             SomeColorSensors.ColorSensorData colorData = color.getColorSensorData();
 
+            if (mag.magStatus()) {
+                telemetry.addData("Mag Sensor", "Pressed");
+            } else {
+                telemetry.addData("Mag Sensor", "Not Pressed");
+            }
+
+            // Get distance sensor data
+            // SomeDistanceSensor distance = new SomeDistanceSensor(hardwareMap);
+
+//            double distanceData = distance.getDistance();
 
             // Display color sensor data in telemetry
             telemetry.addData("Red", colorData.red);
