@@ -2,11 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.sensors.touchSensors;
-import org.firstinspires.ftc.teamcode.sensors.colorSensors;
+import org.firstinspires.ftc.teamcode.sensors.SomeDistanceSensor;
+import org.firstinspires.ftc.teamcode.sensors.SomeMagSensors;
+import org.firstinspires.ftc.teamcode.sensors.SomeTouchSensors;
+import org.firstinspires.ftc.teamcode.sensors.SomeColorSensors;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 @TeleOp(group = "drive", name = "TeleOp")
 
 public class RobotContainer extends LinearOpMode {
-
+    
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -24,8 +25,10 @@ public class RobotContainer extends LinearOpMode {
         PracticeServoSubsystem servoSub = new PracticeServoSubsystem(hardwareMap);
         PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        touchSensors touch = new touchSensors(hardwareMap);
-        colorSensors color = new colorSensors(hardwareMap);
+        SomeTouchSensors touch = new SomeTouchSensors(hardwareMap);
+        SomeMagSensors mag = new SomeMagSensors(hardwareMap);
+        SomeColorSensors color = new SomeColorSensors(hardwareMap);
+        SomeDistanceSensor distance = new SomeDistanceSensor(hardwareMap);
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
@@ -52,14 +55,41 @@ public class RobotContainer extends LinearOpMode {
                 servoSub.closeServo(); // Close gripper
             } // end of if statement for Y button
 
-            
+
+            if (touch.isTouchOnePressed()) {
+                //TRUE - run the motor
+                motorSub.rotateMotor(0.5);
+            } else {
+                motorSub.rotateMotor(0);
+                //FALSE - stop the motor
+
+            } // End of if statement for touch sensor
+
+
             if (touch.isTouchOnePressed()) {
                 telemetry.addData("Touch Sensor", "Pressed");
             } else {
                 telemetry.addData("Touch Sensor", "Not Pressed");
             }
+
             // Get color sensor data
-            colorSensors.ColorSensorData colorData = color.getColorSensorData();
+            SomeColorSensors.ColorSensorData colorData = color.getColorSensorData();
+
+            if (mag.magStatus()) {
+                telemetry.addData("Mag Sensor", "Pressed");
+            } else {
+                telemetry.addData("Mag Sensor", "Not Pressed");
+            }
+
+            // Get distance sensor data
+            // SomeDistanceSensor distance = new SomeDistanceSensor(hardwareMap);
+
+            double distanceData = distance.getDistance();
+            double distanceDataInches = distance.getDistanceInches();
+
+
+            telemetry.addData("Distance (cm)", distanceData);
+            telemetry.addData("Distance (in)", distanceDataInches);
 
             // Display color sensor data in telemetry
             telemetry.addData("Red", colorData.red);
