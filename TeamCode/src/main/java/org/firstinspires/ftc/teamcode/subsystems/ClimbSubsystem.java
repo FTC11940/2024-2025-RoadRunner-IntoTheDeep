@@ -22,12 +22,16 @@ public class ClimbSubsystem {
         someMotor.setPower(0);
         someOtherMotor.setDirection(DcMotorEx.Direction.FORWARD);
         someOtherMotor.setPower(0);
+        // FIXME
 
         // this will move the arm up//
+        // FIXME
         public void setMotorpowerupdoublepower {
             someMotor.setPower(double power)
             someOtherMotor.setPower(power);
         }
+
+        // FIXME
         // this will move the arm down//
         public void setMotorpowerdown ( double power);
         someMotor.setPower(-power);
@@ -41,4 +45,4 @@ public class ClimbSubsystem {
     }
 
 
-}
+} // TODO add a comment
