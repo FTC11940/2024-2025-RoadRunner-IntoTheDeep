@@ -60,7 +60,7 @@ public class RobotContainer extends LinearOpMode {
 
             // Rotate servo 90 degrees with gamepad2 A button
             if (gamepad2.a) {
-                servoSub.ServoPosition(OPEN); // Rotate servo 90 degrees
+                servoSub.setServoPose(SERVO_OPEN); // Rotate servo 90 degrees
             } // end of if statement for A button
 
 
