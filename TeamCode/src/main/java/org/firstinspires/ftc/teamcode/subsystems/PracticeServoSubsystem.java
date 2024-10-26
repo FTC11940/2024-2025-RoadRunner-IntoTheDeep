@@ -23,8 +23,8 @@ public class PracticeServoSubsystem {
 
     // Constants for servo positions
     // Another suggestion would be te use an enum for these values
-    private static final double SERVO_OPEN = 0.0;
-    private static final double SERVO_CLOSED = 1.0;
+    public static final double SERVO_OPEN = 0.0;
+    public static final double SERVO_CLOSED = 1.0;
 
     /**
      * Initializes the PracticeServoSubsystem with the necessary hardware.
@@ -45,7 +45,8 @@ public class PracticeServoSubsystem {
 
         // Set servo direction
         servoZero.setDirection(Servo.Direction.FORWARD);
-        servoZero.setPosition(SERVO_OPEN);
+
+        //servoZero.setPosition(SERVO_OPEN);
 
     }
 
@@ -62,6 +63,14 @@ public class PracticeServoSubsystem {
      * GRIPPER_OPEN: This is likely a constant or a variable that holds the desired position value for opening the gripper. It could be a numerical value representing an angle or a predefined state.
      * In essence, the code instructs a specific servo motor (gripperServo) to move to a position designated for opening the gripper (GRIPPER_OPEN).
      * */
+
+
+    public void setServoPose(double servoPosition) {
+
+        servoZero.setPosition(servoPosition);
+    }
+
+
     /**
      * Opens the gripper.
      */
@@ -75,4 +84,20 @@ public class PracticeServoSubsystem {
     public void closeServo() {
         servoZero.setPosition(SERVO_CLOSED);
     }
-}
+
+
+    
+    /**
+     * Rotates the servo 90 degrees from its current position.
+     */
+    public void rotate90Degrees() {
+        double currentPosition = servoZero.getPosition();
+        double newPosition = currentPosition + 0.5; // 0.5 represents 90 degrees
+
+        // Ensure the new position is within valid range (0.0 to 1.0)
+        newPosition = Math.min(Math.max(newPosition, 0.0), 1.0);
+
+        servoZero.setPosition(newPosition);
+    }
+     
+} // End of class

@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.SERVO_CLOSED;
+import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.SERVO_OPEN;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -54,6 +57,11 @@ public class RobotContainer extends LinearOpMode {
             } else if (gamepad1.x) {
                 servoSub.closeServo(); // Close gripper
             } // end of if statement for Y button
+
+            // Rotate servo 90 degrees with gamepad2 A button
+            if (gamepad2.a) {
+                servoSub.ServoPosition(OPEN); // Rotate servo 90 degrees
+            } // end of if statement for A button
 
 
             if (touch.isTouchOnePressed()) {
