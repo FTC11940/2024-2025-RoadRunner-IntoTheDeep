@@ -19,13 +19,18 @@ public class PracticeServoSubsystem {
      * It is a descriptive name that suggests the servo motor is used for controlling a gripper mechanism.
      * In essence, this line of code declares a private constant field that represents a servo motor used for controlling a gripper.
      */
-    private final Servo servoZero;
+    private final Servo servoZero; // Servo motor for servoZero
+    private double currentPoseZero; // Current position of servoZero
+
+    private final Servo servoOne; // Servo motor for servoOne
+    private double currentPoseOne; // Current position of servoOne
 
     // Constants for servo positions
     // Another suggestion would be te use an enum for these values
     public static final double SERVO_OPEN = 0.0;
-    public static final double SERVO_CLOSED = 1.0;
-
+    public static final double SERVO_CLOSED = 0.25;
+    public static final double SERVO_HOME = 0.0;
+    public static final double SERVO_ONE_MAX = 1.0;
     /**
      * Initializes the PracticeServoSubsystem with the necessary hardware.
      *
@@ -42,9 +47,11 @@ public class PracticeServoSubsystem {
     public PracticeServoSubsystem(HardwareMap hardwareMap) {
 
         servoZero = hardwareMap.get(Servo.class,"servoZero");
+        servoOne = hardwareMap.get(Servo.class,"servoOne");
 
         // Set servo direction
         servoZero.setDirection(Servo.Direction.FORWARD);
+        servoOne.setDirection(Servo.Direction.FORWARD);
 
         //servoZero.setPosition(SERVO_OPEN);
 
@@ -65,9 +72,12 @@ public class PracticeServoSubsystem {
      * */
 
 
-    public void setServoPose(double servoPosition) {
-
+    public void setServoZeroPose(double servoPosition) {
         servoZero.setPosition(servoPosition);
+    }
+
+    public void setServoOnePose(double servoPosition) {
+        servoOne.setPosition(servoPosition);
     }
 
 

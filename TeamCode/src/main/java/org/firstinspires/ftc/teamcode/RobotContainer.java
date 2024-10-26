@@ -60,9 +60,19 @@ public class RobotContainer extends LinearOpMode {
 
             // Rotate servo 90 degrees with gamepad2 A button
             if (gamepad2.a) {
-                servoSub.setServoPose(SERVO_OPEN); // Rotate servo 90 degrees
+                servoSub.setServoZeroPose(SERVO_OPEN); // Rotate servo 90 degrees
             } // end of if statement for A button
+            if (gamepad2.b) {
+                servoSub.setServoZeroPose(SERVO_CLOSED); // Rotate servo 90 degrees
+            } // end of if statement for B button
 
+            if (gamepad2.x) {
+                servoSub.setServoOnePose(0.75); // Backward
+            } // end of if statement for X button
+            if (gamepad2.y) {
+                servoSub.setServoOnePose(0.25); // Forward
+            } // end of if statement for Y button 
+            
 
             if (touch.isTouchOnePressed()) {
                 //TRUE - run the motor
