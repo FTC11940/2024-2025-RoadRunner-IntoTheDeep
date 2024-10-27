@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.SERVO_CLOSED;
 import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.SERVO_OPEN;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,8 +15,9 @@ import org.firstinspires.ftc.teamcode.sensors.SomeColorSensors;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 
+@Disabled
 
-@TeleOp(group = "drive", name = "TeleOp")
+@TeleOp(group = "drive", name = "Practice TeleOp")
 
 public class RobotContainer extends LinearOpMode {
     
@@ -53,17 +55,17 @@ public class RobotContainer extends LinearOpMode {
 
             // Open gripper with gamepad Y button
             if (gamepad1.y) {
-                servoSub.openServo(); // Open gripper
+                servoSub.openServo();
             } else if (gamepad1.x) {
-                servoSub.closeServo(); // Close gripper
+                servoSub.closeServo();
             } // end of if statement for Y button
 
             // Rotate servo 90 degrees with gamepad2 A button
             if (gamepad2.a) {
-                servoSub.setServoZeroPose(SERVO_OPEN); // Rotate servo 90 degrees
+                servoSub.setServoZeroPose(SERVO_OPEN);
             } // end of if statement for A button
             if (gamepad2.b) {
-                servoSub.setServoZeroPose(SERVO_CLOSED); // Rotate servo 90 degrees
+                servoSub.setServoZeroPose(SERVO_CLOSED);
             } // end of if statement for B button
 
             if (gamepad2.x) {
@@ -78,12 +80,14 @@ public class RobotContainer extends LinearOpMode {
                 //TRUE - run the motor
                 motorSub.rotateMotor(0.5);
             } else {
-                motorSub.rotateMotor(0);
                 //FALSE - stop the motor
+                motorSub.rotateMotor(0);
+
 
             } // End of if statement for touch sensor
 
 
+            // Display touch sensor data in telemetry
             if (touch.isTouchOnePressed()) {
                 telemetry.addData("Touch Sensor", "Pressed");
             } else {
@@ -101,7 +105,6 @@ public class RobotContainer extends LinearOpMode {
 
             // Get distance sensor data
             // SomeDistanceSensor distance = new SomeDistanceSensor(hardwareMap);
-
             double distanceData = distance.getDistance();
             double distanceDataInches = distance.getDistanceInches();
 
