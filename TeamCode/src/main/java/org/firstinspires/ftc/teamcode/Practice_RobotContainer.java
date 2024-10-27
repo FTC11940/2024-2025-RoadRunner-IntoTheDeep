@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.INTAKE_SERVO_DOWN;
+import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.INTAKE_SERVO_RELEASE;
 import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.SERVO_CLOSED;
 import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.SERVO_OPEN;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -43,45 +46,41 @@ public class Practice_RobotContainer extends LinearOpMode {
         // While loop to keep the robot running
         while (opModeIsActive()) {
 
-            // Call methods from the subsystems and assign them to button presses
+            // Call methods from the subsystems and assign them to gamepad inputs
+
             // FIXME RC2.Replace these with button presses with current Methods (actions in Subsystems).
-            if (gamepad1.a) {
-                motorSub.rotateMotor(0.25); // Run the motor with 0.5 power
-            } else if (gamepad1.b) {
-                motorSub.rotateMotorReverse(0.25); // Run the motor with 0.5 power in reverse
-            } else {
-                motorSub.stopMotor(); // Stop motor if neither button is pressed
-            } // end of if statement for A and B buttons
+            drive.setWeightedDrivePower(
+                    new Pose2d(
+                            -gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x,
+                            -gamepad1.right_stick_x
+                    )
+            );
 
-            // Open gripper with gamepad Y button
-            if (gamepad1.y) {
-                servoSub.openServo();
-            } else if (gamepad1.x) {
-                servoSub.closeServo();
-            } // end of if statement for Y button
-
-            // Rotate servo 90 degrees with gamepad2 A button
-            if (gamepad2.a) {
+            // Rotate servo degrees with gamepad2 A button
+            if (gamepad1.x) {
                 servoSub.setServoZeroPose(SERVO_OPEN);
             } // end of if statement for A button
-            if (gamepad2.b) {
+
+            if (gamepad1.y) {
                 servoSub.setServoZeroPose(SERVO_CLOSED);
             } // end of if statement for B button
 
-            if (gamepad2.x) {
-                servoSub.setServoOnePose(0.75); // Backward
+            // Set the intake arm servo for intake and release positions
+            if (gamepad1.a) {
+                servoSub.setServoOnePose(INTAKE_SERVO_DOWN);
             } // end of if statement for X button
-            if (gamepad2.y) {
-                servoSub.setServoOnePose(0.25); // Forward
+            if (gamepad1.b) {
+                servoSub.setServoOnePose(INTAKE_SERVO_RELEASE);
             } // end of if statement for Y button 
             
 
             if (touch.isTouchOnePressed()) {
-                //TRUE - run the motor
-                motorSub.rotateMotor(0.5);
+                // TRUE
+                motorSub.rotateMotor(0.0);
             } else {
-                //FALSE - stop the motor
-                motorSub.rotateMotor(0);
+                // FALSE
+                // motorSub.rotateMotor(0);
 
 
             } // End of if statement for touch sensor

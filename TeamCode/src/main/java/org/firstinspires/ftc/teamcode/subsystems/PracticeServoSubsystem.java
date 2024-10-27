@@ -28,9 +28,10 @@ public class PracticeServoSubsystem {
     // Constants for servo positions
     // Another suggestion would be te use an enum for these values
     public static final double SERVO_OPEN = 0.0;
-    public static final double SERVO_CLOSED = 0.25;
-    public static final double SERVO_HOME = 0.0;
-    public static final double SERVO_ONE_MAX = 1.0;
+    public static final double SERVO_CLOSED = 1.0;
+
+    public static final double INTAKE_SERVO_DOWN = 0.30;
+    public static final double INTAKE_SERVO_RELEASE = 0.90;
     /**
      * Initializes the PracticeServoSubsystem with the necessary hardware.
      *
@@ -77,6 +78,7 @@ public class PracticeServoSubsystem {
     }
 
     public void setServoOnePose(double servoPosition) {
+
         servoOne.setPosition(servoPosition);
     }
 
