@@ -15,11 +15,11 @@ import org.firstinspires.ftc.teamcode.sensors.SomeColorSensors;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 
-@Disabled
+// @Disabled
 
 @TeleOp(group = "drive", name = "Practice TeleOp")
 
-public class RobotContainer extends LinearOpMode {
+public class Practice_RobotContainer extends LinearOpMode {
     
     @Override
     public void runOpMode() throws InterruptedException {

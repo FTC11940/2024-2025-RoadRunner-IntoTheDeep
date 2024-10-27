@@ -1,5 +1,3 @@
-doc_scoy_notes.md
-
 # IntakeSubsystem.java
 * Power intake motor forward direction, no position
 * Power intake motor reverse direction, no position
