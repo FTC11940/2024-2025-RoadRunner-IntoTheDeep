@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -28,9 +29,7 @@ public class IntakeSubsystem {
     // The release (for dropping pieces into the observation zone (specimen zone))
     public static final double INTAKE_RELEASE_MOTOR_POWER = -1;
 
-
-    //@Override
-    public void runOpMode() {
+    public IntakeSubsystem(HardwareMap hardwareMap) {
 
         intakeArmServo = hardwareMap.servo.get("intakeArmServo");
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
