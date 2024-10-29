@@ -11,8 +11,7 @@ public class ClimbSubsystem {
     DcMotor someOtherMotor;
 
 
-
-    public ClimbSubsystem(HardwareMap hardwareMap ) {
+    public ClimbSubsystem(HardwareMap hardwareMap) {
 
         someMotor = hardwareMap.get(DcMotor.class, "leftBack");
         someOtherMotor = hardwareMap.get(DcMotor.class, "rightBack");
@@ -23,26 +22,26 @@ public class ClimbSubsystem {
         someOtherMotor.setDirection(DcMotorEx.Direction.FORWARD);
         someOtherMotor.setPower(0);
         // FIXME
-
+    }
         // this will move the arm up//
+
         // FIXME
-        public void setMotorpowerupdoublepower {
-            someMotor.setPower(double power)
-            someOtherMotor.setPower(power);
+        public void setMotorPowerUp(double power) {
+                someMotor.setPower(power);
+                someOtherMotor.setPower(power);
         }
 
         // FIXME
         // this will move the arm down//
-        public void setMotorpowerdown ( double power);
+        public void setMotorPowerDown(double power){
         someMotor.setPower(-power);
-        someOtherMotor.SetPower(0);
-    }
-            // FIXME bracket
-            public void incrementMotordouble (RotSomeDegrees)
-]
+        someOtherMotor.setPower(0);
         }
 
+    // FIXME bracket
+    public void incrementMotor(double power){
+
     }
 
-
-} // TODO add a comment
+}
+ // TODO add a comment

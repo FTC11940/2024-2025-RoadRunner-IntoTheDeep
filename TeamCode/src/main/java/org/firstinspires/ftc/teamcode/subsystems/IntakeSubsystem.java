@@ -10,9 +10,9 @@ public class IntakeSubsystem {
     //Equation for finding 160 degrees: 0.88889*X and X = what position the servo is in when it is 180 degrees.
     //servoName.setPosition(0.88889);
 
-    Servo intakeServo;
-    DcMotor intakeMotor;
-    TouchSensor intakeTouch;
+    Servo grabbySpinner;
+    DcMotor grabby;
+    TouchSensor grabbyTouchy;
 
     //position to pick up pieces (for picking up pieces) 0 degrees
     public static final double Picking_Up = 0;
@@ -30,9 +30,9 @@ public class IntakeSubsystem {
     //@Override
     public void runOpMode() {
 
-        intakeServo = hardwareMap.servo.get("intakeServo");
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        intakeTouch = hardwareMap.get(TouchSensor.class, "intakeTouch");
+        grabbySpinner = hardwareMap.servo.get("intakeServo");
+        grabby = hardwareMap.get(DcMotor.class, "intakeMotor");
+        grabbyTouchy = hardwareMap.get(TouchSensor.class, "intakeTouch");
 
         //Set the starting position
 
