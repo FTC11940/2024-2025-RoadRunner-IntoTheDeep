@@ -65,6 +65,7 @@ public class PracticeMotorSubsystem {
      * @param power The power to apply to the motor.
      */
     public void rotateMotorReverse(double power) {
+
         someMotor.setPower(-power);
         someOtherMotor.setPower(-power);
     }

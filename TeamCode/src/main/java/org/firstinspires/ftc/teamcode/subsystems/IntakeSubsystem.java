@@ -16,7 +16,7 @@ public class IntakeSubsystem {
     TouchSensor intakeTouch;
 
     /* Motor and Servo Positions    */
-    
+
     // Position to pick up pieces (for picking up pieces) 0 degrees
     public static final double INTAKE_SERVO_POSITION = 0;
 
