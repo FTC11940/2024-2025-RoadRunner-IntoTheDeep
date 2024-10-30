@@ -7,8 +7,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.sensors.Sensors;
+import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.ClimbSubystem;
+import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
 
 
 @TeleOp(group = "drive", name = "TeleOp")
@@ -28,7 +34,6 @@ public class RobotContainer extends LinearOpMode {
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
         ClimbSubystem climbSub = new ClimbSubystem(hardwareMap);
-
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();

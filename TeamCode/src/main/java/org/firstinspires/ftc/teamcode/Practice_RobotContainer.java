@@ -6,14 +6,11 @@ import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.S
 import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.SERVO_OPEN;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.sensors.SomeDistanceSensor;
 import org.firstinspires.ftc.teamcode.sensors.SomeMagSensors;
-import org.firstinspires.ftc.teamcode.sensors.SomeTouchSensors;
 import org.firstinspires.ftc.teamcode.sensors.SomeColorSensors;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;

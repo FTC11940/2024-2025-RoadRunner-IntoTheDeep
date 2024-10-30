@@ -38,7 +38,5 @@ public class ClimbSubsystem {
         someOtherMotor.setPower(0);
         }
 
-    }
-
 
 }
