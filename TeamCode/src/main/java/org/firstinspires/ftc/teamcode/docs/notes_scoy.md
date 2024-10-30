@@ -1,6 +1,6 @@
 # IntakeSubsystem.java
-* Power intake motor forward direction, no position
-* Power intake motor reverse direction, no position
+* Power intake motor (grabber wheel) forward direction, no position
+* Power intake motor (grabber wheel) reverse direction, no position
 * Power intake motor off
 * Set arm servo to specific position for intake
 * Set arm servo to specific position for release
@@ -9,6 +9,7 @@
 * Power slides motor forward to slide out to specific position
 * Power slides motor reverse to slide in to specific position
 * Power slides motor off
+* Power slides motor incrementally for testing purposes
 
 # ClimbSubsystem.java
 * Power climb motor forward/up direction to specific position

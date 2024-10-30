@@ -2,18 +2,15 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.ClimbSubystem;
+import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
 
 
@@ -33,11 +30,16 @@ public class RobotContainer extends LinearOpMode {
         IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
-        ClimbSubystem climbSub = new ClimbSubystem(hardwareMap);
+        ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
 
+        /* Reset the motor encoder position */
+
+        // TODO Test the reset
+        slidesSub.resetSlideEncoder();
+        // TODO add a reset for climb
 
         // While loop to keep the robot running
         while (opModeIsActive()) {
@@ -60,21 +62,39 @@ public class RobotContainer extends LinearOpMode {
 
             //
             if (gamepad1.a) {
+
             }
 
             //
             if (gamepad1.b) {
             }
 
-            //
+            // TODO Test the SlideSubsystem
+            /* Use the X button to incrementally move the slide motor in a reverse direction
+            * Use the Y button to incrementally move the slide motor in a forward direction */
             if (gamepad1.x) {
+                slidesSub.powerSlide(-0.1);
+            } else if (gamepad1.y) {
+                slidesSub.powerSlide(0.1);
+            } else {
+                // Stop the slide motor
+                slidesSub.powerSlide(0);
             }
 
-            //
-            if (gamepad1.y) {
+            // TODO Test the IntakeSubsystem
+            /* Use the right bumper to Power Intake Wheel (for picking up pieces)
+            * Use the left bumper to reverse Power Intake Wheel (for dropping pieces into the bucket)*/
+            if (gamepad1.right_bumper) {
+                intakeSub.powerIntakeWheel(IntakeSubsystem.WHEEL_POWER_INTAKE);
+            } else if (gamepad1.left_bumper) {
+                intakeSub.powerIntakeWheel(IntakeSubsystem.WHEEL_POWER_RELEASE);
+            } else {
+                intakeSub.powerIntakeWheel(0);
             }
 
-
+            // Add telemetry for slide encoder
+            int encoderPosition = slidesSub.slideMotor.getCurrentPosition();
+            telemetry.addData("Slide Encoder", encoderPosition);
 
             telemetry.update();
 

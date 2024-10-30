@@ -6,36 +6,32 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class ClimbSubsystem {
 
-    DcMotor someMotor;
+    public DcMotorEx climbMotorOne;
+    public DcMotorEx climbMotorTwo;
 
-    DcMotor someOtherMotor;
 
 
     public ClimbSubsystem(HardwareMap hardwareMap) {
 
-        someMotor = hardwareMap.get(DcMotor.class, "leftBack");
-        someOtherMotor = hardwareMap.get(DcMotor.class, "rightBack");
+        climbMotorOne = hardwareMap.get(DcMotorEx.class, "leftBack");
 
+        climbMotorOne.setDirection(DcMotorEx.Direction.FORWARD);
+        climbMotorOne.setPower(0);
+        climbMotorTwo.setDirection(DcMotorEx.Direction.FORWARD);
+        climbMotorTwo.setPower(0);
 
-        someMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        someMotor.setPower(0);
-        someOtherMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        someOtherMotor.setPower(0);
-        // FIXME
     }
-        // this will move the arm up//
-
+        /* This will move the climber up */
         // FIXME
         public void setMotorPowerUp(double power) {
-                someMotor.setPower(power);
-                someOtherMotor.setPower(power);
+            climbMotorOne.setPower(power);
+            climbMotorOne.setPower(power);
         }
 
-        // FIXME
         // this will move the arm down//
         public void setMotorPowerDown(double power){
-        someMotor.setPower(-power);
-        someOtherMotor.setPower(0);
+            climbMotorOne.setPower(-power);
+            climbMotorTwo.setPower(0);
         }
 
 

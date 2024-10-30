@@ -18,16 +18,16 @@ public class IntakeSubsystem {
     /* Motor and Servo Positions    */
 
     // Position to pick up pieces (for picking up pieces) 0 degrees
-    public static final double INTAKE_SERVO_POSITION = 0;
+    public static final double SERVO_POSITION_INTAKE = 0;
 
     // Position to drop pieces into the bucket (for scoring in the baskets) about 160 degrees
-    public static final double RELEASE_SERVO_POSITION = 0.888889;
+    public static final double SERVO_POSITION_RELEASE = 0.888889;
 
     // The intake (For picking up pieces using the wheel)
-    public static final double INTAKE_MOTOR_POWER = 1;
+    public static final double WHEEL_POWER_INTAKE = 0.25;
 
     // The release (for dropping pieces into the observation zone (specimen zone))
-    public static final double INTAKE_RELEASE_MOTOR_POWER = -1;
+    public static final double WHEEL_POWER_RELEASE = -0.25;
 
     public IntakeSubsystem(HardwareMap hardwareMap) {
 
@@ -37,16 +37,24 @@ public class IntakeSubsystem {
 
     }
 
+    // TODO Test with low power
+    /* Use for turning on the Intake Wheel */
+    public void powerIntakeWheel(double power) {
+        intakeMotor.setPower(power);
+    }
+
     // Set all parameters for the intake position
-    public void setIntakePosition() {
-        intakeArmServo.setPosition(INTAKE_SERVO_POSITION);
-        intakeMotor.setPower(INTAKE_MOTOR_POWER);
+    public void groupIntakePosition() {
+        intakeArmServo.setPosition(SERVO_POSITION_INTAKE);
+        intakeMotor.setPower(WHEEL_POWER_INTAKE);
     }
 
     // Set all parameters for the release position
-    public void setReleasePosition() {
-        intakeArmServo.setPosition(RELEASE_SERVO_POSITION);
+    public void groupReleasePosition() {
+        intakeArmServo.setPosition(SERVO_POSITION_RELEASE);
         // intakeMotor.setPower(INTAKE_RELEASE_MOTOR_POWER);
     }
+
+
 
 } // End of IntakeSubsystem class
