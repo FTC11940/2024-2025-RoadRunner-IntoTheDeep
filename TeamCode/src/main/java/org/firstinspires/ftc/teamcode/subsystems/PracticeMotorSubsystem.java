@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class PracticeMotorSubsystem {
@@ -27,6 +28,7 @@ public class PracticeMotorSubsystem {
      */
 
     private final DcMotor someMotor;
+    private final DcMotor someOtherMotor;
 
     public PracticeMotorSubsystem(HardwareMap hardwareMap) {
 
@@ -36,10 +38,16 @@ public class PracticeMotorSubsystem {
          * Station & Control Hub setup
          */
         someMotor = hardwareMap.get(DcMotor.class, "leftBack");
+        someOtherMotor = hardwareMap.get(DcMotor.class, "rightBack");
+
+        // Brake or Coast mode
+        //someMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Set motor direction
         someMotor.setDirection(DcMotorEx.Direction.FORWARD);
         someMotor.setPower(0);
+        someOtherMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        someOtherMotor.setPower(0);
 
     }
 
@@ -50,6 +58,7 @@ public class PracticeMotorSubsystem {
      */
     public void rotateMotor(double power) {
         someMotor.setPower(power);
+        someOtherMotor.setPower(power);
     }
     /***
      * Turns the motor in the opposite direction as rotate motor method
@@ -58,6 +67,7 @@ public class PracticeMotorSubsystem {
     public void rotateMotorReverse(double power) {
 
         someMotor.setPower(-power);
+        someOtherMotor.setPower(-power);
     }
 
     /**
@@ -65,6 +75,7 @@ public class PracticeMotorSubsystem {
      */
     public void stopMotor() {
         someMotor.setPower(0);
+        someOtherMotor.setPower(0);
     }
 
     /** increment the motor with every button press,

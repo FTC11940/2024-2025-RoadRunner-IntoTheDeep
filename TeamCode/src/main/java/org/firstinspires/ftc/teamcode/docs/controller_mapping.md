@@ -20,3 +20,6 @@
 | D-Pad Down    | gamepad1.dpad_down     | D-pad down button                         |
 | D-Pad Left    | gamepad1.dpad_left     | D-pad left button                         |
 | D-Pad Right   | gamepad1.dpad_right    | D-pad right button                        |
+
+Same for `gamepad2.*`
+

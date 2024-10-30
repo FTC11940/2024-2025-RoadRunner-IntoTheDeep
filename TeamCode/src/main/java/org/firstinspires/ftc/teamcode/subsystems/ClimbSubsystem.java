@@ -38,10 +38,7 @@ public class ClimbSubsystem {
         someOtherMotor.setPower(0);
         }
 
-    // FIXME bracket
-    public void incrementMotor(double power){
-
     }
 
+
 }
- // TODO add a comment

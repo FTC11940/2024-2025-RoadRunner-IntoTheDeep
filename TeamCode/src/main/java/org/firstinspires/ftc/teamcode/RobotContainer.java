@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -17,53 +20,57 @@ public class RobotContainer extends LinearOpMode {
 
         // Subsystems
         // Create new instances of classes, including subsystems, and assign to a variable
-        // FIXME RC1. Replace these with the names of actual subsystems
-        PracticeServoSubsystem servoSub = new PracticeServoSubsystem(hardwareMap);
-        PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        touchSensors touch = new touchSensors(hardwareMap);
-        colorSensors color = new colorSensors(hardwareMap);
+        Sensors sensorsSub = new Sensors(hardwareMap);
+        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap);
+        IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap);
+        SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap);
+        DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
+        ClimbSubystem climbSub = new ClimbSubystem(hardwareMap);
+
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
 
-        // ! negation operator, i.e. the running code is not stopped
-        // alternative -- opModeIsActive() and `isStarted()`
+
         // While loop to keep the robot running
         while (opModeIsActive()) {
 
-            // Call methods from the subsystems and assign them to button presses
             // FIXME RC2.Replace these with button presses with current Methods (actions in Subsystems).
+            /*
+            * Map methods from the subsystems to gamepad inputs
+            * See `ControllerMapping.md` for gamepad field names
+            */
+
+
+            //
+            drive.setWeightedDrivePower(
+                    new Pose2d(
+                            -gamepad1.left_stick_y,
+                            -gamepad1.left_stick_x,
+                            -gamepad1.right_stick_x
+                    )
+            );
+
+            //
             if (gamepad1.a) {
-                motorSub.rotateMotor(0.25); // Run the motor with 0.5 power
-            } else if (gamepad1.b) {
-                motorSub.rotateMotorReverse(0.25); // Run the motor with 0.5 power in reverse
-            } else {
-                motorSub.stopMotor(); // Stop motor if neither button is pressed
-            } // end of if statement for A and B buttons
-
-            // Open gripper with gamepad Y button
-            if (gamepad1.y) {
-                servoSub.openServo(); // Open gripper
-            } else if (gamepad1.x) {
-                servoSub.closeServo(); // Close gripper
-            } // end of if statement for Y button
-
-            
-            if (touch.isTouchOnePressed()) {
-                telemetry.addData("Touch Sensor", "Pressed");
-            } else {
-                telemetry.addData("Touch Sensor", "Not Pressed");
             }
-            // Get color sensor data
-            colorSensors.ColorSensorData colorData = color.getColorSensorData();
 
-            // Display color sensor data in telemetry
-            telemetry.addData("Red", colorData.red);
-            telemetry.addData("Green", colorData.green);
-            telemetry.addData("Blue", colorData.blue);
-            telemetry.addData("Alpha", colorData.alpha);
-            
+            //
+            if (gamepad1.b) {
+            }
+
+            //
+            if (gamepad1.x) {
+            }
+
+            //
+            if (gamepad1.y) {
+            }
+
+
+
             telemetry.update();
 
         } // end of while loop
