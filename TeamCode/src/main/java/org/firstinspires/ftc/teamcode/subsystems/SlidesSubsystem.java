@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-// FIXME check spelling of imports
-import com. qualcomm.robotcore.hardware.DcMotor;
-import com. qualcomm.robotcore.hardware.DcMotorEx;
-// FIXME check spelling of imports, and punctuation
-import com. qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 public class SlidesSubsystem {
@@ -12,7 +10,6 @@ public class SlidesSubsystem {
 
     private final DcMotor somemotor;
 
-    // FIXME check reference
     public SlidesSubsystem(HardwareMap hardwaremap) {
         somemotor = hardwaremap.get(DcMotor.class, "leftback");
         somemotor.setDirection(DcMotor.Direction.FORWARD);
