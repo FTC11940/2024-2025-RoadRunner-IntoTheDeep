@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.SomeMagSensors;
-import org.firstinspires.ftc.teamcode.sensors.SomeColorSensors;
+// import org.firstinspires.ftc.teamcode.sensors.SomeColorSensors;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
 
@@ -30,10 +30,10 @@ public class Practice_RobotContainer extends LinearOpMode {
         PracticeServoSubsystem servoSub = new PracticeServoSubsystem(hardwareMap);
         PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        SomeTouchSensors touch = new SomeTouchSensors(hardwareMap);
-        SomeMagSensors mag = new SomeMagSensors(hardwareMap);
-        SomeColorSensors color = new SomeColorSensors(hardwareMap);
-        SomeDistanceSensor distance = new SomeDistanceSensor(hardwareMap);
+        // SomeTouchSensors touch = new SomeTouchSensors(hardwareMap);
+        // SomeMagSensors mag = new SomeMagSensors(hardwareMap);
+        // SomeColorSensors color = new SomeColorSensors(hardwareMap);
+        // SomeDistanceSensor distance = new SomeDistanceSensor(hardwareMap);
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();

@@ -13,3 +13,15 @@ This table is a summary of the hardware used on the robot with relevant confirug
 ## Expansion Hub
 | Type  | Selection         | Port | Device Name     |
 |-------|--------------------|------|-----------------|
+
+
+
+## Control Hub for Prototype
+| Type  | Selection        | Port | Device Name    |
+|-------|------------------|------|----------------|
+| Motor | GoBilda 5202/3/4 | 0    | slideMotor     |
+| Motor | REV Core Hex     | 1    | intakeWheel    |
+| Motor |                  | 2    |                |
+| Motor |                  | 3    |                |
+| Servo | Servo            | 0    | servoZero      |
+| Servo | Servo            | 5    | intakeArmServo |

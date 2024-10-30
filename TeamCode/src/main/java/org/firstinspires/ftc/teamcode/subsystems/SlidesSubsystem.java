@@ -13,13 +13,15 @@ public class SlidesSubsystem {
     public final double POWER_INCREMENT = 0.1;
 
     // TODO
-    //  Define the slide positions
-    public final int SLIDE_POSITION_OUT = 200;
-    public final int SLIDE_POSITION_IN = 0;
+    /*  Define the slide positions. Determine */
+    public static final int SLIDE_POSE_OUT = 500;
+    public static final int SLIDE_POSE_IN = 0;
 
     /* Constructor for the SlidesSubsystem class */
     public SlidesSubsystem(HardwareMap hardwaremap) {
-        slideMotor = hardwaremap.get(DcMotorEx.class, "leftback");
+        // TODO Uncomment for CompBot
+//        slideMotor = hardwaremap.get(DcMotorEx.class, "slideMotor");
+        slideMotor = hardwaremap.get(DcMotorEx.class, "slideMotor");
         slideMotor.setDirection(DcMotor.Direction.FORWARD);
         slideMotor.setPower(0);
 
@@ -29,10 +31,16 @@ public class SlidesSubsystem {
     //  Move the slides to set positions to be determined with set points defined with variables
     public void setSlidePose(int position) {
         slideMotor.setTargetPosition(position);
+
+        // Set run mode to RUN_TO_POSITION
+        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        slideMotor.setPower(0.5);
     }
 
     /* Method to move a motor incrementally while a button is held */
     public void powerSlide(double power) {
+
         slideMotor.setPower(power);
     }
 

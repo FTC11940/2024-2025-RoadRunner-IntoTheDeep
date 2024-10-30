@@ -12,47 +12,61 @@ public class IntakeSubsystem {
     //servoName.setPosition(0.88889);
 
     Servo intakeArmServo;
-    DcMotor intakeMotor;
+    DcMotor intakeWheel;
     TouchSensor intakeTouch;
 
     /* Motor and Servo Positions    */
 
-    // Position to pick up pieces (for picking up pieces) 0 degrees
-    public static final double SERVO_POSITION_INTAKE = 0;
+    /* Position to pick up pieces (for picking up pieces) and releasing */
+    public static final double ARM_POSE_INTAKE = 0.05;
+    public static final double ARM_POSE_RELEASE = 0.50;
 
-    // Position to drop pieces into the bucket (for scoring in the baskets) about 160 degrees
-    public static final double SERVO_POSITION_RELEASE = 0.888889;
-
-    // The intake (For picking up pieces using the wheel)
-    public static final double WHEEL_POWER_INTAKE = 0.25;
-
-    // The release (for dropping pieces into the observation zone (specimen zone))
-    public static final double WHEEL_POWER_RELEASE = -0.25;
+    /* The intake wheel power for picking up and releasing pieces */
+    public static final double WHEEL_INTAKE = 1.0;
+    public static final double WHEEL_RELEASE = -1.0;
 
     public IntakeSubsystem(HardwareMap hardwareMap) {
 
+        //        intakeTouch = hardwareMap.get(TouchSensor.class, "intakeTouch");
+
         intakeArmServo = hardwareMap.servo.get("intakeArmServo");
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        intakeTouch = hardwareMap.get(TouchSensor.class, "intakeTouch");
+        intakeWheel = hardwareMap.get(DcMotor.class, "intakeWheel");
+        intakeWheel.setDirection(DcMotor.Direction.REVERSE);
 
     }
 
     // TODO Test with low power
     /* Use for turning on the Intake Wheel */
     public void powerIntakeWheel(double power) {
-        intakeMotor.setPower(power);
+
+        intakeWheel.setPower(power);
     }
 
-    // Set all parameters for the intake position
+    // TODO
+    /* Set Intake Arm to intake position */
+    public void setIntakeArmPosition(double position) {
+
+        intakeArmServo.setPosition(position);
+    }
+
+    // TODO Test
+    /* Set all parameters for the intake position
+    * Rotate arm into the intake (down) position
+    * Power the wheel for intake
+    * */
     public void groupIntakePosition() {
-        intakeArmServo.setPosition(SERVO_POSITION_INTAKE);
-        intakeMotor.setPower(WHEEL_POWER_INTAKE);
+        // Assume or check that slides are at "out" position
+        intakeArmServo.setPosition(ARM_POSE_INTAKE);
+        intakeWheel.setPower(WHEEL_INTAKE);
+
     }
 
+    // TODO Test
     // Set all parameters for the release position
     public void groupReleasePosition() {
-        intakeArmServo.setPosition(SERVO_POSITION_RELEASE);
-        // intakeMotor.setPower(INTAKE_RELEASE_MOTOR_POWER);
+        intakeArmServo.setPosition(ARM_POSE_RELEASE);
+        intakeWheel.setPower(WHEEL_RELEASE);
+
     }
 
 
