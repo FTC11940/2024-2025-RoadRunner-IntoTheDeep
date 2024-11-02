@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 //import org.firstinspires.ftc.teamcode.sensors.Sensors;
-//import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
 //import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
 //import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
@@ -35,7 +35,7 @@ public class RobotContainer extends LinearOpMode {
 
 //        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 //        Sensors sensorsSub = new Sensors(hardwareMap);
-//        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap);
+        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap);
         IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap);
 //        DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
