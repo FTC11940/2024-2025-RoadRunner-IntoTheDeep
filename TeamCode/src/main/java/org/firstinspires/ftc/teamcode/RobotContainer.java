@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_POSE_INTAKE;
-import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_POSE_RELEASE;
+import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_INTAKE_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_RELEASE_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_INTAKE_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_RELEASE_POSE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.WHEEL_INTAKE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.WHEEL_RELEASE;
-import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.SLIDE_POSE_IN;
-import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.SLIDE_POSE_OUT;
+import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.SLIDE_IN_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.SLIDE_OUT_POSE;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -14,10 +16,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-//import org.firstinspires.ftc.teamcode.sensors.Sensors;
+import org.firstinspires.ftc.teamcode.sensors.Sensors;
 import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
-//import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
-//import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
 
@@ -33,34 +35,33 @@ public class RobotContainer extends LinearOpMode {
         // Subsystems
         // Create new instances of classes, including subsystems, and assign to a variable
 
-//        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-//        Sensors sensorsSub = new Sensors(hardwareMap);
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        Sensors sensorsSub = new Sensors(hardwareMap);
         BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap);
         IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap);
-//        DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
-//        ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
+        DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
+        ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
 
         /* Reset the motor encoder position */
-
-        // TODO Test the reset
+        // TODO Test the slide reset
         slidesSub.resetSlideEncoder();
-        // TODO add a reset for climb
+
+        // TODO Test the climber reset
+        climbSub.resetClimberEncoder();
 
         // While loop to keep the robot running
         while (opModeIsActive()) {
 
-            // FIXME RC2.Replace these with button presses with current Methods (actions in Subsystems).
             /*
-            * Map methods from the subsystems to gamepad inputs
-            * See `ControllerMapping.md` for gamepad field names
-            */
+            * DRIVER INPUT MAPPING
+             * Map methods (actions) from the subsystems to gamepad inputs
+             * See `ControllerMapping.md` for gamepad field names
+             */
 
-
-            /* TODO Uncomment for CompBot
             drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,
@@ -68,42 +69,87 @@ public class RobotContainer extends LinearOpMode {
                             -gamepad1.right_stick_x
                     )
             );
-            */
 
-            //
+            /* Set the intake arm to intake or release position*/
             if (gamepad1.a) {
-                intakeSub.setIntakeArmPosition(ARM_POSE_INTAKE);
+                intakeSub.setIntakeArm(ARM_INTAKE_POSE);
             }
 
-            //
             if (gamepad1.b) {
-                intakeSub.setIntakeArmPosition(ARM_POSE_RELEASE);
+                intakeSub.setIntakeArm(ARM_RELEASE_POSE);
             }
 
             // TODO Test the SlideSubsystem
-            /* Use the X button to incrementally move the slide motor in a reverse direction
-            * Use the Y button to incrementally move the slide motor in a forward direction */
             if (gamepad1.x) {
-                slidesSub.setSlidePose(SLIDE_POSE_IN);
+                slidesSub.setSlidePose(SLIDE_IN_POSE);
             }
             if (gamepad1.y) {
-                slidesSub.setSlidePose(SLIDE_POSE_OUT); // TODO determine experimentally
+                slidesSub.setSlidePose(SLIDE_OUT_POSE);
             }
 
             // TODO Test the IntakeSubsystem
+            // Use the right trigger to power the intake wheel (for picking up pieces)
+            // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
+            if (gamepad1.right_trigger > 0) {
+                intakeSub.powerIntakeWheel(gamepad1.right_trigger * WHEEL_INTAKE); // Scale power with trigger value
+            } else if (gamepad1.left_trigger > 0) {
+                intakeSub.powerIntakeWheel(gamepad1.left_trigger * WHEEL_RELEASE); // Scale power and reverse direction
+            } else {
+                intakeSub.powerIntakeWheel(0); // Stop the intake wheel
+            }
+
+            /*
+             * OPERATOR INPUT MAPPING
+             * Map methods (actions) from the subsystems to gamepad inputs for the second controller
+             * See `ControllerMapping.md` for gamepad field names
+             */
+
+            /* TODO Add and Test BucketSubsystem */
+            if (gamepad2.a) {
+                bucketSub.setBucket(BUCKET_INTAKE_POSE);
+            }
+            if (gamepad2.b) {
+                bucketSub.setBucket(BUCKET_RELEASE_POSE);
+            }
+
+            /* TODO Test ClimberSubsystem */
+            if (gamepad2.dpad_up) {
+                climbSub.setClimber(climbSub.CLIMB_UP);
+            } else if (gamepad2.dpad_down) {
+                climbSub.setClimber(climbSub.CLIMB_DOWN);
+            } else {
+                climbSub.setClimber(0);
+            }
+
+            // TODO Test IntakeSubsystem version 2
             /* Use the right bumper to Power Intake Wheel (for picking up pieces)
-            * Use the left bumper to reverse Power Intake Wheel (for dropping pieces into the bucket) */
-            if (gamepad1.right_bumper) {
+             * Use the left bumper to reverse Power Intake Wheel (for dropping pieces into the bucket) */
+            if (gamepad2.right_bumper) {
                 intakeSub.powerIntakeWheel(WHEEL_INTAKE);
-            } else if (gamepad1.left_bumper) {
+            } else if (gamepad2.left_bumper) {
                 intakeSub.powerIntakeWheel(WHEEL_RELEASE);
             } else {
                 intakeSub.powerIntakeWheel(0);
             }
 
-            // Add telemetry for slide encoder
-            int encoderPosition = slidesSub.slideMotor.getCurrentPosition();
-            telemetry.addData("Slide Encoder", encoderPosition);
+            /* Use the X button to incrementally move the slide motor in a reverse direction
+             * Use the Y button to incrementally move the slide motor in a forward direction */
+            // TODO Add manual power for SlideSubsystem
+            if (gamepad2.x) {
+//                slidesSub.setSlidePose(SLIDE_POSE_IN);
+            }
+            if (gamepad2.y) {
+//                slidesSub.setSlidePose(SLIDE_POSE_OUT);
+            }
+
+            /* Add telemetry for slide encoder */
+            telemetry.addData("Intake Wheel Power",intakeSub.intakeWheel.getPower());
+            telemetry.addData("Intake Arm Servo",intakeSub.intakeArmServo.getPosition());
+            telemetry.addData("Bucket Servo",bucketSub.bucketServo.getPosition());
+            telemetry.addData("Slide Encoder",slidesSub.slideMotor.getCurrentPosition());
+
+            /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
+            telemetry.addData("Slide Touch",sensorsSub.slideTouch.isPressed());
 
             telemetry.update();
 

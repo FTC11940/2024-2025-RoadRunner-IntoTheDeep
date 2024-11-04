@@ -1,26 +1,17 @@
-# IntakeSubsystem.java
-* Power intake motor (grabber wheel) forward direction, no position
-* Power intake motor (grabber wheel) reverse direction, no position
-* Power intake motor off
-* Set arm servo to specific position for intake
-* Set arm servo to specific position for release
+# Non Driving Actions
 
-# SlidesSubsystem.java
-* Power slides motor forward to slide out to specific position
-* Power slides motor reverse to slide in to specific position
-* Power slides motor off
-* Power slides motor incrementally for testing purposes
+## IntakeSubsystem.java
+- [x] Power intake motor (grabber wheel) forward direction and reverse direction (no position)
+- [x] Set arm servo to specific position for intake and for release
 
-# ClimbSubsystem.java
-* Power climb motor forward/up direction to specific position
-* Power climb motor reverse/down direction to specific position
-* Power climb motor off
+## SlidesSubsystem.java
+- [x] Set slides motor forward to slide out to a specific position and reverse to slide in to a specific position
+- [x] Power slides motor incrementally for testing purposes
 
-# BucketSubsystem.java
-* Set bucket servo to specific position for intake
-* Set bucket servo to specific position for release
-* Set bucket servo to specific position for travel
+## ClimbSubsystem.java
+- [ ] Power climb motor forward/up to a specific position and reverse/down to a specific position
+- [ ] Power climb motor off
 
-# BucketDumpSubsystem.java
-* Power bucket dump motor reverse direction to specific position
-* Power bucket dump motor off
+## BucketSubsystem.java
+- [ ] Set bucket servo to a specific position for intake, release, and travel
+- [ ] Set bucket dump motor reverse direction to specific position

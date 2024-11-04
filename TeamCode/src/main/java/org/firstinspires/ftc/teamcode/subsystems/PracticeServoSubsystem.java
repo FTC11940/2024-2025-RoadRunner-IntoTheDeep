@@ -70,7 +70,7 @@ public class PracticeServoSubsystem {
      * setPosition(): This is a method call on the gripperServo object, instructing it to set its position.
      * GRIPPER_OPEN: This is likely a constant or a variable that holds the desired position value for opening the gripper. It could be a numerical value representing an angle or a predefined state.
      * In essence, the code instructs a specific servo motor (gripperServo) to move to a position designated for opening the gripper (GRIPPER_OPEN).
-     * */
+     */
 
 
     public void setServoZeroPose(double servoPosition) {
@@ -98,7 +98,6 @@ public class PracticeServoSubsystem {
     }
 
 
-    
     /**
      * Rotates the servo 90 degrees from its current position.
      */
@@ -107,9 +106,9 @@ public class PracticeServoSubsystem {
         double newPosition = currentPosition + 0.5; // 0.5 represents 90 degrees
 
         // Ensure the new position is within valid range (0.0 to 1.0)
-        newPosition = Math.min(Math.max(newPosition, 0.0), 1.0);
+        newPosition = Math.min(Math.max(newPosition,0.0),1.0);
 
         servoZero.setPosition(newPosition);
     }
-     
+
 } // End of class
