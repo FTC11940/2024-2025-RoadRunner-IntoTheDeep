@@ -12,8 +12,8 @@ public class IntakeSubsystem {
     //Equation for finding 160 degrees: 0.88889*X and X = what position the servo is in when it is 180 degrees.
     //servoName.setPosition(0.88889);
 
-    public Servo intakeArmServo;
-    public DcMotor intakeWheel;
+    public Servo intakeArm; // GoBilda
+    public DcMotor intakeWheel; // REV Hex Core
     TouchSensor intakeTouch;
 
     /* Motor and Servo Positions    */
@@ -29,7 +29,7 @@ public class IntakeSubsystem {
     public IntakeSubsystem(HardwareMap hardwareMap) {
 
         //        intakeTouch = hardwareMap.get(TouchSensor.class, "intakeTouch");
-        intakeArmServo = hardwareMap.servo.get("intakeArmServo");
+        intakeArm = hardwareMap.servo.get("intakeArm");
         intakeWheel = hardwareMap.get(DcMotor.class,"intakeWheel");
 
         intakeWheel.setDirection(DcMotor.Direction.REVERSE);
@@ -47,7 +47,7 @@ public class IntakeSubsystem {
     /* Set Intake Arm to intake position */
     public void setIntakeArm(double position) {
 
-        intakeArmServo.setPosition(position);
+        intakeArm.setPosition(position);
     }
 
     // TODO Implement a group command for intake of pieces
@@ -57,7 +57,7 @@ public class IntakeSubsystem {
      * */
     public void groupIntakePosition() {
         // Assume or check that slides are at "out" position
-        intakeArmServo.setPosition(ARM_INTAKE_POSE);
+        intakeArm.setPosition(ARM_INTAKE_POSE);
         intakeWheel.setPower(WHEEL_INTAKE);
 
     }
@@ -65,7 +65,7 @@ public class IntakeSubsystem {
     // TODO Implement a group command for release of pieces
     // Set all parameters for the release position
     public void groupReleasePosition() {
-        intakeArmServo.setPosition(ARM_RELEASE_POSE);
+        intakeArm.setPosition(ARM_RELEASE_POSE);
         intakeWheel.setPower(WHEEL_RELEASE);
 
     }

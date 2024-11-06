@@ -53,6 +53,8 @@ public class RobotContainer extends LinearOpMode {
         // TODO Test the climber reset
         climbSub.resetClimberEncoder();
 
+        bucketSub.resetLiftEncoder();
+
         // While loop to keep the robot running
         while (opModeIsActive()) {
 
@@ -144,7 +146,7 @@ public class RobotContainer extends LinearOpMode {
 
             /* Add telemetry for slide encoder */
             telemetry.addData("Intake Wheel Power",intakeSub.intakeWheel.getPower());
-            telemetry.addData("Intake Arm Servo",intakeSub.intakeArmServo.getPosition());
+            telemetry.addData("Intake Arm Servo",intakeSub.intakeArm.getPosition());
             telemetry.addData("Bucket Servo",bucketSub.bucketServo.getPosition());
             telemetry.addData("Slide Encoder",slidesSub.slideMotor.getCurrentPosition());
 
