@@ -19,8 +19,8 @@ public class IntakeSubsystem {
     /* Motor and Servo Positions    */
 
     /* Position to pick up pieces (for picking up pieces) and releasing */
-    public static final double ARM_INTAKE_POSE = 0.05;
-    public static final double ARM_RELEASE_POSE = 0.50;
+    public static final double ARM_INTAKE_POSE = 0.00; //
+    public static final double ARM_RELEASE_POSE = 1.00; //
 
     /* The intake wheel power for picking up and releasing pieces */
     public static final double WHEEL_INTAKE = 1.0;
@@ -29,7 +29,7 @@ public class IntakeSubsystem {
     public IntakeSubsystem(HardwareMap hardwareMap) {
 
         //        intakeTouch = hardwareMap.get(TouchSensor.class, "intakeTouch");
-        intakeArm = hardwareMap.servo.get("intakeArm");
+        intakeArm = hardwareMap.servo.get("bucket");
         intakeWheel = hardwareMap.get(DcMotor.class,"intakeWheel");
 
         intakeWheel.setDirection(DcMotor.Direction.REVERSE);
