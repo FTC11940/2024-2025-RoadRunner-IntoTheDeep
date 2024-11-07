@@ -156,7 +156,7 @@ public class RobotContainer extends LinearOpMode {
             telemetry.addData("Intake Wheel Power",intakeSub.intakeWheel.getPower());
             telemetry.addData("Intake Arm Servo",intakeSub.intakeArm.getPosition());
             telemetry.addData("Bucket Servo",bucketSub.bucketServo.getPosition());
-            telemetry.addData("Slide Encoder",slidesSub.slideMotor.getCurrentPosition());
+            telemetry.addData("Slide Encoder",slidesSub.slide.getCurrentPosition());
 
             /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
             telemetry.addData("Slide Touch",sensorsSub.slideTouch.isPressed());

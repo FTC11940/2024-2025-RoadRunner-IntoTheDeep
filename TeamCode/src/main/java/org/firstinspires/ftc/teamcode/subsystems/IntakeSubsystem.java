@@ -19,8 +19,8 @@ public class IntakeSubsystem {
     /* Motor and Servo Positions    */
 
     /* Position to pick up pieces (for picking up pieces) and releasing */
-    public static final double ARM_INTAKE_POSE = 0.05; //
-    public static final double ARM_RELEASE_POSE = 0.50; //
+    public static final double ARM_INTAKE_POSE = 1.00; //
+    public static final double ARM_RELEASE_POSE = 0.00; //
 
     /* The intake wheel power for picking up and releasing pieces */
     public static final double WHEEL_INTAKE = 1.0;

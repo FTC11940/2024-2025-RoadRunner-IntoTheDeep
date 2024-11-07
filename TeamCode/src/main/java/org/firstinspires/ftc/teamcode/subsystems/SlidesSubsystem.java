@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class SlidesSubsystem {
 
-    public final DcMotorEx slideMotor;
+    public final DcMotorEx slide;
     public final double POWER_INCREMENT = 0.1;
 
     /*  TODO Determine and Define the slide positions. */
@@ -18,39 +18,39 @@ public class SlidesSubsystem {
 
     /* Constructor for the SlidesSubsystem class */
     public SlidesSubsystem(HardwareMap hardwaremap) {
-        slideMotor = hardwaremap.get(DcMotorEx.class,"slideMotor");
-        slideMotor.setDirection(DcMotor.Direction.REVERSE);
-        slideMotor.setPower(0);
+        slide = hardwaremap.get(DcMotorEx.class,"slide");
+        slide.setDirection(DcMotor.Direction.REVERSE);
+        slide.setPower(0);
 
     }
 
     /*  Move the slides to set positions to be determined with set points defined with variables */
     public void setSlidePose(int position) {
-        slideMotor.setTargetPosition(position);
+        slide.setTargetPosition(position);
 
         // Set run mode to RUN_TO_POSITION
-        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        slideMotor.setPower(0.5);
+        slide.setPower(0.5);
     }
 
     /* Method to move a motor incrementally while a button is held */
     public void powerSlide(double power) {
 
-        slideMotor.setPower(power);
+        slide.setPower(power);
     }
 
     public void stopMotor(int power) {
 
-        slideMotor.setPower(0);
+        slide.setPower(0);
     }
 
     // TODO Test the reset of slide encoder
     /* Reset the slide motor encoder */
     public void resetSlideEncoder() {
-        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleepy(0.1);
-        slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     private ElapsedTime delayTimer = new ElapsedTime();
