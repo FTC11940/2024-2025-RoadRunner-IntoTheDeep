@@ -13,13 +13,13 @@ public class SlidesSubsystem {
     public final double POWER_INCREMENT = 0.1;
 
     /*  TODO Determine and Define the slide positions. */
-    public static final int SLIDE_OUT_POSE = 500;
+    public static final int SLIDE_OUT_POSE = 300;
     public static final int SLIDE_IN_POSE = 0;
 
     /* Constructor for the SlidesSubsystem class */
     public SlidesSubsystem(HardwareMap hardwaremap) {
         slideMotor = hardwaremap.get(DcMotorEx.class,"slideMotor");
-        slideMotor.setDirection(DcMotor.Direction.FORWARD);
+        slideMotor.setDirection(DcMotor.Direction.REVERSE);
         slideMotor.setPower(0);
 
     }

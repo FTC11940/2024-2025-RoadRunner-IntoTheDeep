@@ -81,11 +81,19 @@ public class RobotContainer extends LinearOpMode {
                 intakeSub.setIntakeArm(ARM_RELEASE_POSE);
             }
 
-            // TODO Test the SlideSubsystem
+            // TODO Test bucket servo
             if (gamepad1.x) {
-                slidesSub.setSlidePose(SLIDE_IN_POSE);
+                bucketSub.setBucket(BUCKET_INTAKE_POSE);
             }
             if (gamepad1.y) {
+                bucketSub.setBucket(BUCKET_RELEASE_POSE);
+            }
+
+            // TODO Test the SlideSubsystem
+            if (gamepad1.left_bumper) {
+                slidesSub.setSlidePose(SLIDE_IN_POSE);
+            }
+            if (gamepad1.right_bumper) {
                 slidesSub.setSlidePose(SLIDE_OUT_POSE);
             }
 
