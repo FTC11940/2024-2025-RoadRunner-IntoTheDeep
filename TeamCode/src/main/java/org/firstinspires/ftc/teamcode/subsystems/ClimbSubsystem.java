@@ -12,9 +12,9 @@ public class ClimbSubsystem {
 
 //    public ClimbMotorGroup;
 
-    public final double CLIMB_UP = 1.0;
-    public final double CLIMB_DOWN = -0.5;
-
+    public final int CLIMB_UP = 100;
+    public final int CLIMB_DOWN = 0;
+    public final double CLIMB_POWER = 0.25;
 
     public ClimbSubsystem(HardwareMap hardwareMap) {
 
@@ -32,10 +32,10 @@ public class ClimbSubsystem {
 
     /* This will move the climber up */
     // TODO Determine and Set the encoder position of the motor
-    public void setClimber(double position) {
-        climberOneMotor.setPower(position);
+    public void setClimber(int position) {
+        climberOneMotor.setTargetPosition(position);
         climberOneMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        climberOneMotor.setPower(position);
+        climberOneMotor.setPower(CLIMB_POWER);
     }
 
     // TODO Test the power of the climber motor
