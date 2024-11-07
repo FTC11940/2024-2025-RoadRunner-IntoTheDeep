@@ -20,7 +20,7 @@ public class BucketSubsystem {
     public final static double LIFT_DOWN = 0;
 
     public BucketSubsystem(HardwareMap hardwareMap) {
-        bucketServo = hardwareMap.get(Servo.class,"intakeArm");
+        bucketServo = hardwareMap.get(Servo.class,"bucket");
         lift = hardwareMap.get(DcMotor.class, "lift");
     }
 

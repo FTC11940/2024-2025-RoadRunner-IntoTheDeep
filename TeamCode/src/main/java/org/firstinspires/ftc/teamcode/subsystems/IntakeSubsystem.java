@@ -29,7 +29,7 @@ public class IntakeSubsystem {
     public IntakeSubsystem(HardwareMap hardwareMap) {
 
         //        intakeTouch = hardwareMap.get(TouchSensor.class, "intakeTouch");
-        intakeArm = hardwareMap.servo.get("bucket");
+        intakeArm = hardwareMap.servo.get("intakeArm");
         intakeWheel = hardwareMap.get(DcMotor.class,"intakeWheel");
 
         intakeWheel.setDirection(DcMotor.Direction.REVERSE);
