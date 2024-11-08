@@ -35,7 +35,7 @@ public class ClimbSubsystem {
     public void setClimber(int position) {
         climberOneMotor.setTargetPosition(position);
         climberOneMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        climberOneMotor.setPower(CLIMB_POWER);
+        climberOneMotor.setPower(CLIMB_UP);
     }
 
     // TODO Test the power of the climber motor

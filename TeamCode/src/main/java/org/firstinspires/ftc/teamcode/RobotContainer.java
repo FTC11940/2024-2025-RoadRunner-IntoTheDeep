@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_INTAKE_POSE;
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_RELEASE_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.HIGH_BASKET;
+import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.LIFT_DOWN;
+import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.LOW_BASKET;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_INTAKE_POSE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_RELEASE_POSE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.WHEEL_INTAKE;
@@ -53,6 +56,7 @@ public class RobotContainer extends LinearOpMode {
         // TODO Test the climber reset
         climbSub.resetClimberEncoder();
 
+        // TODO Test the Lift reset
         bucketSub.resetLiftEncoder();
 
         // While loop to keep the robot running
@@ -108,6 +112,19 @@ public class RobotContainer extends LinearOpMode {
                 intakeSub.powerIntakeWheel(0); // Stop the intake wheel
             }
 
+            /* TODO Test BucketSubsystem Lift */
+            if (gamepad1.dpad_right) {
+                bucketSub.setLift(HIGH_BASKET);
+            }
+            if (gamepad1.dpad_left) {
+                bucketSub.setLift(LOW_BASKET);
+            }
+            if (gamepad1.dpad_down) {
+                bucketSub.setLift(LIFT_DOWN);
+
+            }
+
+
             /*
              * OPERATOR INPUT MAPPING
              * Map methods (actions) from the subsystems to gamepad inputs for the second controller
@@ -157,6 +174,7 @@ public class RobotContainer extends LinearOpMode {
             telemetry.addData("Intake Arm Servo",intakeSub.intakeArm.getPosition());
             telemetry.addData("Bucket Servo",bucketSub.bucketServo.getPosition());
             telemetry.addData("Slide Encoder",slidesSub.slide.getCurrentPosition());
+            telemetry.addData("Bucket Lift Encoder",bucketSub.lift.getCurrentPosition());
 
             /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
             telemetry.addData("Slide Touch",sensorsSub.slideTouch.isPressed());

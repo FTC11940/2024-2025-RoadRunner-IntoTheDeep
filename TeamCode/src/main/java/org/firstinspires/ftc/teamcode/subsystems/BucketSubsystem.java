@@ -15,13 +15,23 @@ public class BucketSubsystem {
     public final static double BUCKET_INTAKE_POSE = 0.0;
     public final static double BUCKET_RELEASE_POSE = 1.00;
 
-    public final static double HIGH_BASKET = 200;
-    public final static double LOW_BASKET = 100;
-    public final static double LIFT_DOWN = 0;
+    public final static int HIGH_BASKET = 2800;
+    public final static int LOW_BASKET = 1000;
+    public final static int LIFT_DOWN = 0;
+
+    // TODO Determine the lift encoder positions
+
+    // 2400 37.5 inches
+    // 2000 33 inches
+    // 1000 20 inches
+    // 0    8 inches
 
     public BucketSubsystem(HardwareMap hardwareMap) {
         bucketServo = hardwareMap.get(Servo.class,"bucket");
         lift = hardwareMap.get(DcMotor.class, "lift");
+
+        lift.setDirection(DcMotor.Direction.REVERSE);
+
     }
 
     /* Use to set the bucket to intake or release position */
@@ -33,7 +43,7 @@ public class BucketSubsystem {
     public void setLift(int pose) {
         lift.setTargetPosition(pose);
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift.setPower(0.25);
+        lift.setPower(0.30);
     }
 
     public void powerLift(double power) {
