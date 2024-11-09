@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_INTAKE_POSE;
-import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_RELEASE_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_DOWN_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_UP_POSE;
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.HIGH_BASKET;
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.LIFT_DOWN;
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.LOW_BASKET;
@@ -87,10 +87,10 @@ public class RobotContainer extends LinearOpMode {
 
             // TODO Test bucket servo
             if (gamepad1.x) {
-                bucketSub.setBucket(BUCKET_INTAKE_POSE);
+                bucketSub.setBucket(BUCKET_DOWN_POSE);
             }
             if (gamepad1.y) {
-                bucketSub.setBucket(BUCKET_RELEASE_POSE);
+                bucketSub.setBucket(BUCKET_UP_POSE);
             }
 
             // TODO Test the SlideSubsystem
@@ -133,10 +133,10 @@ public class RobotContainer extends LinearOpMode {
 
             /* TODO Add and Test BucketSubsystem */
             if (gamepad2.a) {
-                bucketSub.setBucket(BUCKET_INTAKE_POSE);
+                bucketSub.setBucket(BUCKET_DOWN_POSE);
             }
             if (gamepad2.b) {
-                bucketSub.setBucket(BUCKET_RELEASE_POSE);
+                bucketSub.setBucket(BUCKET_UP_POSE);
             }
 
             /* TODO Test ClimberSubsystem */

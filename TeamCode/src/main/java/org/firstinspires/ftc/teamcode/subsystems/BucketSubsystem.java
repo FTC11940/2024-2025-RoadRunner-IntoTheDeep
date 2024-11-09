@@ -8,12 +8,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class BucketSubsystem {
 
     public Servo bucketServo;
+
     // Lift motor for bucket slide (GoBilda 5203)
     public DcMotor lift;
 
     // TODO Determine the bucket intake and release poses
-    public final static double BUCKET_INTAKE_POSE = 0.0;
-    public final static double BUCKET_RELEASE_POSE = 1.00;
+    public final static double BUCKET_DOWN_POSE = 0.0;
+    public final static double BUCKET_UP_POSE = 1.00;
 
     public final static int HIGH_BASKET = 2800;
     public final static int LOW_BASKET = 1000;
@@ -21,15 +22,20 @@ public class BucketSubsystem {
 
     // TODO Determine the lift encoder positions
 
-    // 2400 37.5 inches
-    // 2000 33 inches
-    // 1000 20 inches
-    // 0    8 inches
+    /*
+    Encoder  | Bucket height
+    --------------------------
+    2400     | 37.5 inches
+    2000     | 33 inches
+    1000     | 20 inches
+    00000    | 8 inches
+    * */
 
     public BucketSubsystem(HardwareMap hardwareMap) {
         bucketServo = hardwareMap.get(Servo.class,"bucket");
         lift = hardwareMap.get(DcMotor.class, "lift");
 
+        // Motor needed to be reversed for the bucket to work with positive values
         lift.setDirection(DcMotor.Direction.REVERSE);
 
     }
