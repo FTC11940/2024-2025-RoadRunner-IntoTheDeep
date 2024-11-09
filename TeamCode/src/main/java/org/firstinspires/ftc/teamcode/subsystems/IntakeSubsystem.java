@@ -18,9 +18,27 @@ public class IntakeSubsystem {
 
     /* Motor and Servo Positions    */
 
+    // TODO
     /* Position to pick up pieces (for picking up pieces) and releasing */
-    public static final double ARM_INTAKE_POSE = 1.00; //
-    public static final double ARM_RELEASE_POSE = 0.00; //
+    public static final double ARM_POSE_DOWN = 0.60; //
+    public static final double ARM_POSE_UP = 0.40; //
+
+    /*
+    POSE    | Comments
+    ------- | --------------
+    0.00    | Too far down
+    0.10    |
+    0.20    |
+    0.30    |
+    0.40    |
+    0.50    |
+    0.60    |
+    0.70    |
+    0.80    |
+    0.90    |
+    1.00    | Too far up
+
+    * */
 
     /* The intake wheel power for picking up and releasing pieces */
     public static final double WHEEL_INTAKE = 1.0;
@@ -57,7 +75,7 @@ public class IntakeSubsystem {
      * */
     public void groupIntakePosition() {
         // Assume or check that slides are at "out" position
-        intakeArm.setPosition(ARM_INTAKE_POSE);
+        intakeArm.setPosition(ARM_POSE_DOWN);
         intakeWheel.setPower(WHEEL_INTAKE);
 
     }
@@ -65,7 +83,7 @@ public class IntakeSubsystem {
     // TODO Implement a group command for release of pieces
     // Set all parameters for the release position
     public void groupReleasePosition() {
-        intakeArm.setPosition(ARM_RELEASE_POSE);
+        intakeArm.setPosition(ARM_POSE_UP);
         intakeWheel.setPower(WHEEL_RELEASE);
 
     }

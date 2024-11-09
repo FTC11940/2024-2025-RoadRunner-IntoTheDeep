@@ -6,8 +6,8 @@ import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_U
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.HIGH_BASKET;
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.LIFT_DOWN;
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.LOW_BASKET;
-import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_INTAKE_POSE;
-import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_RELEASE_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_POSE_DOWN;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_POSE_UP;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.WHEEL_INTAKE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.WHEEL_RELEASE;
 import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.SLIDE_IN_POSE;
@@ -78,11 +78,11 @@ public class RobotContainer extends LinearOpMode {
 
             /* Set the intake arm to intake or release position*/
             if (gamepad1.a) {
-                intakeSub.setIntakeArm(ARM_INTAKE_POSE);
+                intakeSub.setIntakeArm(ARM_POSE_DOWN);
             }
 
             if (gamepad1.b) {
-                intakeSub.setIntakeArm(ARM_RELEASE_POSE);
+                intakeSub.setIntakeArm(ARM_POSE_UP);
             }
 
             // TODO Test bucket servo
