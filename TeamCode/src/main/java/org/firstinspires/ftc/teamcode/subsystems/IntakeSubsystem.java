@@ -20,20 +20,23 @@ public class IntakeSubsystem {
 
     // TODO
     /* Position to pick up pieces (for picking up pieces) and releasing */
-    public static final double ARM_POSE_DOWN = 0.60; //
-    public static final double ARM_POSE_UP = 0.40; //
+    public static final double ARM_POSE_DOWN = 0.22; //
+    public static final double ARM_POSE_UP = 0.75; //
 
     /*
     POSE    | Comments
     ------- | --------------
     0.00    | Too far down
     0.10    |
-    0.20    |
+    0.20    | Maybe too far down
+    0.22    | Close enough for now
+    0.25    | Not far down enough
     0.30    |
-    0.40    |
+    0.40    | Not down enough
     0.50    |
-    0.60    |
-    0.70    |
+    0.60    | Not up enough towards bucket
+    0.70    | Close, but a little more
+    0.75    | Seems about right
     0.80    |
     0.90    |
     1.00    | Too far up
@@ -88,5 +91,9 @@ public class IntakeSubsystem {
 
     }
 
+    // A method that increments a servo position by a given amount (0.05) with every button press
+    public void incrementIntakeArm(double turd) {
+        // take current
+    }
 
 } // End of IntakeSubsystem class

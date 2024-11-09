@@ -77,13 +77,26 @@ public class RobotContainer extends LinearOpMode {
             );
 
             /* Set the intake arm to intake or release position*/
+
             if (gamepad1.a) {
-                intakeSub.setIntakeArm(ARM_POSE_DOWN);
+                intakeSub.setIntakeArm(ARM_POSE_UP);
             }
 
             if (gamepad1.b) {
-                intakeSub.setIntakeArm(ARM_POSE_UP);
+                intakeSub.setIntakeArm(ARM_POSE_DOWN);
             }
+
+
+            /*
+            if (gamepad1.a) {
+                intakeSub.incrementIntakeArm (-0.05);
+            }
+
+            if (gamepad1.b) {
+                intakeSub.incrementIntakeArm (0.05);
+            }
+
+             */
 
             // TODO Test bucket servo
             if (gamepad1.x) {
