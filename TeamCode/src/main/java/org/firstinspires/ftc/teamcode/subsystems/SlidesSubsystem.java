@@ -65,11 +65,13 @@ public class SlidesSubsystem {
     } // end of sleepy method
 
     /* Reset the slide motor encoder when the slide touch sensor is pressed */
+    /*
     public void resetSlideEncoderOnTouch() {
         if (sensors.slideTouch.isPressed()) {
             slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+    */
 
 } //end of class

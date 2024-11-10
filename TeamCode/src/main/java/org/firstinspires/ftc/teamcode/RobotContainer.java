@@ -69,7 +69,7 @@ public class RobotContainer extends LinearOpMode {
         while (opModeIsActive()) {
 
             // TODO Test the slide reset
-            slidesSub.resetSlideEncoderOnTouch();
+//            slidesSub.resetSlideEncoderOnTouch();
 
 
             /*
@@ -200,7 +200,9 @@ public class RobotContainer extends LinearOpMode {
             telemetry.addData("Bucket Lift Encoder",bucketSub.lift.getCurrentPosition());
 
             /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
-            telemetry.addData("Slide Touch",sensorsSub.slideTouch.isPressed());
+            telemetry.addData("Slide Touch",sensorsSub.isSlideTouchPressed());
+//            telemetry.addData("Intake Dist", sensorsSub.intakeSensor.getDistance(DistanceUnit.INCH );
+
 
             telemetry.update();
 
