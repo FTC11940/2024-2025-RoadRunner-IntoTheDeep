@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -9,8 +7,6 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 // Removed the extended LinearOpMode
 public class IntakeSubsystem {
-    //Equation for finding 160 degrees: 0.88889*X and X = what position the servo is in when it is 180 degrees.
-    //servoName.setPosition(0.88889);
 
     public Servo intakeArm; // GoBilda
     public DcMotor intakeWheel; // REV Hex Core
@@ -26,20 +22,20 @@ public class IntakeSubsystem {
     /*
     POSE    | Comments
     ------- | --------------
-    0.00    | Too far down
+    0.00    | Too far down by a lot
     0.10    |
     0.20    | Maybe too far down
     0.22    | Close enough for now
     0.25    | Not far down enough
     0.30    |
-    0.40    | Not down enough
+    0.40    | Not down enough by a lot
     0.50    |
     0.60    | Not up enough towards bucket
     0.70    | Close, but a little more
     0.75    | Seems about right
     0.80    |
     0.90    |
-    1.00    | Too far up
+    1.00    | Too far up by a lot
 
     * */
 
@@ -95,5 +91,26 @@ public class IntakeSubsystem {
     public void incrementIntakeArm(double turd) {
         // take current
     }
+
+    // TODO Check the intake arm status
+    public enum intakeArmStatus {
+        ARM_DOWN,
+        ARM_UP,
+        UNKNOWN
+    }
+
+    public intakeArmStatus getIntakeArmStatus() {
+        double currentPosition = intakeArm.getPosition();
+        double tolerance = 0.05; // 5% tolerance
+
+        if (Math.abs(currentPosition - ARM_POSE_DOWN) <= tolerance * ARM_POSE_DOWN) {
+            return intakeArmStatus.ARM_DOWN;
+        } else if (Math.abs(currentPosition - ARM_POSE_UP) <= tolerance * ARM_POSE_UP) {
+            return intakeArmStatus.ARM_UP;
+        } else {
+            return intakeArmStatus.UNKNOWN;
+        }
+    }
+
 
 } // End of IntakeSubsystem class

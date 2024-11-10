@@ -23,12 +23,12 @@ public class BucketSubsystem {
     // TODO Determine the lift encoder positions
 
     /*
-    Encoder  | Bucket height
-    --------------------------
+    Encoder  | Bucket height Approx
+    --------------------------------
     2400     | 37.5 inches
-    2000     | 33 inches
-    1000     | 20 inches
-    00000    | 8 inches
+    2000     | 33.0 inches
+    1000     | 20.0 inches
+    0000     | 08.0 inches
     * */
 
     public BucketSubsystem(HardwareMap hardwareMap) {
@@ -70,5 +70,58 @@ public class BucketSubsystem {
         while (delayTimer.seconds() < seconds) {
         }
     } // end of sleepy method
+
+    // TODO Bucket status
+     public enum BucketStatus {
+        BUCKET_DOWN,
+        BUCKET_UP,
+        UNKNOWN
+    }
+    public BucketStatus getBucketStatus() {
+        double servoPosition = bucketServo.getPosition();
+
+        if (servoPosition == BUCKET_DOWN_POSE) {
+            return BucketStatus.BUCKET_DOWN;
+        } else if (servoPosition == BUCKET_UP_POSE) {
+            return BucketStatus.BUCKET_UP;
+        } else {
+            return BucketStatus.UNKNOWN;
+        }
+    }
+
+    // TODO Lift Status
+    public enum LiftStatus {
+        HIGH_BASKET,
+        LOW_BASKET,
+        UNKNOWN
+    }
+
+    /* STRICT definition of status
+    public LiftStatus getLiftStatus() {
+        int liftPosition = lift.getCurrentPosition();
+
+        if (liftPosition == HIGH_BASKET) {
+            return LiftStatus.HIGH_BASKET;
+        } else if (liftPosition == LOW_BASKET) {
+            return LiftStatus.LOW_BASKET;
+        } else {
+            return LiftStatus.UNKNOWN;
+        }
+    }
+    */
+
+    public LiftStatus getLiftStatus() {
+        int liftPosition = lift.getCurrentPosition();
+        double tolerance = 0.05; // 5% tolerance
+
+        if (Math.abs(liftPosition - HIGH_BASKET) <= tolerance * HIGH_BASKET) {
+            return LiftStatus.HIGH_BASKET;
+        } else if (Math.abs(liftPosition - LOW_BASKET) <= tolerance * LOW_BASKET) {
+            return LiftStatus.LOW_BASKET;
+        } else {
+            return LiftStatus.UNKNOWN;
+        }
+    }
+
 
 } // End of class
