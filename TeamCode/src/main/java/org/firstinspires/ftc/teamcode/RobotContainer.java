@@ -32,17 +32,23 @@ import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
 
 public class RobotContainer extends LinearOpMode {
 
+    // Added to make sensor check work
+    private Sensors sensors;
+    private SampleMecanumDrive drive;
+    private BucketSubsystem bucketSub;
+    private IntakeSubsystem intakeSub;
+    private SlidesSubsystem slidesSub;
+    private DriveSubsystem driveSub;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
-        // Subsystems
-        // Create new instances of classes, including subsystems, and assign to a variable
-
+        /* Subsystems */
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Sensors sensorsSub = new Sensors(hardwareMap);
         BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap);
         IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap);
-        SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap);
+        SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
         ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
 
@@ -61,6 +67,10 @@ public class RobotContainer extends LinearOpMode {
 
         // While loop to keep the robot running
         while (opModeIsActive()) {
+
+            // TODO Test the slide reset
+//            slidesSub.resetSlideEncoderOnTouch();
+
 
             /*
             * DRIVER INPUT MAPPING
@@ -185,6 +195,7 @@ public class RobotContainer extends LinearOpMode {
             /* Add telemetry for slide encoder */
             telemetry.addData("Intake Wheel Power",intakeSub.intakeWheel.getPower());
 
+
 //            telemetry.addData("Intake Arm Servo",intakeSub.intakeArm.getPosition());
 //            telemetry.addData("Intake Arm State", intakeSub.getIntakeArmStatus());
             telemetry.addData("Intake Arm", String.format("%s, (%.2f)",
@@ -204,6 +215,11 @@ public class RobotContainer extends LinearOpMode {
 //            telemetry.addData("Lift State", bucketSub.getLiftStatus());
             telemetry.addData("Lift", String.format("(%d), %s",
                     bucketSub.lift.getCurrentPosition(), bucketSub.getLiftStatus()));
+
+            /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
+            telemetry.addData("Slide Touch",sensorsSub.isSlideTouchPressed());
+//            telemetry.addData("Intake Dist", sensorsSub.intakeSensor.getDistance(DistanceUnit.INCH );
+
 
 
             telemetry.update();
