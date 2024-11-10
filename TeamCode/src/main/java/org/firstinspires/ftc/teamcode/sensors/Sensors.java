@@ -12,10 +12,13 @@ public class Sensors {
 
     // TODO Add slideTouch to Robot Configuration
     public TouchSensor slideTouch;
+
     public DistanceSensor intakeSensor;
 
     public Sensors(HardwareMap hardwareMap) {
+
         slideTouch = hardwareMap.get(TouchSensor.class,"slideTouch");
+
         intakeSensor = hardwareMap.get(DistanceSensor.class,"intakeSensor");
     }
 
