@@ -48,7 +48,7 @@ public class RobotContainer extends LinearOpMode {
         Sensors sensorsSub = new Sensors(hardwareMap);
         BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap);
         IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap);
-        SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap);
+        SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
         ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
 
@@ -70,7 +70,8 @@ public class RobotContainer extends LinearOpMode {
 
             // TODO Test the slide reset
             // slidesSub.resetSlideEncoderOnTouch();
-
+            sensors.slideTouch.isPressed();
+            slidesSub.resetSlideEncoderOnTouch();
 
             /*
             * DRIVER INPUT MAPPING

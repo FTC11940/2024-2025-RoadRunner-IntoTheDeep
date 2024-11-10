@@ -12,6 +12,8 @@ import org.firstinspires.ftc.teamcode.sensors.Sensors;
 public class SlidesSubsystem {
 
     public final DcMotorEx slide;
+    private Sensors sensors;
+
     public final double POWER_INCREMENT = 0.1;
 
     /*  TODO Determine and Define the slide positions. */
@@ -19,11 +21,11 @@ public class SlidesSubsystem {
     public static final int SLIDE_IN_POSE = 0;
 
     /* Constructor for the SlidesSubsystem class */
-    public SlidesSubsystem(HardwareMap hardwareMap) {
+    public SlidesSubsystem(HardwareMap hardwareMap, Sensors sensors) {
         slide = hardwareMap.get(DcMotorEx.class,"slide");
         slide.setDirection(DcMotor.Direction.REVERSE);
         slide.setPower(0);
-
+        this.sensors = sensors;
     }
 
 
@@ -99,6 +101,11 @@ public class SlidesSubsystem {
     }
 
     /* Reset the slide motor encoder when the slide touch sensor is pressed */
-
+    public void resetSlideEncoderOnTouch() {
+        if (sensors != null && sensors.slideTouch != null && sensors.slideTouch.isPressed()) {
+            slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
 
 } //end of class
