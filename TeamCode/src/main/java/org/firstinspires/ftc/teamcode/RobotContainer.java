@@ -185,21 +185,24 @@ public class RobotContainer extends LinearOpMode {
             /* Add telemetry for slide encoder */
             telemetry.addData("Intake Wheel Power",intakeSub.intakeWheel.getPower());
 
-            telemetry.addData("Intake Arm Servo",intakeSub.intakeArm.getPosition());
-            telemetry.addData("Intake Arm State", intakeSub.getIntakeArmStatus());
-//            telemetry.addData("Intake Arm", String.format("Servo: %.2f, State: %s",
-//                    intakeSub.intakeArm.getPosition(), intakeSub.getIntakeArmStatus()));
+//            telemetry.addData("Intake Arm Servo",intakeSub.intakeArm.getPosition());
+//            telemetry.addData("Intake Arm State", intakeSub.getIntakeArmStatus());
+            telemetry.addData("Intake Arm", String.format("Arm: %.2f, %s",
+                    intakeSub.intakeArm.getPosition(), intakeSub.getIntakeArmStatus()));
 
-            telemetry.addData("Slide Encoder",slidesSub.slide.getCurrentPosition());
-            telemetry.addData("Slide State", slidesSub.getSlideStatus());
-//            telemetry.addData("Slide", String.format("Encoder: %d, State: %s",
-//                    slidesSub.slide.getCurrentPosition(), slidesSub.getSlideStatus()));
+//            telemetry.addData("Slide Encoder",slidesSub.slide.getCurrentPosition());
+//            telemetry.addData("Slide State", slidesSub.getSlideStatus());
+            telemetry.addData("Slide", String.format("Slide: %d, %s",
+                    slidesSub.slide.getCurrentPosition(), slidesSub.getSlideStatus()));
 
-            telemetry.addData("Bucket Servo",bucketSub.bucketServo.getPosition());
-            telemetry.addData("Bucket State", bucketSub.getBucketStatus());
-
-            telemetry.addData("Lift Encoder",bucketSub.lift.getCurrentPosition());
-            telemetry.addData("Lift State", bucketSub.getLiftStatus());
+//            telemetry.addData("Bucket Servo",bucketSub.bucketServo.getPosition());
+//            telemetry.addData("Bucket State", bucketSub.getBucketStatus());
+            telemetry.addData("Bucket", "Servo Position: " + bucketSub.bucketServo.getPosition() +
+                    ", State: " + bucketSub.getBucketStatus());
+//            telemetry.addData("Lift Encoder",bucketSub.lift.getCurrentPosition());
+//            telemetry.addData("Lift State", bucketSub.getLiftStatus());
+            telemetry.addData("Lift Status", "Encoder: ${bucketSub.lift.getCurrentPosition()}, " +
+                    "State: ${bucketSub.getLiftStatus()}");
 
             /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
             telemetry.addData("Slide Touch",sensorsSub.slideTouch.isPressed());

@@ -103,13 +103,14 @@ public class IntakeSubsystem {
         double currentPosition = intakeArm.getPosition();
         double tolerance = 0.05; // 5% tolerance
 
-    if (Math.abs(currentPosition - ARM_POSE_DOWN) <= tolerance * ARM_POSE_DOWN) {
-        return intakeArmStatus.ARM_DOWN;
-    } else if (Math.abs(currentPosition - ARM_POSE_UP) <= tolerance * ARM_POSE_UP) {
-        return intakeArmStatus.ARM_UP;
-    } else {
-        return intakeArmStatus.UNKNOWN;
+        if (Math.abs(currentPosition - ARM_POSE_DOWN) <= tolerance * ARM_POSE_DOWN) {
+            return intakeArmStatus.ARM_DOWN;
+        } else if (Math.abs(currentPosition - ARM_POSE_UP) <= tolerance * ARM_POSE_UP) {
+            return intakeArmStatus.ARM_UP;
+        } else {
+            return intakeArmStatus.UNKNOWN;
+        }
     }
-}
+
 
 } // End of IntakeSubsystem class

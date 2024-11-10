@@ -69,6 +69,7 @@ public class SlidesSubsystem {
         UNKNOWN
     }
 
+    /* STRICT check
     public SlideStatus getSlideStatus() {
         if (slide.getCurrentPosition() == SLIDE_IN_POSE) {
             return SlideStatus.SLIDES_OUT;
@@ -78,7 +79,9 @@ public class SlidesSubsystem {
             return SlideStatus.UNKNOWN;
         }
     }
-    /*
+     */
+
+
     public SlideStatus getSlideStatus() {
         int slidePosition = slide.getCurrentPosition();
         double tolerance = 0.05; // 5% tolerance
@@ -91,6 +94,5 @@ public class SlidesSubsystem {
             return SlideStatus.UNKNOWN;
         }
     }
-    */
 
 } //end of class

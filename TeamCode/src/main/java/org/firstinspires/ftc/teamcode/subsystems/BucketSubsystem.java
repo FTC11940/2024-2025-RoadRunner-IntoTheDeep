@@ -96,6 +96,7 @@ public class BucketSubsystem {
         UNKNOWN
     }
 
+    /* STRICT definition of status
     public LiftStatus getLiftStatus() {
         int liftPosition = lift.getCurrentPosition();
 
@@ -107,20 +108,20 @@ public class BucketSubsystem {
             return LiftStatus.UNKNOWN;
         }
     }
+    */
 
-    /*
     public LiftStatus getLiftStatus() {
-    int liftPosition = lift.getCurrentPosition();
-    double tolerance = 0.05; // 5% tolerance
+        int liftPosition = lift.getCurrentPosition();
+        double tolerance = 0.05; // 5% tolerance
 
-    if (Math.abs(liftPosition - HIGH_BASKET) <= tolerance * HIGH_BASKET) {
-        return LiftStatus.HIGH_BASKET;
-    } else if (Math.abs(liftPosition - LOW_BASKET) <= tolerance * LOW_BASKET) {
-        return LiftStatus.LOW_BASKET;
-    } else {
-        return LiftStatus.UNKNOWN;
+        if (Math.abs(liftPosition - HIGH_BASKET) <= tolerance * HIGH_BASKET) {
+            return LiftStatus.HIGH_BASKET;
+        } else if (Math.abs(liftPosition - LOW_BASKET) <= tolerance * LOW_BASKET) {
+            return LiftStatus.LOW_BASKET;
+        } else {
+            return LiftStatus.UNKNOWN;
+        }
     }
-}
-    * */
+
 
 } // End of class
