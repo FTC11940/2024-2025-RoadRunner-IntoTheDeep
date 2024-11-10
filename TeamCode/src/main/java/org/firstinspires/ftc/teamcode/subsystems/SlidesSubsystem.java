@@ -61,4 +61,38 @@ public class SlidesSubsystem {
         }
     } // end of sleepy method
 
+    // TODO Check the status of the slides
+
+    public enum SlideStatus {
+        SLIDES_IN,
+        SLIDES_OUT,
+        UNKNOWN
+    }
+
+    /* STRICT check
+    public SlideStatus getSlideStatus() {
+        if (slide.getCurrentPosition() == SLIDE_IN_POSE) {
+            return SlideStatus.SLIDES_OUT;
+        } else if (slide.getCurrentPosition() == SLIDE_OUT_POSE) {
+            return SlideStatus.SLIDES_IN;
+        } else {
+            return SlideStatus.UNKNOWN;
+        }
+    }
+     */
+
+
+    public SlideStatus getSlideStatus() {
+        int slidePosition = slide.getCurrentPosition();
+        double tolerance = 0.05; // 5% tolerance
+
+        if (Math.abs(slidePosition - SLIDE_IN_POSE) <= tolerance * SLIDE_IN_POSE) {
+            return SlideStatus.SLIDES_IN; // Corrected return value
+        } else if (Math.abs(slidePosition - SLIDE_OUT_POSE) <= tolerance * SLIDE_OUT_POSE) {
+            return SlideStatus.SLIDES_OUT; // Corrected return value
+        } else {
+            return SlideStatus.UNKNOWN;
+        }
+    }
+
 } //end of class

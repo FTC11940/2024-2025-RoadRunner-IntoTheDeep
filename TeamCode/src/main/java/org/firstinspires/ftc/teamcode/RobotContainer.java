@@ -184,13 +184,27 @@ public class RobotContainer extends LinearOpMode {
 
             /* Add telemetry for slide encoder */
             telemetry.addData("Intake Wheel Power",intakeSub.intakeWheel.getPower());
-            telemetry.addData("Intake Arm Servo",intakeSub.intakeArm.getPosition());
-            telemetry.addData("Bucket Servo",bucketSub.bucketServo.getPosition());
-            telemetry.addData("Slide Encoder",slidesSub.slide.getCurrentPosition());
-            telemetry.addData("Bucket Lift Encoder",bucketSub.lift.getCurrentPosition());
 
-            /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
-            telemetry.addData("Slide Touch",sensorsSub.slideTouch.isPressed());
+//            telemetry.addData("Intake Arm Servo",intakeSub.intakeArm.getPosition());
+//            telemetry.addData("Intake Arm State", intakeSub.getIntakeArmStatus());
+            telemetry.addData("Intake Arm", String.format("%s, (%.2f)",
+                    intakeSub.getIntakeArmStatus(), intakeSub.intakeArm.getPosition()));
+
+//            telemetry.addData("Slide Encoder",slidesSub.slide.getCurrentPosition());
+//            telemetry.addData("Slide State", slidesSub.getSlideStatus());
+            telemetry.addData("Slide", String.format("%s, (%d)",
+                    slidesSub.getSlideStatus(), slidesSub.slide.getCurrentPosition()));
+
+//            telemetry.addData("Bucket Servo",bucketSub.bucketServo.getPosition());
+//            telemetry.addData("Bucket State", bucketSub.getBucketStatus());
+            telemetry.addData("Bucket", String.format("(%.2f), %s",
+                    bucketSub.bucketServo.getPosition(), bucketSub.getBucketStatus()));
+
+//            telemetry.addData("Lift Encoder",bucketSub.lift.getCurrentPosition());
+//            telemetry.addData("Lift State", bucketSub.getLiftStatus());
+            telemetry.addData("Lift", String.format("(%d), %s",
+                    bucketSub.lift.getCurrentPosition(), bucketSub.getLiftStatus()));
+
 
             telemetry.update();
 
