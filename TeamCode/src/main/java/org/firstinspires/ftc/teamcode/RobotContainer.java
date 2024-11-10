@@ -32,17 +32,23 @@ import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
 
 public class RobotContainer extends LinearOpMode {
 
+    // Added to make sensor check work
+    private Sensors sensors;
+    private SampleMecanumDrive drive;
+    private BucketSubsystem bucketSub;
+    private IntakeSubsystem intakeSub;
+    private SlidesSubsystem slidesSub;
+    private DriveSubsystem driveSub;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
-        // Subsystems
-        // Create new instances of classes, including subsystems, and assign to a variable
-
+        /* Subsystems */
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Sensors sensorsSub = new Sensors(hardwareMap);
         BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap);
         IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap);
-        SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap);
+        SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
         ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
 
@@ -61,6 +67,10 @@ public class RobotContainer extends LinearOpMode {
 
         // While loop to keep the robot running
         while (opModeIsActive()) {
+
+            // TODO Test the slide reset
+            slidesSub.resetSlideEncoderOnTouch();
+
 
             /*
             * DRIVER INPUT MAPPING
