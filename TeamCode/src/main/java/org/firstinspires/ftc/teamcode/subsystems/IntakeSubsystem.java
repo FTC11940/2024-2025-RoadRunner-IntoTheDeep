@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
 // Removed the extended LinearOpMode
 public class IntakeSubsystem {
@@ -43,13 +47,17 @@ public class IntakeSubsystem {
     public static final double WHEEL_INTAKE = 1.0;
     public static final double WHEEL_RELEASE = -1.0;
 
-    public IntakeSubsystem(HardwareMap hardwareMap) {
+    public DistanceSensor intakeSensor;
 
-        //        intakeTouch = hardwareMap.get(TouchSensor.class, "intakeTouch");
+    public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors) {
+
         intakeArm = hardwareMap.servo.get("intakeArm");
         intakeWheel = hardwareMap.get(DcMotor.class,"intakeWheel");
 
         intakeWheel.setDirection(DcMotor.Direction.REVERSE);
+
+
+        intakeSensor = hardwareMap.get(DistanceSensor.class, "intakeSensor");
 
     }
 
@@ -112,5 +120,29 @@ public class IntakeSubsystem {
         }
     }
 
+
+    public void stopIntakeIfClose() {
+        if (intakeSensor.getDistance(DistanceUnit.CM) <= 3) {
+            intakeWheel.setPower(0); // Won't work because it would stop ALL power
+
+        }
+    }
+
+    // TODO Check the intake distance sensor
+    /* Distance when sensor mounted on side */
+    private double SAMPLE_DISTANCE = 5.0;
+
+    public enum SpecimenStatus {
+        SAMPLE_ACQUIRED,
+        NO_SAMPLE,
+    }
+
+    public SpecimenStatus getSpecimenStatus() {
+        if (intakeSensor.getDistance(DistanceUnit.CM) <= SAMPLE_DISTANCE) {
+            return SpecimenStatus.SAMPLE_ACQUIRED;
+        } else {
+            return SpecimenStatus.NO_SAMPLE;
+        }
+    }
 
 } // End of IntakeSubsystem class

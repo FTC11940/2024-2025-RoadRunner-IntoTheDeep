@@ -13,8 +13,8 @@ public class BucketSubsystem {
     public DcMotor lift;
 
     // TODO Determine the bucket intake and release poses
-    public final static double BUCKET_DOWN_POSE = 0.0;
-    public final static double BUCKET_UP_POSE = 1.00;
+    public final static double BUCKET_DOWN_POSE = 1.20;
+    public final static double BUCKET_UP_POSE = 0.00;
 
     public final static int HIGH_BASKET = 2800;
     public final static int LOW_BASKET = 1000;

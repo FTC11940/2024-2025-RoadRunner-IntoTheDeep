@@ -51,7 +51,7 @@ public class RobotContainer extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Sensors sensorsSub = new Sensors(hardwareMap);
         BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap);
-        IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap);
+        IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
         ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
@@ -120,8 +120,14 @@ public class RobotContainer extends LinearOpMode {
             // TODO Test the IntakeSubsystem
             // Use the right trigger to power the intake wheel (for picking up pieces)
             // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
+            // TODO
             if (gamepad1.right_trigger > 0) {
-                intakeSub.powerIntakeWheel(gamepad1.right_trigger * WHEEL_INTAKE); // Scale power with trigger value
+                if (intakeSub.getSpecimenStatus() == IntakeSubsystem.SpecimenStatus.SAMPLE_ACQUIRED) {
+                    intakeSub.powerIntakeWheel(0);
+                } else {
+                    intakeSub.powerIntakeWheel(gamepad1.right_trigger * WHEEL_INTAKE);
+                }
+
             } else if (gamepad1.left_trigger > 0) {
                 intakeSub.powerIntakeWheel(gamepad1.left_trigger * WHEEL_RELEASE); // Scale power and reverse direction
             } else {
@@ -167,6 +173,7 @@ public class RobotContainer extends LinearOpMode {
             // TODO Test IntakeSubsystem version 2
             /* Use the right bumper to Power Intake Wheel (for picking up pieces)
              * Use the left bumper to reverse Power Intake Wheel (for dropping pieces into the bucket) */
+
             if (gamepad2.right_bumper) {
                 intakeSub.powerIntakeWheel(WHEEL_INTAKE);
             } else if (gamepad2.left_bumper) {
@@ -208,10 +215,12 @@ public class RobotContainer extends LinearOpMode {
             telemetry.addData("Slide Touch",sensorsSub.isSlideTouchPressed());
 
             /* Add telemetry for intake distance sensor */
-            telemetry.addData("Intake Distance", String.format("%.2f (CM)",
-                    sensorsSub.intakeSensor.getDistance(DistanceUnit.CM)));
+            telemetry.addData("Intake Distance", String.format("%s, %.2f (CM)",
+                    intakeSub.getSpecimenStatus(), sensorsSub.intakeSensor.getDistance(DistanceUnit.CM)));
 
             telemetry.update();
+
+
 
         } // end of while loop
 
