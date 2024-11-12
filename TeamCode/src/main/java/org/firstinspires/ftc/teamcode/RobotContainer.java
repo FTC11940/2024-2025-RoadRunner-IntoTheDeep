@@ -69,8 +69,9 @@ public class RobotContainer extends LinearOpMode {
         while (opModeIsActive()) {
 
             // TODO Test the slide reset
-//            slidesSub.resetSlideEncoderOnTouch();
+//            sensors.slideTouch.isPressed();
 
+            slidesSub.resetSlideEncoderOnTouch();
 
             /*
             * DRIVER INPUT MAPPING
@@ -95,18 +96,6 @@ public class RobotContainer extends LinearOpMode {
             if (gamepad1.b) {
                 intakeSub.setIntakeArm(ARM_POSE_DOWN);
             }
-
-
-            /*
-            if (gamepad1.a) {
-                intakeSub.incrementIntakeArm (-0.05);
-            }
-
-            if (gamepad1.b) {
-                intakeSub.incrementIntakeArm (0.05);
-            }
-
-             */
 
             // TODO Test bucket servo
             if (gamepad1.x) {
@@ -196,31 +185,23 @@ public class RobotContainer extends LinearOpMode {
             telemetry.addData("Intake Wheel Power",intakeSub.intakeWheel.getPower());
 
 
-//            telemetry.addData("Intake Arm Servo",intakeSub.intakeArm.getPosition());
-//            telemetry.addData("Intake Arm State", intakeSub.getIntakeArmStatus());
             telemetry.addData("Intake Arm", String.format("%s, (%.2f)",
                     intakeSub.getIntakeArmStatus(), intakeSub.intakeArm.getPosition()));
 
-//            telemetry.addData("Slide Encoder",slidesSub.slide.getCurrentPosition());
-//            telemetry.addData("Slide State", slidesSub.getSlideStatus());
+
             telemetry.addData("Slide", String.format("%s, (%d)",
                     slidesSub.getSlideStatus(), slidesSub.slide.getCurrentPosition()));
 
-//            telemetry.addData("Bucket Servo",bucketSub.bucketServo.getPosition());
-//            telemetry.addData("Bucket State", bucketSub.getBucketStatus());
-            telemetry.addData("Bucket", String.format("(%.2f), %s",
-                    bucketSub.bucketServo.getPosition(), bucketSub.getBucketStatus()));
 
-//            telemetry.addData("Lift Encoder",bucketSub.lift.getCurrentPosition());
-//            telemetry.addData("Lift State", bucketSub.getLiftStatus());
-            telemetry.addData("Lift", String.format("(%d), %s",
-                    bucketSub.lift.getCurrentPosition(), bucketSub.getLiftStatus()));
+            telemetry.addData("Bucket", String.format("%s, (%.2f)",
+                    bucketSub.getBucketStatus(), bucketSub.bucketServo.getPosition()));
+
+            telemetry.addData("Lift", String.format("%s, (%d)",
+                    bucketSub.getLiftStatus(), bucketSub.lift.getCurrentPosition()));
 
             /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
             telemetry.addData("Slide Touch",sensorsSub.isSlideTouchPressed());
 //            telemetry.addData("Intake Dist", sensorsSub.intakeSensor.getDistance(DistanceUnit.INCH );
-
-
 
             telemetry.update();
 
