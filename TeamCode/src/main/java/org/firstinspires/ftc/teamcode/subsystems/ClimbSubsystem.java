@@ -31,20 +31,17 @@ public class ClimbSubsystem {
     }
 
     /* This will move the climber up */
-    // TODO Determine and Set the encoder position of the motor
     public void setClimber(int position) {
         climberOneMotor.setTargetPosition(position);
         climberOneMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         climberOneMotor.setPower(CLIMB_UP);
     }
 
-    // TODO Test the power of the climber motor
     public void powerClimber(double power) {
         climberOneMotor.setPower(power);
         climberOneMotor.setPower(0);
     }
 
-    // TODO Test the reset of climb encoder. Currently no sensor
     /* Reset the slide motor encoder */
     public void resetClimberEncoder() {
         climberOneMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

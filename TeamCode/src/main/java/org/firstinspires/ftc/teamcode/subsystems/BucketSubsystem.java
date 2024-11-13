@@ -31,7 +31,7 @@ public class BucketSubsystem {
     0000     | 08.0 inches
     * */
 
-    private final IntakeSubsystem intakeSub;
+   private final IntakeSubsystem intakeSub;
 
     public BucketSubsystem(HardwareMap hardwareMap, IntakeSubsystem intakeSub) {
         bucketServo = hardwareMap.get(Servo.class,"bucket");
@@ -77,6 +77,7 @@ public class BucketSubsystem {
         while (delayTimer.seconds() < seconds) {
         }
     } // end of sleepy method
+
 
     public enum BucketStatus {
         DOWN,
