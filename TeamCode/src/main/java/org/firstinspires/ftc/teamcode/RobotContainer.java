@@ -40,9 +40,9 @@ public class RobotContainer extends LinearOpMode {
 
         /* Subsystems */
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Sensors sensorsSub = new Sensors(hardwareMap);
-        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap);
-        IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors);
+        Sensors sensors = new Sensors(hardwareMap);
+        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap, intakeSub);
+        IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors, bucketSub);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
         ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
@@ -51,29 +51,22 @@ public class RobotContainer extends LinearOpMode {
         waitForStart();
 
         /* Reset the motor encoder position */
-        // TODO Test the slide reset
         slidesSub.resetSlideEncoder();
 
-        // TODO Test the climber reset
         climbSub.resetClimberEncoder();
 
-        // TODO Test the Lift reset
         bucketSub.resetLiftEncoder();
 
         // While loop to keep the robot running
         while (opModeIsActive()) {
 
-            // TODO Test the slide reset
-//            sensors.slideTouch.isPressed();
-
             slidesSub.resetSlideEncoderOnTouch();
 
             /*
-            * DRIVER INPUT MAPPING
+             * DRIVER INPUT MAPPING
              * Map methods (actions) from the subsystems to gamepad inputs
              * See `ControllerMapping.md` for gamepad field names
              */
-
             drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,
@@ -85,14 +78,14 @@ public class RobotContainer extends LinearOpMode {
             /* Set the intake arm to intake or release position*/
 
             if (gamepad1.a) {
-                intakeSub.setIntakeArm(ARM_POSE_UP);
+//                intakeSub.setIntakeArm(ARM_POSE_UP);
+                intakeSub.groupIntakeArmUp();
             }
 
             if (gamepad1.b) {
                 intakeSub.setIntakeArm(ARM_POSE_DOWN);
             }
 
-            // TODO Test bucket servo
             if (gamepad1.x) {
                 bucketSub.setBucket(BUCKET_DOWN_POSE);
             }
@@ -100,7 +93,6 @@ public class RobotContainer extends LinearOpMode {
                 bucketSub.setBucket(BUCKET_UP_POSE);
             }
 
-            // TODO Test the SlideSubsystem
             if (gamepad1.left_bumper) {
                 slidesSub.setSlidePose(SLIDE_IN_POSE);
             }
@@ -108,12 +100,10 @@ public class RobotContainer extends LinearOpMode {
                 slidesSub.setSlidePose(SLIDE_OUT_POSE);
             }
 
-            // TODO Test the IntakeSubsystem
             // Use the right trigger to power the intake wheel (for picking up pieces)
             // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
-            // TODO
             if (gamepad1.right_trigger > 0) {
-                if (intakeSub.getSpecimenStatus() == IntakeSubsystem.SpecimenStatus.SAMPLE_ACQUIRED) {
+                if (intakeSub.getSampleStatus() == IntakeSubsystem.SampleStatus.SAMPLE_ACQUIRED) {
                     intakeSub.powerIntakeWheel(0);
                 } else {
                     intakeSub.powerIntakeWheel(gamepad1.right_trigger * WHEEL_INTAKE);
@@ -125,7 +115,6 @@ public class RobotContainer extends LinearOpMode {
                 intakeSub.powerIntakeWheel(0); // Stop the intake wheel
             }
 
-            /* TODO Test BucketSubsystem Lift */
             if (gamepad1.dpad_right) {
                 bucketSub.setLift(HIGH_BASKET);
             }
@@ -134,9 +123,7 @@ public class RobotContainer extends LinearOpMode {
             }
             if (gamepad1.dpad_down) {
                 bucketSub.setLift(LIFT_DOWN);
-
             }
-
 
             /*
              * OPERATOR INPUT MAPPING
@@ -144,7 +131,6 @@ public class RobotContainer extends LinearOpMode {
              * See `ControllerMapping.md` for gamepad field names
              */
 
-            /* TODO Add and Test BucketSubsystem */
             if (gamepad2.a) {
                 bucketSub.setBucket(BUCKET_DOWN_POSE);
             }
@@ -152,7 +138,6 @@ public class RobotContainer extends LinearOpMode {
                 bucketSub.setBucket(BUCKET_UP_POSE);
             }
 
-            /* TODO Test ClimberSubsystem */
             if (gamepad2.dpad_up) {
                 climbSub.setClimber(climbSub.CLIMB_UP);
             } else if (gamepad2.dpad_down) {
@@ -161,7 +146,6 @@ public class RobotContainer extends LinearOpMode {
                 climbSub.setClimber(0);
             }
 
-            // TODO Test IntakeSubsystem version 2
             /* Use the right bumper to Power Intake Wheel (for picking up pieces)
              * Use the left bumper to reverse Power Intake Wheel (for dropping pieces into the bucket) */
 
@@ -175,7 +159,6 @@ public class RobotContainer extends LinearOpMode {
 
             /* Use the X button to incrementally move the slide motor in a reverse direction
              * Use the Y button to incrementally move the slide motor in a forward direction */
-            // TODO Add manual power for SlideSubsystem
             if (gamepad2.x) {
 //                slidesSub.setSlidePose(SLIDE_POSE_IN);
             }
@@ -203,11 +186,11 @@ public class RobotContainer extends LinearOpMode {
                     bucketSub.getLiftStatus(), bucketSub.lift.getCurrentPosition()));
 
             /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
-            telemetry.addData("Slide Touch",sensorsSub.isSlideTouchPressed());
+            telemetry.addData("Slide Touch",sensors.isSlideTouchPressed());
 
             /* Add telemetry for intake distance sensor */
             telemetry.addData("Intake Distance", String.format("%s, %.2f (CM)",
-                    intakeSub.getSpecimenStatus(), sensorsSub.intakeSensor.getDistance(DistanceUnit.CM)));
+                    intakeSub.getSampleStatus(), sensors.intakeSensor.getDistance(DistanceUnit.CM)));
 
             telemetry.update();
 
