@@ -3,25 +3,31 @@ This table is a summary of the hardware used on the robot with relevant confirug
 
 ## Control Hub
 
-| Type  | Selection         | Port | Device Name     |
-|-------|--------------------|------|-----------------|
-| Motor | GoBilda 5202/3/4   | 0    | leftFront_par0  |
-| Motor | GoBilda 5202/3/4   | 1    | leftBack_par1   |
-| Motor | GoBilda 5202/3/4   | 2    | RightBack_perp  |
-| Motor | GoBilda 5202/3/4   | 3    | RightFront      |
+| Type  | Selection        | Port | Device Name   |
+|-------|------------------|------|--------------|
+| Motor | GoBilda 5202/3/4 | 0    | leftFront    |
+| Motor | GoBilda 5202/3/4 | 1    | leftBack     |
+| Motor | GoBilda 5202/3/4 | 2    | RightBack    |
+| Motor | GoBilda 5202/3/4 | 3    | RightFront   |
+| servo |                  | 1    |              |
+| servo |                  | 2    |              |
+| servo |                  | 3    |              |
+| servo | Bucket           | 4    |              |
+
+tombsV1
+tombsV2
+tombsH
 
 ## Expansion Hub
-| Type  | Selection         | Port | Device Name     |
-|-------|--------------------|------|-----------------|
-
-
-
-## Control Hub for Prototype
-| Type  | Selection        | Port | Device Name    |
-|-------|------------------|------|----------------|
-| Motor | GoBilda 5202/3/4 | 0    | slideMotor     |
-| Motor | REV Core Hex     | 1    | intakeWheel    |
-| Motor |                  | 2    |                |
-| Motor |                  | 3    |                |
-| Servo | Servo            | 0    | servoZero      |
-| Servo | Servo            | 5    | intakeArmServo |
+| Type  | Selection                    | Port | Device Name |
+|-------|------------------------------|------|-------------|
+| motor | REV HEX motor                | 0    | intakeWheel |
+| motor | REV Core HEX                 | 1    | lift        |
+| motor | REV Motor Ultraplanetary HEX | 2    | slide       |
+| motor | REV Core HEX                 | 3    | lift        |
+| servo |                              | 0    |             |
+| servo |                              | 1    |             |
+| servo |                              | 2    |             |
+| servo |                              | 3    |             |
+| servo | Bucket                       | 4    |             |
+| servo |                              | 5    | intakeArm   |

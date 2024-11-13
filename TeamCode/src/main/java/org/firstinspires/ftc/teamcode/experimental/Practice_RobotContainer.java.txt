@@ -1,9 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.INTAKE_SERVO_DOWN;
-import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.INTAKE_SERVO_RELEASE;
-import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.SERVO_CLOSED;
-import static org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem.SERVO_OPEN;
+import static org.firstinspires.ftc.teamcode.docs.PracticeServoSubsystem.INTAKE_SERVO_DOWN;
+import static org.firstinspires.ftc.teamcode.docs.PracticeServoSubsystem.INTAKE_SERVO_RELEASE;
+import static org.firstinspires.ftc.teamcode.docs.PracticeServoSubsystem.SERVO_CLOSED;
+import static org.firstinspires.ftc.teamcode.docs.PracticeServoSubsystem.SERVO_OPEN;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.SomeMagSensors;
 // import org.firstinspires.ftc.teamcode.sensors.SomeColorSensors;
-import org.firstinspires.ftc.teamcode.subsystems.PracticeMotorSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.PracticeServoSubsystem;
+import org.firstinspires.ftc.teamcode.docs.PracticeMotorSubsystem;
+import org.firstinspires.ftc.teamcode.docs.PracticeServoSubsystem;
 
 // @Disabled
 
@@ -26,7 +26,7 @@ public class Practice_RobotContainer extends LinearOpMode {
 
         // Subsystems
         // Create new instances of classes, including subsystems, and assign to a variable
-        // FIXME RC1. Replace these with the names of actual subsystems
+        // RC1. Replace these with the names of actual subsystems
         PracticeServoSubsystem servoSub = new PracticeServoSubsystem(hardwareMap);
         PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -45,7 +45,7 @@ public class Practice_RobotContainer extends LinearOpMode {
 
             // Call methods from the subsystems and assign them to gamepad inputs
 
-            // FIXME RC2.Replace these with button presses with current Methods (actions in Subsystems).
+            // RC2.Replace these with button presses with current Methods (actions in Subsystems).
             drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,

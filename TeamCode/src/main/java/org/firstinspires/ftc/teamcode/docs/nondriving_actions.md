@@ -1,12 +1,12 @@
 # Non Driving Actions
 
 ## IntakeSubsystem.java
-- [x] Power intake motor (grabber wheel) forward direction and reverse direction (no position)
-- [x] Set arm servo to specific position for intake and for release
+- [ ] Power intake motor (grabber wheel) forward direction and reverse direction (no position)
+- [ ] Set arm servo to specific position for intake and for release
 
 ## SlidesSubsystem.java
-- [x] Set slides motor forward to slide out to a specific position and reverse to slide in to a specific position
-- [x] Power slides motor incrementally for testing purposes
+- [ ] Set slides motor forward to slide out to a specific position and reverse to slide in to a specific position 
+- [ ] Power slides motor incrementally for testing purposes
 
 ## ClimbSubsystem.java
 - [ ] Power climb motor forward/up to a specific position and reverse/down to a specific position

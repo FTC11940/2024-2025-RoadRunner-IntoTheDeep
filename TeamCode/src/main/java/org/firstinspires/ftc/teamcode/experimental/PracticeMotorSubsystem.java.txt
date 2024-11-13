@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.docs;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class PracticeMotorSubsystem {
@@ -10,7 +9,7 @@ public class PracticeMotorSubsystem {
     /**
      * In short, this line of code declares a private, constant variable named `someMotor`
      * that will hold a reference to a DcMotor object.
-     *
+     * <p>
      * This code declares a variable named `someMotor` with the following characteristics:
      * private: This is an access modifier that restricts the visibility of the variable.
      * Only code within the same class can access and modify someMotor.
@@ -23,7 +22,7 @@ public class PracticeMotorSubsystem {
      * This class is part of a library that provides functionality for controlling DC motors.
      * someMotor: This is the name of the variable.
      * It's a descriptive identifier chosen by the programmer to represent the specific DC motor being controlled.
-     *
+     * <p>
      * For demonstration purposes; This would be a TERRIBLE variable name!
      */
 
@@ -37,8 +36,8 @@ public class PracticeMotorSubsystem {
          * Note that the string name, "leftBack" has to match the name in the Driver
          * Station & Control Hub setup
          */
-        someMotor = hardwareMap.get(DcMotor.class, "leftBack");
-        someOtherMotor = hardwareMap.get(DcMotor.class, "rightBack");
+        someMotor = hardwareMap.get(DcMotor.class,"leftBack");
+        someOtherMotor = hardwareMap.get(DcMotor.class,"rightBack");
 
         // Brake or Coast mode
         //someMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -53,13 +52,15 @@ public class PracticeMotorSubsystem {
 
     /**
      * Turns the motor in one direction
+     *
      * @param power The power to apply to the motor.
-     * The power can be any value between -1.0 and 1.0 and is generally set in the OpMode.
+     *              The power can be any value between -1.0 and 1.0 and is generally set in the OpMode.
      */
     public void rotateMotor(double power) {
         someMotor.setPower(power);
         someOtherMotor.setPower(power);
     }
+
     /***
      * Turns the motor in the opposite direction as rotate motor method
      * @param power The power to apply to the motor.
@@ -78,7 +79,8 @@ public class PracticeMotorSubsystem {
         someOtherMotor.setPower(0);
     }
 
-    /** increment the motor with every button press,
+    /**
+     * increment the motor with every button press,
      * increase the motor by 10 degrees per button press
      */
 

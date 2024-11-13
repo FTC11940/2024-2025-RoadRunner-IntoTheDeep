@@ -10,6 +10,3 @@
 | I2C Bus 2 | REV 2M Distance Sensor      | 0     | "distanceSensor"|
 | Dc Motor  | Intake Motor                | 0     | "intakeMotor" |
 | Servo     | Intake Arm Servo             | 0     | "intakeArmServo"|
-
-
-
