@@ -1,24 +1,26 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
 public class IntakeSubsystem {
 
     public Servo intakeArm; // GoBilda
-    public DcMotor intakeWheel; // REV Hex Core
+    public DcMotorEx intakeWheel; // REV Hex Core
     TouchSensor intakeTouch;
     private final BucketSubsystem bucketSub;
 
     /* Motor and Servo Positions    */
     /* Position to pick up pieces (for picking up pieces) and releasing */
-    public static final double ARM_POSE_DOWN = 0.22; //
+    public static final double ARM_POSE_DOWN = 0.20; //
     public static final double ARM_POSE_UP = 0.75; //
 
     /*
@@ -50,9 +52,9 @@ public class IntakeSubsystem {
     public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors, BucketSubsystem bucketSub) {
 
         intakeArm = hardwareMap.servo.get("intakeArm");
-        intakeWheel = hardwareMap.get(DcMotor.class,"intakeWheel");
+        intakeWheel = hardwareMap.get(DcMotorEx.class,"intakeWheel");
 
-        intakeWheel.setDirection(DcMotor.Direction.REVERSE);
+        intakeWheel.setDirection(DcMotorEx.Direction.REVERSE);
 
         this.bucketSub = bucketSub;
 
@@ -79,9 +81,6 @@ public class IntakeSubsystem {
         * If `getLiftStatus() == LiftStatus.DOWN and
         * If `powerIntakeWheel is equal to or less than 0
         * then move the intake arm to `ARM_POSE_UP`
-        *
-        *
-
         /* Move the arm up
         intakeArm.setPosition(ARM_POSE_UP);
     }
@@ -91,9 +90,10 @@ public class IntakeSubsystem {
         /* Check the status of the bucket servo, bucket lift, and intake wheel power
         to make sure they are in the DOWN and OFF states */
 
-        if (bucketSub.getBucketStatus() == BucketSubsystem.BucketStatus.DOWN &&
+        if (
+//                bucketSub.getBucketStatus() == BucketSubsystem.BucketStatus.DOWN &&
                 bucketSub.getLiftStatus() == BucketSubsystem.LiftStatus.DOWN &&
-                intakeWheel.getPower() <= 0) {
+                intakeWheel.getPower() <= 0.05) {
 
             // Move the intake arm to ARM_POSE_UP
             intakeArm.setPosition(ARM_POSE_UP);
@@ -169,5 +169,11 @@ public class IntakeSubsystem {
             return SampleStatus.NO_SAMPLE;
         }
     }
+
+/*
+    public double getIntakeWheelCurrent() {
+        return intakeWheel.getCurrent(CurrentUnit.AMPS);
+    }
+*/
 
 } // End of IntakeSubsystem class
