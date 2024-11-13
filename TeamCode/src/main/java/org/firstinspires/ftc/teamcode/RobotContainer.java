@@ -1,17 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_DOWN_POSE;
-import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.BUCKET_UP_POSE;
-import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.HIGH_BASKET;
-import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.LIFT_DOWN;
-import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.LOW_BASKET;
-import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_POSE_DOWN;
-import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.ARM_POSE_UP;
-import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.WHEEL_INTAKE;
-import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.WHEEL_RELEASE;
-import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.SLIDE_IN_POSE;
-import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.SLIDE_OUT_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.*;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.*;
+import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.*;
 
 import android.annotation.SuppressLint;
 
