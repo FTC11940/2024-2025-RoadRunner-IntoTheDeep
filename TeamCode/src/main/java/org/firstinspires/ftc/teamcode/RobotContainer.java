@@ -63,7 +63,7 @@ public class RobotContainer extends LinearOpMode {
             slidesSub.resetSlideEncoderOnTouch();
 
             /*
-            * DRIVER INPUT MAPPING
+             * DRIVER INPUT MAPPING
              * Map methods (actions) from the subsystems to gamepad inputs
              * See `ControllerMapping.md` for gamepad field names
              */

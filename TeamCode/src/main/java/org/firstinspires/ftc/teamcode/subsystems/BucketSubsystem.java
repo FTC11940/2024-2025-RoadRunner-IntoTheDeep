@@ -78,7 +78,8 @@ public class BucketSubsystem {
         }
     } // end of sleepy method
 
-     public enum BucketStatus {
+
+    public enum BucketStatus {
         DOWN,
         UP,
         UNKNOWN

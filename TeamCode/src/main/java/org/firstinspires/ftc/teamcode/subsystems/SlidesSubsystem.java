@@ -25,10 +25,8 @@ public class SlidesSubsystem {
         slide.setDirection(DcMotor.Direction.REVERSE);
         slide.setPower(0);
 
-//        this.sensors = sensors;
-
-        // If this works, try going back to using this.sensors
         slideTouch = hardwareMap.get(TouchSensor.class,"slideTouch");
+
     }
 
 
@@ -38,11 +36,11 @@ public class SlidesSubsystem {
 
         // Set run mode to RUN_TO_POSITION
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         slide.setPower(0.5);
     }
 
-    /* Method to move a motor incrementally while a button is held */
+    /* Method to move a motor incrementally while a button is held
+    * Mostly for testing purposes */
     public void powerSlide(double power) {
 
         slide.setPower(power);
@@ -73,19 +71,6 @@ public class SlidesSubsystem {
         SLIDES_OUT,
         UNKNOWN
     }
-
-    /* STRICT check
-    public SlideStatus getSlideStatus() {
-        if (slide.getCurrentPosition() == SLIDE_IN_POSE) {
-            return SlideStatus.SLIDES_OUT;
-        } else if (slide.getCurrentPosition() == SLIDE_OUT_POSE) {
-            return SlideStatus.SLIDES_IN;
-        } else {
-            return SlideStatus.UNKNOWN;
-        }
-    }
-     */
-
 
     public SlideStatus getSlideStatus() {
         int slidePosition = slide.getCurrentPosition();
