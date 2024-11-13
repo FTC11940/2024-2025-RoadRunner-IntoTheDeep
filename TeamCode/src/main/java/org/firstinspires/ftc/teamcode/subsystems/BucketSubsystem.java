@@ -12,15 +12,15 @@ public class BucketSubsystem {
     // Lift motor for bucket slide (GoBilda 5203)
     public DcMotor lift;
 
-    // TODO Determine the bucket intake and release poses
-    public final static double BUCKET_DOWN_POSE = 1.20;
-    public final static double BUCKET_UP_POSE = 0.00;
+    /* Bucket */
+    // Right programming side
+    public final static double BUCKET_DOWN_POSE = 0.90;
+    // Left programming side
+    public final static double BUCKET_UP_POSE = 0.15;
 
     public final static int HIGH_BASKET = 2800;
     public final static int LOW_BASKET = 1000;
-    public final static int LIFT_DOWN = 0;
-
-    // TODO Determine the lift encoder positions
+    public final static int LIFT_DOWN = 0; // Li
 
     /*
     Encoder  | Bucket height Approx
@@ -31,22 +31,29 @@ public class BucketSubsystem {
     0000     | 08.0 inches
     * */
 
-    public BucketSubsystem(HardwareMap hardwareMap) {
+    private final IntakeSubsystem intakeSub;
+
+    public BucketSubsystem(HardwareMap hardwareMap, IntakeSubsystem intakeSub) {
         bucketServo = hardwareMap.get(Servo.class,"bucket");
         lift = hardwareMap.get(DcMotor.class, "lift");
 
         // Motor needed to be reversed for the bucket to work with positive values
         lift.setDirection(DcMotor.Direction.REVERSE);
 
+        this.intakeSub = intakeSub;
+
     }
 
     /* Use to set the bucket to intake or release position */
     public void setBucket(double pose) {
+        /* Check to make sure arm is out of the way */
 
         bucketServo.setPosition(pose);
     }
 
     public void setLift(int pose) {
+        /* Check to make sure arm is out of the way */
+
         lift.setTargetPosition(pose);
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lift.setPower(0.30);
@@ -71,28 +78,27 @@ public class BucketSubsystem {
         }
     } // end of sleepy method
 
-    // TODO Bucket status
-     public enum BucketStatus {
-        BUCKET_DOWN,
-        BUCKET_UP,
+    public enum BucketStatus {
+        DOWN,
+        UP,
         UNKNOWN
     }
     public BucketStatus getBucketStatus() {
         double servoPosition = bucketServo.getPosition();
 
         if (servoPosition == BUCKET_DOWN_POSE) {
-            return BucketStatus.BUCKET_DOWN;
+            return BucketStatus.DOWN;
         } else if (servoPosition == BUCKET_UP_POSE) {
-            return BucketStatus.BUCKET_UP;
+            return BucketStatus.UP;
         } else {
             return BucketStatus.UNKNOWN;
         }
     }
 
-    // TODO Lift Status
     public enum LiftStatus {
         HIGH_BASKET,
         LOW_BASKET,
+        DOWN,
         UNKNOWN
     }
 
@@ -112,12 +118,16 @@ public class BucketSubsystem {
 
     public LiftStatus getLiftStatus() {
         int liftPosition = lift.getCurrentPosition();
-        double tolerance = 0.05; // 5% tolerance
+
+        //      +|- of 30 on the low end and 84 on the high end
+        double tolerance = 0.03;
 
         if (Math.abs(liftPosition - HIGH_BASKET) <= tolerance * HIGH_BASKET) {
             return LiftStatus.HIGH_BASKET;
         } else if (Math.abs(liftPosition - LOW_BASKET) <= tolerance * LOW_BASKET) {
             return LiftStatus.LOW_BASKET;
+        } else if (liftPosition >= -35 && liftPosition <= 35) {
+            return LiftStatus.DOWN;
         } else {
             return LiftStatus.UNKNOWN;
         }
