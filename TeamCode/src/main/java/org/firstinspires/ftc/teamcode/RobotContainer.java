@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
@@ -191,6 +192,8 @@ public class RobotContainer extends LinearOpMode {
             /* Add telemetry for intake distance sensor */
             telemetry.addData("Intake Distance", String.format("%s, %.2f (CM)",
                     intakeSub.getSampleStatus(), sensors.intakeSensor.getDistance(DistanceUnit.CM)));
+
+            telemetry.addData("Intake Current (A)", String.format("%.2f", intakeSub.intakeWheel.getCurrent(CurrentUnit.AMPS)));
 
             telemetry.update();
 

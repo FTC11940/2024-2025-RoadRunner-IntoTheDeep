@@ -14,7 +14,7 @@ public class BucketSubsystem {
 
     /* Bucket */
     // Right programming side
-    public final static double BUCKET_DOWN_POSE = 0.90;
+    public final static double BUCKET_DOWN_POSE = 0.88;
     // Left programming side
     public final static double BUCKET_UP_POSE = 0.15;
 
