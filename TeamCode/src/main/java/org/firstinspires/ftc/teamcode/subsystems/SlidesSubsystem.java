@@ -16,7 +16,6 @@ public class SlidesSubsystem {
 
     public final double POWER_INCREMENT = 0.1;
 
-    /*  TODO Determine and Define the slide positions. */
     public static final int SLIDE_OUT_POSE = 300;
     public static final int SLIDE_IN_POSE = 0;
 
@@ -69,9 +68,6 @@ public class SlidesSubsystem {
         }
     } // end of sleepy method
 
-
-    // TODO Check the status of the slides
-
     public enum SlideStatus {
         SLIDES_IN,
         SLIDES_OUT,
@@ -105,7 +101,6 @@ public class SlidesSubsystem {
     }
 
     /* Reset the slide motor encoder when the slide touch sensor is pressed */
-    // FIXME Remove this method to see if NullPointer goes away
     public void resetSlideEncoderOnTouch() {
         if (slideTouch.isPressed()) {
             slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

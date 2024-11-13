@@ -26,7 +26,7 @@ public class Practice_RobotContainer extends LinearOpMode {
 
         // Subsystems
         // Create new instances of classes, including subsystems, and assign to a variable
-        // FIXME RC1. Replace these with the names of actual subsystems
+        // RC1. Replace these with the names of actual subsystems
         PracticeServoSubsystem servoSub = new PracticeServoSubsystem(hardwareMap);
         PracticeMotorSubsystem motorSub = new PracticeMotorSubsystem(hardwareMap);
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -45,7 +45,7 @@ public class Practice_RobotContainer extends LinearOpMode {
 
             // Call methods from the subsystems and assign them to gamepad inputs
 
-            // FIXME RC2.Replace these with button presses with current Methods (actions in Subsystems).
+            // RC2.Replace these with button presses with current Methods (actions in Subsystems).
             drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,

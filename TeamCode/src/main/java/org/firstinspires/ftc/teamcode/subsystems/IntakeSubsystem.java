@@ -9,16 +9,14 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
-// Removed the extended LinearOpMode
 public class IntakeSubsystem {
 
     public Servo intakeArm; // GoBilda
     public DcMotor intakeWheel; // REV Hex Core
     TouchSensor intakeTouch;
+    private final BucketSubsystem bucketSub;
 
     /* Motor and Servo Positions    */
-
-    // TODO
     /* Position to pick up pieces (for picking up pieces) and releasing */
     public static final double ARM_POSE_DOWN = 0.22; //
     public static final double ARM_POSE_UP = 0.75; //
@@ -49,33 +47,63 @@ public class IntakeSubsystem {
 
     public DistanceSensor intakeSensor;
 
-    public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors) {
+    public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors, BucketSubsystem bucketSub) {
 
         intakeArm = hardwareMap.servo.get("intakeArm");
         intakeWheel = hardwareMap.get(DcMotor.class,"intakeWheel");
 
         intakeWheel.setDirection(DcMotor.Direction.REVERSE);
 
+        this.bucketSub = bucketSub;
 
         intakeSensor = hardwareMap.get(DistanceSensor.class, "intakeSensor");
 
     }
 
-    // TODO Test Intake Wheel Power
     /* Use for turning on the Intake Wheel */
     public void powerIntakeWheel(double power) {
 
         intakeWheel.setPower(power);
     }
 
-    // TODO Determine the intake arm servo position
     /* Set Intake Arm to intake position */
     public void setIntakeArm(double position) {
 
         intakeArm.setPosition(position);
     }
 
-    // TODO Implement a group command for intake of pieces
+    /*
+    public void groupIntakeArmUp(double position) {
+        /* Check the status of the bucket servo and bucket lift
+        * If `getBucketStatus() == BucketStatus.DOWN and
+        * If `getLiftStatus() == LiftStatus.DOWN and
+        * If `powerIntakeWheel is equal to or less than 0
+        * then move the intake arm to `ARM_POSE_UP`
+        *
+        *
+
+        /* Move the arm up
+        intakeArm.setPosition(ARM_POSE_UP);
+    }
+    */
+
+    public void groupIntakeArmUp() {
+        /* Check the status of the bucket servo, bucket lift, and intake wheel power
+        to make sure they are in the DOWN and OFF states */
+
+        if (bucketSub.getBucketStatus() == BucketSubsystem.BucketStatus.DOWN &&
+                bucketSub.getLiftStatus() == BucketSubsystem.LiftStatus.DOWN &&
+                intakeWheel.getPower() <= 0) {
+
+            // Move the intake arm to ARM_POSE_UP
+            intakeArm.setPosition(ARM_POSE_UP);
+        }
+    }
+    public void rotateIntakeArmDown(double position) {
+
+        intakeArm.setPosition(ARM_POSE_DOWN);
+    }
+
     /* Set all parameters for the intake position
      * Rotate arm into the intake (down) position
      * Power the wheel for intake
@@ -87,7 +115,6 @@ public class IntakeSubsystem {
 
     }
 
-    // TODO Implement a group command for release of pieces
     // Set all parameters for the release position
     public void groupReleasePosition() {
         intakeArm.setPosition(ARM_POSE_UP);
@@ -100,7 +127,6 @@ public class IntakeSubsystem {
         // take current
     }
 
-    // TODO Check the intake arm status
     public enum intakeArmStatus {
         ARM_DOWN,
         ARM_UP,
@@ -128,20 +154,19 @@ public class IntakeSubsystem {
         }
     }
 
-    // TODO Check the intake distance sensor
     /* Distance when sensor mounted on side */
-    private double SAMPLE_DISTANCE = 5.0;
+    public double SAMPLE_DISTANCE = 5.0;
 
-    public enum SpecimenStatus {
+    public enum SampleStatus {
         SAMPLE_ACQUIRED,
         NO_SAMPLE,
     }
 
-    public SpecimenStatus getSpecimenStatus() {
+    public SampleStatus getSampleStatus() {
         if (intakeSensor.getDistance(DistanceUnit.CM) <= SAMPLE_DISTANCE) {
-            return SpecimenStatus.SAMPLE_ACQUIRED;
+            return SampleStatus.SAMPLE_ACQUIRED;
         } else {
-            return SpecimenStatus.NO_SAMPLE;
+            return SampleStatus.NO_SAMPLE;
         }
     }
 
