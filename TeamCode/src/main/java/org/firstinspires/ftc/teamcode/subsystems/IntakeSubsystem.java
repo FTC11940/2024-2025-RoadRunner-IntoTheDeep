@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -14,7 +13,7 @@ import org.firstinspires.ftc.teamcode.sensors.Sensors;
 public class IntakeSubsystem {
 
     public Servo intakeArm; // GoBilda
-    public DcMotorEx intakeWheel; // REV Hex Core
+    public DcMotor intakeWheel; // REV Hex Core
     TouchSensor intakeTouch;
     private final BucketSubsystem bucketSub;
 
@@ -52,9 +51,9 @@ public class IntakeSubsystem {
     public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors, BucketSubsystem bucketSub) {
 
         intakeArm = hardwareMap.servo.get("intakeArm");
-        intakeWheel = hardwareMap.get(DcMotorEx.class,"intakeWheel");
+        intakeWheel = hardwareMap.get(DcMotor.class,"intakeWheel");
 
-        intakeWheel.setDirection(DcMotorEx.Direction.REVERSE);
+        intakeWheel.setDirection(DcMotor.Direction.REVERSE);
 
         this.bucketSub = bucketSub;
 
@@ -146,14 +145,6 @@ public class IntakeSubsystem {
         }
     }
 
-
-    public void stopIntakeIfClose() {
-        if (intakeSensor.getDistance(DistanceUnit.CM) <= 3) {
-            intakeWheel.setPower(0); // Won't work because it would stop ALL power
-
-        }
-    }
-
     /* Distance when sensor mounted on side */
     public double SAMPLE_DISTANCE = 5.0;
 
@@ -169,11 +160,5 @@ public class IntakeSubsystem {
             return SampleStatus.NO_SAMPLE;
         }
     }
-
-/*
-    public double getIntakeWheelCurrent() {
-        return intakeWheel.getCurrent(CurrentUnit.AMPS);
-    }
-*/
 
 } // End of IntakeSubsystem class

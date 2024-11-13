@@ -105,7 +105,7 @@ public class RobotContainer extends LinearOpMode {
             // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
             if (gamepad1.right_trigger > 0) {
                 if (intakeSub.getSampleStatus() == IntakeSubsystem.SampleStatus.SAMPLE_ACQUIRED) {
-                    intakeSub.powerIntakeWheel(0);
+                    intakeSub.powerIntakeWheel(0.1);
                 } else {
                     intakeSub.powerIntakeWheel(gamepad1.right_trigger * WHEEL_INTAKE);
                 }
@@ -192,8 +192,6 @@ public class RobotContainer extends LinearOpMode {
             /* Add telemetry for intake distance sensor */
             telemetry.addData("Intake Distance", String.format("%s, %.2f (CM)",
                     intakeSub.getSampleStatus(), sensors.intakeSensor.getDistance(DistanceUnit.CM)));
-
-            telemetry.addData("Intake Current (A)", String.format("%.2f", intakeSub.intakeWheel.getCurrent(CurrentUnit.AMPS)));
 
             telemetry.update();
 

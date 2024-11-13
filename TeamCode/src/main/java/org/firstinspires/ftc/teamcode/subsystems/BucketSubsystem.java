@@ -19,15 +19,15 @@ public class BucketSubsystem {
     public final static double BUCKET_UP_POSE = 0.15;
 
     public final static int HIGH_BASKET = 2800;
-    public final static int LOW_BASKET = 1000;
-    public final static int LIFT_DOWN = 0; // Li
+    public final static int LOW_BASKET = 1400;
+    public final static int LIFT_DOWN = 0;
 
     /*
     Encoder  | Bucket height Approx
     --------------------------------
     2400     | 37.5 inches
     2000     | 33.0 inches
-    1000     | 20.0 inches
+    1000     | 20.0 inches // Too low
     0000     | 08.0 inches
     * */
 
@@ -56,7 +56,7 @@ public class BucketSubsystem {
 
         lift.setTargetPosition(pose);
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift.setPower(0.30);
+        lift.setPower(0.60);
     }
 
     public void powerLift(double power) {
