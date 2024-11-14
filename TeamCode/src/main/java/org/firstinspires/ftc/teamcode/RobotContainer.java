@@ -95,9 +95,10 @@ public class RobotContainer extends LinearOpMode {
 
             if (gamepad1.left_bumper) {
                 slidesSub.setSlidePose(SLIDE_IN_POSE);
-            }
-            if (gamepad1.right_bumper) {
-                slidesSub.setSlidePose(SLIDE_OUT_POSE);
+            } else if (gamepad1.right_bumper) {
+                slidesSub.powerSlide(0.5);
+            } else {
+                slidesSub.powerSlide(0);
             }
 
             // Use the right trigger to power the intake wheel (for picking up pieces)
