@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
@@ -63,7 +64,7 @@ public class RobotContainer extends LinearOpMode {
             slidesSub.resetSlideEncoderOnTouch();
 
             /*
-            * DRIVER INPUT MAPPING
+             * DRIVER INPUT MAPPING
              * Map methods (actions) from the subsystems to gamepad inputs
              * See `ControllerMapping.md` for gamepad field names
              */
@@ -104,7 +105,7 @@ public class RobotContainer extends LinearOpMode {
             // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
             if (gamepad1.right_trigger > 0) {
                 if (intakeSub.getSampleStatus() == IntakeSubsystem.SampleStatus.SAMPLE_ACQUIRED) {
-                    intakeSub.powerIntakeWheel(0);
+                    intakeSub.powerIntakeWheel(0.1);
                 } else {
                     intakeSub.powerIntakeWheel(gamepad1.right_trigger * WHEEL_INTAKE);
                 }

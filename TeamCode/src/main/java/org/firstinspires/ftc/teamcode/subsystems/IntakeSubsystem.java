@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
@@ -18,7 +19,7 @@ public class IntakeSubsystem {
 
     /* Motor and Servo Positions    */
     /* Position to pick up pieces (for picking up pieces) and releasing */
-    public static final double ARM_POSE_DOWN = 0.22; //
+    public static final double ARM_POSE_DOWN = 0.20; //
     public static final double ARM_POSE_UP = 0.75; //
 
     /*
@@ -79,9 +80,6 @@ public class IntakeSubsystem {
         * If `getLiftStatus() == LiftStatus.DOWN and
         * If `powerIntakeWheel is equal to or less than 0
         * then move the intake arm to `ARM_POSE_UP`
-        *
-        *
-
         /* Move the arm up
         intakeArm.setPosition(ARM_POSE_UP);
     }
@@ -91,9 +89,10 @@ public class IntakeSubsystem {
         /* Check the status of the bucket servo, bucket lift, and intake wheel power
         to make sure they are in the DOWN and OFF states */
 
-        if (bucketSub.getBucketStatus() == BucketSubsystem.BucketStatus.DOWN &&
+        if (
+//                bucketSub.getBucketStatus() == BucketSubsystem.BucketStatus.DOWN &&
                 bucketSub.getLiftStatus() == BucketSubsystem.LiftStatus.DOWN &&
-                intakeWheel.getPower() <= 0) {
+                intakeWheel.getPower() <= 0.05) {
 
             // Move the intake arm to ARM_POSE_UP
             intakeArm.setPosition(ARM_POSE_UP);
@@ -143,14 +142,6 @@ public class IntakeSubsystem {
             return intakeArmStatus.ARM_UP;
         } else {
             return intakeArmStatus.UNKNOWN;
-        }
-    }
-
-
-    public void stopIntakeIfClose() {
-        if (intakeSensor.getDistance(DistanceUnit.CM) <= 3) {
-            intakeWheel.setPower(0); // Won't work because it would stop ALL power
-
         }
     }
 
