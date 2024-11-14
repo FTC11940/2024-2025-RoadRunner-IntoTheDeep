@@ -1,99 +1,108 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.sensors.Sensors;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 
 public class BucketSubsystem {
 
-    public Servo bucketServo;
+    public final Servo bucketServo;
+    public final DcMotor lift;
+    private final Telemetry telemetry;
+    private final ElapsedTime delayTimer = new ElapsedTime();
 
-    // Lift motor for bucket slide (GoBilda 5203)
-    public DcMotor lift;
-
-    /* Bucket */
-    // Right programming side
+    // Bucket positions
     public final static double BUCKET_DOWN_POSE = 0.88;
-    // Left programming side
     public final static double BUCKET_UP_POSE = 0.15;
 
+    // Lift positions
     public final static int HIGH_BASKET = 2800;
     public final static int LOW_BASKET = 1400;
     public final static int LIFT_DOWN = 0;
 
-    /*
-    Encoder  | Bucket height Approx
-    --------------------------------
-    2400     | 37.5 inches
-    2000     | 33.0 inches
-    1000     | 20.0 inches // Too low
-    0000     | 08.0 inches
-    * */
+    // Tolerance for lift position checks
+    private static final double LIFT_TOLERANCE = 0.03;
 
-   private final IntakeSubsystem intakeSub;
+    private final Sensors sensors;
 
-    public BucketSubsystem(HardwareMap hardwareMap, IntakeSubsystem intakeSub) {
-        bucketServo = hardwareMap.get(Servo.class,"bucket");
+    public BucketSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
+
+        this.sensors = new Sensors(hardwareMap);
+        this.telemetry = telemetry;
+
+        bucketServo = hardwareMap.get(Servo.class, "bucket");
         lift = hardwareMap.get(DcMotor.class, "lift");
 
-        // Motor needed to be reversed for the bucket to work with positive values
+
         lift.setDirection(DcMotor.Direction.REVERSE);
 
-        this.intakeSub = intakeSub;
+
+        new IntakeSubsystem(hardwareMap, sensors, this);
 
     }
 
-    /* Use to set the bucket to intake or release position */
     public void setBucket(double pose) {
-        /* Check to make sure arm is out of the way */
-
         bucketServo.setPosition(pose);
     }
 
     public void setLift(int pose) {
-        /* Check to make sure arm is out of the way */
-
         lift.setTargetPosition(pose);
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lift.setPower(0.60);
+    }
+
+    public void setLiftHigh() {
+        moveLiftIfArmDown(HIGH_BASKET, 0.60);
+    }
+
+    public void setLiftLow() {
+        moveLiftIfArmDown(LOW_BASKET, 0.80);
+    }
+
+    public void setLiftDown() {
+        moveLiftIfArmDown(LIFT_DOWN, 0.80);
+    }
+
+    private void moveLiftIfArmDown(int targetPosition, double power) {
+            lift.setTargetPosition(targetPosition);
+            lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            lift.setPower(power);
     }
 
     public void powerLift(double power) {
         lift.setPower(power);
     }
 
-    /* Reset the slide motor encoder */
     public void resetLiftEncoder() {
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleepy(0.1);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    private ElapsedTime delayTimer = new ElapsedTime();
-
-    public void sleepy(double seconds) {
+    private void sleepy(double seconds) {
         delayTimer.reset();
         while (delayTimer.seconds() < seconds) {
+            // Wait
         }
-    } // end of sleepy method
-
+    }
 
     public enum BucketStatus {
         DOWN,
         UP,
         UNKNOWN
     }
+
     public BucketStatus getBucketStatus() {
         double servoPosition = bucketServo.getPosition();
-
-        if (servoPosition == BUCKET_DOWN_POSE) {
-            return BucketStatus.DOWN;
-        } else if (servoPosition == BUCKET_UP_POSE) {
-            return BucketStatus.UP;
-        } else {
-            return BucketStatus.UNKNOWN;
-        }
+        return servoPosition == BUCKET_DOWN_POSE ? BucketStatus.DOWN :
+                servoPosition == BUCKET_UP_POSE ? BucketStatus.UP :
+                        BucketStatus.UNKNOWN;
     }
 
     public enum LiftStatus {
@@ -103,29 +112,12 @@ public class BucketSubsystem {
         UNKNOWN
     }
 
-    /* STRICT definition of status
     public LiftStatus getLiftStatus() {
         int liftPosition = lift.getCurrentPosition();
 
-        if (liftPosition == HIGH_BASKET) {
+        if (Math.abs(liftPosition - HIGH_BASKET) <= LIFT_TOLERANCE * HIGH_BASKET) {
             return LiftStatus.HIGH_BASKET;
-        } else if (liftPosition == LOW_BASKET) {
-            return LiftStatus.LOW_BASKET;
-        } else {
-            return LiftStatus.UNKNOWN;
-        }
-    }
-    */
-
-    public LiftStatus getLiftStatus() {
-        int liftPosition = lift.getCurrentPosition();
-
-        //      +|- of 30 on the low end and 84 on the high end
-        double tolerance = 0.03;
-
-        if (Math.abs(liftPosition - HIGH_BASKET) <= tolerance * HIGH_BASKET) {
-            return LiftStatus.HIGH_BASKET;
-        } else if (Math.abs(liftPosition - LOW_BASKET) <= tolerance * LOW_BASKET) {
+        } else if (Math.abs(liftPosition - LOW_BASKET) <= LIFT_TOLERANCE * LOW_BASKET) {
             return LiftStatus.LOW_BASKET;
         } else if (liftPosition >= -35 && liftPosition <= 35) {
             return LiftStatus.DOWN;
@@ -133,6 +125,4 @@ public class BucketSubsystem {
             return LiftStatus.UNKNOWN;
         }
     }
-
-
-} // End of class
+}

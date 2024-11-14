@@ -27,7 +27,6 @@ import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
 
 public class RobotContainer extends LinearOpMode {
 
-    // Added to make sensor check work
     private Sensors sensors;
     private SampleMecanumDrive drive;
     private BucketSubsystem bucketSub;
@@ -42,7 +41,7 @@ public class RobotContainer extends LinearOpMode {
         /* Subsystems */
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Sensors sensors = new Sensors(hardwareMap);
-        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap, intakeSub);
+        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap, telemetry);
         IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors, bucketSub);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
@@ -96,16 +95,17 @@ public class RobotContainer extends LinearOpMode {
 
             if (gamepad1.left_bumper) {
                 slidesSub.setSlidePose(SLIDE_IN_POSE);
-            }
-            if (gamepad1.right_bumper) {
-                slidesSub.setSlidePose(SLIDE_OUT_POSE);
+            } else if (gamepad1.right_bumper) {
+                slidesSub.powerSlide(0.5);
+            } else {
+                slidesSub.powerSlide(0);
             }
 
             // Use the right trigger to power the intake wheel (for picking up pieces)
             // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
             if (gamepad1.right_trigger > 0) {
                 if (intakeSub.getSampleStatus() == IntakeSubsystem.SampleStatus.SAMPLE_ACQUIRED) {
-                    intakeSub.powerIntakeWheel(0.1);
+                    intakeSub.powerIntakeWheel(0.2);
                 } else {
                     intakeSub.powerIntakeWheel(gamepad1.right_trigger * WHEEL_INTAKE);
                 }
@@ -117,13 +117,13 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad1.dpad_right) {
-                bucketSub.setLift(HIGH_BASKET);
+                bucketSub.setLiftHigh();
             }
             if (gamepad1.dpad_left) {
-                bucketSub.setLift(LOW_BASKET);
+                bucketSub.setLiftLow();
             }
             if (gamepad1.dpad_down) {
-                bucketSub.setLift(LIFT_DOWN);
+                bucketSub.setLiftDown();
             }
 
             /*
