@@ -16,37 +16,21 @@ public class IntakeSubsystem {
     public DcMotor intakeWheel; // REV Hex Core
     TouchSensor intakeTouch;
     private final BucketSubsystem bucketSub;
+    private final Sensors sensors;
 
     /* Motor and Servo Positions    */
     /* Position to pick up pieces (for picking up pieces) and releasing */
     public static final double ARM_POSE_DOWN = 0.20; //
     public static final double ARM_POSE_UP = 0.75; //
 
-    /*
-    POSE    | Comments
-    ------- | --------------
-    0.00    | Too far down by a lot
-    0.10    |
-    0.20    | Maybe too far down
-    0.22    | Close enough for now
-    0.25    | Not far down enough
-    0.30    |
-    0.40    | Not down enough by a lot
-    0.50    |
-    0.60    | Not up enough towards bucket
-    0.70    | Close, but a little more
-    0.75    | Seems about right
-    0.80    |
-    0.90    |
-    1.00    | Too far up by a lot
-
-    * */
-
     /* The intake wheel power for picking up and releasing pieces */
     public static final double WHEEL_INTAKE = 1.0;
     public static final double WHEEL_RELEASE = -1.0;
 
-    public DistanceSensor intakeSensor;
+    /* Distance when sensor mounted on side */
+    public double SAMPLE_DISTANCE = 5.0;
+
+//    public DistanceSensor intakeSensor;
 
     public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors, BucketSubsystem bucketSub) {
 
@@ -56,8 +40,9 @@ public class IntakeSubsystem {
         intakeWheel.setDirection(DcMotor.Direction.REVERSE);
 
         this.bucketSub = bucketSub;
+        this.sensors = sensors;
 
-        intakeSensor = hardwareMap.get(DistanceSensor.class, "intakeSensor");
+//        intakeSensor = hardwareMap.get(DistanceSensor.class, "intakeSensor");
 
     }
 
@@ -145,16 +130,13 @@ public class IntakeSubsystem {
         }
     }
 
-    /* Distance when sensor mounted on side */
-    public double SAMPLE_DISTANCE = 5.0;
-
     public enum SampleStatus {
         SAMPLE_ACQUIRED,
         NO_SAMPLE,
     }
 
     public SampleStatus getSampleStatus() {
-        if (intakeSensor.getDistance(DistanceUnit.CM) <= SAMPLE_DISTANCE) {
+        if (sensors.intakeSensor.getDistance(DistanceUnit.CM) <= SAMPLE_DISTANCE) {
             return SampleStatus.SAMPLE_ACQUIRED;
         } else {
             return SampleStatus.NO_SAMPLE;

@@ -117,13 +117,13 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad1.dpad_right) {
-                bucketSub.setLift(HIGH_BASKET);
+                bucketSub.setLiftHigh();
             }
             if (gamepad1.dpad_left) {
-                bucketSub.setLift(LOW_BASKET);
+                bucketSub.setLiftLow();
             }
             if (gamepad1.dpad_down) {
-                bucketSub.setLift(LIFT_DOWN);
+                bucketSub.setLiftDown();
             }
 
             /*
