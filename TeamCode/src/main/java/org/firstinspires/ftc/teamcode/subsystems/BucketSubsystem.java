@@ -30,15 +30,11 @@ public class BucketSubsystem {
     private static final double LIFT_TOLERANCE = 0.03;
 
     private final Sensors sensors;
-//    IntakeSubsystem intakeSub;
-    private SlidesSubsystem slidesSub;
 
     public BucketSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
 
         this.sensors = new Sensors(hardwareMap);
         this.telemetry = telemetry;
-        /* This initialize approach isn't working; kicking out a NullPointerException */
-//        this.intakeSub = intakeSub;
 
         bucketServo = hardwareMap.get(Servo.class, "bucket");
         lift = hardwareMap.get(DcMotor.class, "lift");
@@ -74,14 +70,9 @@ public class BucketSubsystem {
     }
 
     private void moveLiftIfArmDown(int targetPosition, double power) {
-        if (/* (intakeSub.getIntakeArmStatus() == IntakeSubsystem.intakeArmStatus.ARM_DOWN)*/) {
             lift.setTargetPosition(targetPosition);
             lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             lift.setPower(power);
-        } else {
-            telemetry.addData("!!", "MOVE THE ARM DOWN !!");
-            telemetry.update();
-        }
     }
 
     public void powerLift(double power) {

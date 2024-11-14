@@ -41,7 +41,7 @@ public class RobotContainer extends LinearOpMode {
         /* Subsystems */
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Sensors sensors = new Sensors(hardwareMap);
-        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap, telemetry, intakeSub);
+        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap, telemetry);
         IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors, bucketSub);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
