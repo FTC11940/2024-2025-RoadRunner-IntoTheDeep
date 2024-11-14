@@ -28,7 +28,7 @@ public class IntakeSubsystem {
     public static final double WHEEL_RELEASE = -1.0;
 
     /* Distance when sensor mounted on side */
-    public double SAMPLE_DISTANCE = 5.0;
+    public double SAMPLE_DISTANCE = 3.70;
 
 //    public DistanceSensor intakeSensor;
 
