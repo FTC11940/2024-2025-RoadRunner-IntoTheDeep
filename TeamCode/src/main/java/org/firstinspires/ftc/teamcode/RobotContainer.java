@@ -35,14 +35,16 @@ public class RobotContainer extends LinearOpMode {
     private DriveSubsystem driveSub;
 
     @SuppressLint("DefaultLocale")
+
     @Override
+
     public void runOpMode() throws InterruptedException {
 
         /* Subsystems */
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Sensors sensors = new Sensors(hardwareMap);
-        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap, telemetry, intakeSub);
-        IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors, bucketSub);
+        BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap, telemetry);
+        IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
         ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
@@ -50,11 +52,9 @@ public class RobotContainer extends LinearOpMode {
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
 
-        /* Reset the motor encoder position */
+        /* Reset the motor encoder position after starting the OpMode */
         slidesSub.resetSlideEncoder();
-
         climbSub.resetClimberEncoder();
-
         bucketSub.resetLiftEncoder();
 
         // While loop to keep the robot running
