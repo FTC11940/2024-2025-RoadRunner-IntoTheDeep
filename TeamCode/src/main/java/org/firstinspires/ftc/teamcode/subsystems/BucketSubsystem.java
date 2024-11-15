@@ -31,6 +31,8 @@ public class BucketSubsystem {
     // Tolerance for lift position checks
     private static final double LIFT_TOLERANCE = 0.03;
 
+    private final Sensors sensors;
+
     public BucketSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
 
         this.sensors = new Sensors(hardwareMap);
@@ -69,14 +71,12 @@ public class BucketSubsystem {
     }
 
     private void moveLiftIfArmDown(int targetPosition, double power) {
+
         if (intakeSub.getIntakeArmStatus() == IntakeSubsystem.intakeArmStatus.ARM_DOWN) {
+
             lift.setTargetPosition(targetPosition);
             lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             lift.setPower(power);
-        } else {
-            telemetry.addData("!!", "MOVE THE ARM DOWN !!");
-            telemetry.update();
-        }
     }
 
     public void powerLift(double power) {
