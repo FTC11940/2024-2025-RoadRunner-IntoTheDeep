@@ -16,7 +16,7 @@ public class BucketSubsystem {
     public final DcMotor lift;
     private final Telemetry telemetry;
     private final ElapsedTime delayTimer = new ElapsedTime();
-    private final Sensors sensors;
+    private Sensors sensors;
     private IntakeSubsystem intakeSub;
 
     // Bucket positions
@@ -30,8 +30,6 @@ public class BucketSubsystem {
 
     // Tolerance for lift position checks
     private static final double LIFT_TOLERANCE = 0.03;
-
-    private final Sensors sensors;
 
     public BucketSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
 
@@ -77,6 +75,7 @@ public class BucketSubsystem {
             lift.setTargetPosition(targetPosition);
             lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             lift.setPower(power);
+        }
     }
 
     public void powerLift(double power) {
