@@ -63,8 +63,6 @@ public class RobotContainer extends LinearOpMode {
         // While loop to keep the robot running
         while (opModeIsActive()) {
 
-            slidesSub.resetSlideEncoderOnTouch();
-
             /*
              * DRIVER INPUT MAPPING
              * Map methods (actions) from the subsystems to gamepad inputs
