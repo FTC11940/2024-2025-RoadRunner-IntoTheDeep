@@ -80,15 +80,15 @@ public class RobotContainer extends LinearOpMode {
 
             /* Set the intake arm to intake or release position*/
 
-            intakeSub.smartPowerIntakeWheel(gamepad2.right_trigger, gamepad2.left_trigger);
+            intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
 
             if (gamepad1.a) {
-//                intakeSub.setIntakeArm(ARM_POSE_UP);
-                intakeSub.groupIntakeArmUp();
+                intakeSub.setIntakeArm(ARM_POSE_DOWN);
             }
 
             if (gamepad1.b) {
-                intakeSub.setIntakeArm(ARM_POSE_DOWN);
+//                intakeSub.setIntakeArm(ARM_POSE_UP);
+                intakeSub.groupIntakeArmUp();
             }
 
             if (gamepad1.x) {

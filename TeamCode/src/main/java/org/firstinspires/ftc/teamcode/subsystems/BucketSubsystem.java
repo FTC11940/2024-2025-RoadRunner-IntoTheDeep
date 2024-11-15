@@ -69,9 +69,7 @@ public class BucketSubsystem {
             telemetry.update();
         }
     }
-    public void setLiftHigh() {
-        setLift(HIGH_BASKET, 0.60);
-    }
+    public void setLiftHigh() { setLift(HIGH_BASKET, 0.60); }
 
     public void setLiftLow() {
         setLift(LOW_BASKET, 0.80);
