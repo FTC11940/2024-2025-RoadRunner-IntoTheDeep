@@ -15,7 +15,7 @@ public class IntakeSubsystem {
     public Servo intakeArm; // GoBilda
     public DcMotor intakeWheel; // REV Hex Core
     TouchSensor intakeTouch;
-    private final BucketSubsystem bucketSub;
+//    private final BucketSubsystem bucketSub;
     private final Sensors sensors;
 
     /* Motor and Servo Positions    */
@@ -32,14 +32,13 @@ public class IntakeSubsystem {
 
 //    public DistanceSensor intakeSensor;
 
-    public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors, BucketSubsystem bucketSub) {
+    public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors) {
 
         intakeArm = hardwareMap.servo.get("intakeArm");
         intakeWheel = hardwareMap.get(DcMotor.class,"intakeWheel");
 
         intakeWheel.setDirection(DcMotor.Direction.REVERSE);
 
-        this.bucketSub = bucketSub;
         this.sensors = sensors;
 
 //        intakeSensor = hardwareMap.get(DistanceSensor.class, "intakeSensor");
@@ -76,7 +75,7 @@ public class IntakeSubsystem {
 
         if (
 //                bucketSub.getBucketStatus() == BucketSubsystem.BucketStatus.DOWN &&
-                bucketSub.getLiftStatus() == BucketSubsystem.LiftStatus.DOWN &&
+//                bucketSub.getLiftStatus() == BucketSubsystem.LiftStatus.DOWN &&
                 intakeWheel.getPower() <= 0.05) {
 
             // Move the intake arm to ARM_POSE_UP
