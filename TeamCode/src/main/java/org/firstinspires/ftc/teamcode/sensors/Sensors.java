@@ -25,6 +25,7 @@ public class Sensors {
 
         return slideTouch.isPressed();
     }
+
     public static final class IntakeThresholds {
         public static final double SAMPLE_DISTANCE = 3.8;  // Moved from IntakeSubsystem
     }
@@ -56,9 +57,6 @@ public class Sensors {
     public boolean isSamplePresent() {
         return getSampleStatus() == SampleStatus.SAMPLE_GRABBED;
     }
-}
-
-
 
 
 } // end of class

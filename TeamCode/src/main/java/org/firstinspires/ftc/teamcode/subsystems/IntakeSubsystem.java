@@ -57,18 +57,6 @@ public class IntakeSubsystem {
         intakeArm.setPosition(position);
     }
 
-    /*
-    public void groupIntakeArmUp(double position) {
-        /* Check the status of the bucket servo and bucket lift
-        * If `getBucketStatus() == BucketStatus.DOWN and
-        * If `getLiftStatus() == LiftStatus.DOWN and
-        * If `powerIntakeWheel is equal to or less than 0
-        * then move the intake arm to `ARM_POSE_UP`
-        /* Move the arm up
-        intakeArm.setPosition(ARM_POSE_UP);
-    }
-    */
-
     public void groupIntakeArmUp() {
         /* Check the status of the bucket servo, bucket lift, and intake wheel power
         to make sure they are in the DOWN and OFF states */
@@ -115,22 +103,6 @@ public class IntakeSubsystem {
         ARM_UP,
         UNKNOWN
     }
-
-    /*
-    public intakeArmStatus getIntakeArmStatus() {
-        double currentPosition = intakeArm.getPosition();
-        double tolerance = 0.05; // 5% tolerance
-
-        if (Math.abs(currentPosition - ARM_POSE_DOWN) <= tolerance * ARM_POSE_DOWN) {
-            return intakeArmStatus.ARM_DOWN;
-        } else if (Math.abs(currentPosition - ARM_POSE_UP) <= tolerance * ARM_POSE_UP) {
-            return intakeArmStatus.ARM_UP;
-        } else {
-            return intakeArmStatus.UNKNOWN;
-        }
-    }
-    */
-
 
     // Keep mechanism-related enums and states
     public enum IntakeArmStatus {
