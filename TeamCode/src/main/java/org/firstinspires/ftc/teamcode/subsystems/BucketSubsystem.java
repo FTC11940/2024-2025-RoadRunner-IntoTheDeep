@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.IntakeArmStatus.ARM_DOWN;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
-import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 
 public class BucketSubsystem {
 
@@ -50,36 +49,34 @@ public class BucketSubsystem {
         bucketServo.setPosition(pose);
     }
 
+    /*
     public void setLift(int pose) {
         lift.setTargetPosition(pose);
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lift.setPower(0.60);
     }
+     */
 
-    public void setLiftHigh() {
-        moveLiftIfArmDown(HIGH_BASKET, 0.60);
+    public void setLift(int pose, double power) {
+        // Only move lift if intake arm is down
+        if (intakeSub.getIntakeArmStatus() == ARM_DOWN) {
+            lift.setTargetPosition(pose);
+            lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            lift.setPower(power);
+        } else {
+            // Optional: Add telemetry or logging here to indicate why lift didn't move
+            telemetry.addData("Lift Error", "Cannot move lift while arm is up");
+            telemetry.update();
+        }
     }
+    public void setLiftHigh() { setLift(HIGH_BASKET, 0.60); }
 
     public void setLiftLow() {
-        moveLiftIfArmDown(LOW_BASKET, 0.80);
+        setLift(LOW_BASKET, 0.80);
     }
 
     public void setLiftDown() {
-        moveLiftIfArmDown(LIFT_DOWN, 0.80);
-    }
-
-    private void moveLiftIfArmDown(int targetPosition, double power) {
-
-        if (intakeSub.getIntakeArmStatus() == IntakeSubsystem.intakeArmStatus.ARM_DOWN) {
-
-            lift.setTargetPosition(targetPosition);
-            lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            lift.setPower(power);
-        }
-    }
-
-    public void powerLift(double power) {
-        lift.setPower(power);
+        setLift(LIFT_DOWN, 0.80);
     }
 
     public void resetLiftEncoder() {
