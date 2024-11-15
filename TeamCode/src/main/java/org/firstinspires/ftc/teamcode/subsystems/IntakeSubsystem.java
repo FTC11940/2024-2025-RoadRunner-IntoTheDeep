@@ -70,6 +70,15 @@ public class IntakeSubsystem {
             intakeArm.setPosition(ARM_POSE_UP);
         }
     }
+
+    public void smartPowerIntakeWheel(double rightTrigger, double leftTrigger) {
+        double wheelPower = rightTrigger - leftTrigger;
+        if (sensors.getSampleStatus() == Sensors.SampleStatus.SAMPLE_GRABBED) {
+            wheelPower *= 0.2; // Reduce power to 20% if sample is acquired
+        }
+        intakeWheel.setPower(wheelPower);
+    }
+
     public void rotateIntakeArmDown(double position) {
 
         intakeArm.setPosition(ARM_POSE_DOWN);
