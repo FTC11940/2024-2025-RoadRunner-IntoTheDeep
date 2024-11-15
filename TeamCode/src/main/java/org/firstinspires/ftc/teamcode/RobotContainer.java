@@ -49,6 +49,9 @@ public class RobotContainer extends LinearOpMode {
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
         ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
 
+        // Added by Claude
+        bucketSub.setIntakeSubsystem(intakeSub);
+
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
 
@@ -116,13 +119,13 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad1.dpad_right) {
-                bucketSub.setLiftHigh();
+                bucketSub.setLiftHigh(); // TODO
             }
             if (gamepad1.dpad_left) {
-                bucketSub.setLiftLow();
+                bucketSub.setLiftLow(); // TODO
             }
             if (gamepad1.dpad_down) {
-                bucketSub.setLiftDown();
+                bucketSub.setLiftDown(); // TODO
             }
 
             /*
