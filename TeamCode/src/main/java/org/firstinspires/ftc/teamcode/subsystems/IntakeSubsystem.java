@@ -116,6 +116,7 @@ public class IntakeSubsystem {
         UNKNOWN
     }
 
+    /*
     public intakeArmStatus getIntakeArmStatus() {
         double currentPosition = intakeArm.getPosition();
         double tolerance = 0.05; // 5% tolerance
@@ -128,18 +129,47 @@ public class IntakeSubsystem {
             return intakeArmStatus.UNKNOWN;
         }
     }
+    */
 
-    public enum SampleStatus {
-        SAMPLE_ACQUIRED,
-        NO_SAMPLE,
+
+    // Keep mechanism-related enums and states
+    public enum IntakeArmStatus {
+        ARM_DOWN("Arm in down position"),
+        ARM_UP("Arm in up position"),
+        UNKNOWN("Arm position unknown");
+
+        private final String description;
+        IntakeArmStatus(String description) {
+            this.description = description;
+        }
+        public String getDescription() { return description; }
     }
 
-    public SampleStatus getSampleStatus() {
-        if (sensors.intakeSensor.getDistance(DistanceUnit.CM) <= SAMPLE_DISTANCE) {
-            return SampleStatus.SAMPLE_ACQUIRED;
+    public IntakeArmStatus getIntakeArmStatus() {
+        double currentPosition = intakeArm.getPosition();
+        double tolerance = 0.05;
+
+        if (Math.abs(currentPosition - ARM_POSE_DOWN) <= tolerance * ARM_POSE_DOWN) {
+            return IntakeArmStatus.ARM_DOWN;
+        } else if (Math.abs(currentPosition - ARM_POSE_UP) <= tolerance * ARM_POSE_UP) {
+            return IntakeArmStatus.ARM_UP;
         } else {
-            return SampleStatus.NO_SAMPLE;
+            return IntakeArmStatus.UNKNOWN;
         }
+    }
+
+    // Example of using both together
+    public void autoIntake() {
+        if (sensors.getSampleStatus() == Sensors.SampleStatus.NO_SAMPLE) {
+            // No sample detected, keep intake running
+            setIntakeArm(ARM_POSE_DOWN);
+            powerIntakeWheel(WHEEL_INTAKE);
+        } else {
+            // Sample acquired, stop intake
+            powerIntakeWheel(0);
+            setIntakeArm(ARM_POSE_UP);
+        }
+
     }
 
 } // End of IntakeSubsystem class

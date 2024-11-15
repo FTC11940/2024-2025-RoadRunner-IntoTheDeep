@@ -106,18 +106,6 @@ public class RobotContainer extends LinearOpMode {
 
             // Use the right trigger to power the intake wheel (for picking up pieces)
             // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
-            if (gamepad1.right_trigger > 0) {
-                if (intakeSub.getSampleStatus() == IntakeSubsystem.SampleStatus.SAMPLE_ACQUIRED) {
-                    intakeSub.powerIntakeWheel(0.2);
-                } else {
-                    intakeSub.powerIntakeWheel(gamepad1.right_trigger * WHEEL_INTAKE);
-                }
-
-            } else if (gamepad1.left_trigger > 0) {
-                intakeSub.powerIntakeWheel(gamepad1.left_trigger * WHEEL_RELEASE); // Scale power and reverse direction
-            } else {
-                intakeSub.powerIntakeWheel(0); // Stop the intake wheel
-            }
 
             if (gamepad1.dpad_right) {
                 bucketSub.setLiftHigh(); // TODO
@@ -192,9 +180,6 @@ public class RobotContainer extends LinearOpMode {
             /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
             telemetry.addData("Slide Touch",sensors.isSlideTouchPressed());
 
-            /* Add telemetry for intake distance sensor */
-            telemetry.addData("Intake Distance", String.format("%s, %.2f (CM)",
-                    intakeSub.getSampleStatus(), sensors.intakeSensor.getDistance(DistanceUnit.CM)));
 
             telemetry.update();
 
