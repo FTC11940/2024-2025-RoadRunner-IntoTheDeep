@@ -71,10 +71,19 @@ public class IntakeSubsystem {
         }
     }
 
+
+    double POWER_REDUCTION = 0.10;
+
     public void smartPowerIntakeWheel(double rightTrigger, double leftTrigger) {
         double wheelPower = rightTrigger - leftTrigger;
-        if (sensors.getSampleStatus() == Sensors.SampleStatus.SAMPLE_GRABBED) {
-            wheelPower *= 0.2; // Reduce power to 20% if sample is acquired
+
+        /* Check to see if a Sample is grabbed.
+        If it is grabbed, reduce the positive power (intake)
+        Only reduce the power for positive power value AND if the sample is grabbed
+        Maintain full power for negative power values to outtake pieces
+        */
+        if (sensors.getSampleStatus() == Sensors.SampleStatus.SAMPLE_GRABBED && wheelPower > 0) {
+            wheelPower *= POWER_REDUCTION; // Reduce power to 20% if sample is acquired
         }
         intakeWheel.setPower(wheelPower);
     }
