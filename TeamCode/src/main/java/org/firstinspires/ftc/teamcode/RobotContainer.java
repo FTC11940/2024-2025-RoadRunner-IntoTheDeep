@@ -35,32 +35,33 @@ public class RobotContainer extends LinearOpMode {
     private DriveSubsystem driveSub;
 
     @SuppressLint("DefaultLocale")
+
     @Override
+
     public void runOpMode() throws InterruptedException {
 
         /* Subsystems */
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         Sensors sensors = new Sensors(hardwareMap);
         BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap, telemetry);
-        IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors, bucketSub);
+        IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
         ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
 
+        // Added by Claude
+        bucketSub.setIntakeSubsystem(intakeSub);
+
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
 
-        /* Reset the motor encoder position */
+        /* Reset the motor encoder position after starting the OpMode */
         slidesSub.resetSlideEncoder();
-
         climbSub.resetClimberEncoder();
-
         bucketSub.resetLiftEncoder();
 
         // While loop to keep the robot running
         while (opModeIsActive()) {
-
-            slidesSub.resetSlideEncoderOnTouch();
 
             /*
              * DRIVER INPUT MAPPING
@@ -77,13 +78,14 @@ public class RobotContainer extends LinearOpMode {
 
             /* Set the intake arm to intake or release position*/
 
+            intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
+
             if (gamepad1.a) {
-//                intakeSub.setIntakeArm(ARM_POSE_UP);
-                intakeSub.groupIntakeArmUp();
+                intakeSub.setIntakeArm(ARM_POSE_DOWN);
             }
 
             if (gamepad1.b) {
-                intakeSub.setIntakeArm(ARM_POSE_DOWN);
+                intakeSub.groupIntakeArmUp();
             }
 
             if (gamepad1.x) {
@@ -103,27 +105,15 @@ public class RobotContainer extends LinearOpMode {
 
             // Use the right trigger to power the intake wheel (for picking up pieces)
             // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
-            if (gamepad1.right_trigger > 0) {
-                if (intakeSub.getSampleStatus() == IntakeSubsystem.SampleStatus.SAMPLE_ACQUIRED) {
-                    intakeSub.powerIntakeWheel(0.2);
-                } else {
-                    intakeSub.powerIntakeWheel(gamepad1.right_trigger * WHEEL_INTAKE);
-                }
-
-            } else if (gamepad1.left_trigger > 0) {
-                intakeSub.powerIntakeWheel(gamepad1.left_trigger * WHEEL_RELEASE); // Scale power and reverse direction
-            } else {
-                intakeSub.powerIntakeWheel(0); // Stop the intake wheel
-            }
 
             if (gamepad1.dpad_right) {
-                bucketSub.setLiftHigh();
+                bucketSub.setLiftHigh(); // TODO
             }
             if (gamepad1.dpad_left) {
-                bucketSub.setLiftLow();
+                bucketSub.setLiftLow(); // TODO
             }
             if (gamepad1.dpad_down) {
-                bucketSub.setLiftDown();
+                bucketSub.setLiftDown(); // TODO
             }
 
             /*
@@ -189,13 +179,8 @@ public class RobotContainer extends LinearOpMode {
             /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
             telemetry.addData("Slide Touch",sensors.isSlideTouchPressed());
 
-            /* Add telemetry for intake distance sensor */
-            telemetry.addData("Intake Distance", String.format("%s, %.2f (CM)",
-                    intakeSub.getSampleStatus(), sensors.intakeSensor.getDistance(DistanceUnit.CM)));
 
             telemetry.update();
-
-
 
         } // end of while loop
 

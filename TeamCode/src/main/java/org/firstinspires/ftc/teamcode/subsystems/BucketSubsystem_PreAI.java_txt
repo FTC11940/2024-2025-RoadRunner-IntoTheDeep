@@ -1,22 +1,19 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.IntakeArmStatus.ARM_DOWN;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
-public class BucketSubsystem {
+public class BucketSubsystem_PreAI {
 
     public final Servo bucketServo;
     public final DcMotor lift;
     private final Telemetry telemetry;
     private final ElapsedTime delayTimer = new ElapsedTime();
-    private Sensors sensors;
-    private IntakeSubsystem intakeSub;
 
     // Bucket positions
     public final static double BUCKET_DOWN_POSE = 0.88;
@@ -30,53 +27,63 @@ public class BucketSubsystem {
     // Tolerance for lift position checks
     private static final double LIFT_TOLERANCE = 0.03;
 
-    public BucketSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
+    private final Sensors sensors;
+    IntakeSubsystem intakeSub;
+    private SlidesSubsystem slidesSub;
+
+    public BucketSubsystem_PreAI(HardwareMap hardwareMap,Telemetry telemetry,IntakeSubsystem intakeSub) {
 
         this.sensors = new Sensors(hardwareMap);
         this.telemetry = telemetry;
+        /* This initialize approach isn't working; kicking out a NullPointerException */
+        this.intakeSub = intakeSub;
 
         bucketServo = hardwareMap.get(Servo.class, "bucket");
         lift = hardwareMap.get(DcMotor.class, "lift");
-        lift.setDirection(DcMotor.Direction.REVERSE);
-    }
 
-    // Method to set the IntakeSubsystem reference after initialization
-    public void setIntakeSubsystem(IntakeSubsystem intakeSub) {
-        this.intakeSub = intakeSub;
+
+        lift.setDirection(DcMotor.Direction.REVERSE);
+
+
+        new IntakeSubsystem(hardwareMap, sensors, this);
+
     }
 
     public void setBucket(double pose) {
         bucketServo.setPosition(pose);
     }
 
-    /*
     public void setLift(int pose) {
         lift.setTargetPosition(pose);
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lift.setPower(0.60);
     }
-     */
 
-    public void setLift(int pose, double power) {
-        // Only move lift if intake arm is down
-        if (intakeSub.getIntakeArmStatus() == ARM_DOWN) {
-            lift.setTargetPosition(pose);
-            lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            lift.setPower(power);
-        } else {
-            // Optional: Add telemetry or logging here to indicate why lift didn't move
-            telemetry.addData("Lift Error", "Cannot move lift while arm is up");
-            telemetry.update();
-        }
+    public void setLiftHigh() {
+        moveLiftIfArmDown(HIGH_BASKET, 0.60);
     }
-    public void setLiftHigh() { setLift(HIGH_BASKET, 0.60); }
 
     public void setLiftLow() {
-        setLift(LOW_BASKET, 0.80);
+        moveLiftIfArmDown(LOW_BASKET, 0.80);
     }
 
     public void setLiftDown() {
-        setLift(LIFT_DOWN, 0.80);
+        moveLiftIfArmDown(LIFT_DOWN, 0.80);
+    }
+
+    private void moveLiftIfArmDown(int targetPosition, double power) {
+        if (intakeSub.getIntakeArmStatus() == IntakeSubsystem.intakeArmStatus.ARM_DOWN) {
+            lift.setTargetPosition(targetPosition);
+            lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            lift.setPower(power);
+        } else {
+            telemetry.addData("!!", "MOVE THE ARM DOWN !!");
+            telemetry.update();
+        }
+    }
+
+    public void powerLift(double power) {
+        lift.setPower(power);
     }
 
     public void resetLiftEncoder() {
