@@ -85,7 +85,6 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad1.b) {
-//                intakeSub.setIntakeArm(ARM_POSE_UP);
                 intakeSub.groupIntakeArmUp();
             }
 
