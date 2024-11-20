@@ -7,18 +7,25 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class ClimbSubsystem {
 
+    public static class Constants {
+        public static final int CLIMB_UP = 100;
+        public static final int CLIMB_DOWN = 0;
+        public static final double CLIMB_POWER = 0.25;
+
+        // You might want to add other constants here like:
+        // public static final String CLIMBER_ONE_NAME = "climberOne";
+        // public static final String CLIMBER_TWO_NAME = "climberTwo";
+    }
+
     public DcMotorEx climberOneMotor;
 //    public DcMotorEx climberTwoMotor;
 
 //    public ClimbMotorGroup;
 
-    public final int CLIMB_UP = 100;
-    public final int CLIMB_DOWN = 0;
-    public final double CLIMB_POWER = 0.25;
+    private final ElapsedTime delayTimer = new ElapsedTime();
 
     public ClimbSubsystem(HardwareMap hardwareMap) {
-
-        climberOneMotor = hardwareMap.get(DcMotorEx.class,"climberOne");
+        climberOneMotor = hardwareMap.get(DcMotorEx.class, "climberOne");
 //        climberOneMotor = hardwareMap.get(DcMotorEx.class,"climberTwo");
 
         climberOneMotor.setDirection(DcMotorEx.Direction.FORWARD);
@@ -34,7 +41,7 @@ public class ClimbSubsystem {
     public void setClimber(int position) {
         climberOneMotor.setTargetPosition(position);
         climberOneMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        climberOneMotor.setPower(CLIMB_UP);
+        climberOneMotor.setPower(Constants.CLIMB_POWER);
     }
 
     public void powerClimber(double power) {
@@ -49,12 +56,9 @@ public class ClimbSubsystem {
         climberOneMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    private ElapsedTime delayTimer = new ElapsedTime();
-
     public void sleepy(double seconds) {
         delayTimer.reset();
         while (delayTimer.seconds() < seconds) {
         }
     } // end of sleepy method
-
 }
