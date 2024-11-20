@@ -11,24 +11,22 @@ import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
 public class BucketSubsystem {
 
+    public static class Constants {
+        public static final double BUCKET_DOWN = 0.88;
+        public static final double BUCKET_UP = 0.15;
+        public static final int LIFT_HIGH = 3000;
+        public static final int LIFT_LOW = 1400;
+        public static final int LIFT_DOWN = 0;
+        public static final double LIFT_TOLERANCE = 0.03;
+
+    }
+
     public final Servo bucketServo;
     public final DcMotor lift;
     private final Telemetry telemetry;
     private final ElapsedTime delayTimer = new ElapsedTime();
     private Sensors sensors;
     private IntakeSubsystem intakeSub;
-
-    // Bucket positions
-    public final static double BUCKET_DOWN_POSE = 0.88;
-    public final static double BUCKET_UP_POSE = 0.15;
-
-    // Lift positions
-    public final static int HIGH_BASKET = 2800;
-    public final static int LOW_BASKET = 1400;
-    public final static int LIFT_DOWN = 0;
-
-    // Tolerance for lift position checks
-    private static final double LIFT_TOLERANCE = 0.03;
 
     public BucketSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
 
@@ -69,14 +67,14 @@ public class BucketSubsystem {
             telemetry.update();
         }
     }
-    public void setLiftHigh() { setLift(HIGH_BASKET, 0.60); }
+    public void setLiftHigh() { setLift(Constants.LIFT_HIGH, 0.60); }
 
     public void setLiftLow() {
-        setLift(LOW_BASKET, 0.80);
+        setLift(Constants.LIFT_LOW, 0.80);
     }
 
     public void setLiftDown() {
-        setLift(LIFT_DOWN, 0.80);
+        setLift(Constants.LIFT_DOWN, 0.80);
     }
 
     public void resetLiftEncoder() {
@@ -100,8 +98,8 @@ public class BucketSubsystem {
 
     public BucketStatus getBucketStatus() {
         double servoPosition = bucketServo.getPosition();
-        return servoPosition == BUCKET_DOWN_POSE ? BucketStatus.DOWN :
-                servoPosition == BUCKET_UP_POSE ? BucketStatus.UP :
+        return servoPosition == Constants.BUCKET_DOWN ? BucketStatus.DOWN :
+                servoPosition == Constants.BUCKET_UP ? BucketStatus.UP :
                         BucketStatus.UNKNOWN;
     }
 
@@ -115,9 +113,9 @@ public class BucketSubsystem {
     public LiftStatus getLiftStatus() {
         int liftPosition = lift.getCurrentPosition();
 
-        if (Math.abs(liftPosition - HIGH_BASKET) <= LIFT_TOLERANCE * HIGH_BASKET) {
+        if (Math.abs(liftPosition - Constants.LIFT_HIGH) <= Constants.LIFT_TOLERANCE * Constants.LIFT_HIGH) {
             return LiftStatus.HIGH_BASKET;
-        } else if (Math.abs(liftPosition - LOW_BASKET) <= LIFT_TOLERANCE * LOW_BASKET) {
+        } else if (Math.abs(liftPosition - Constants.LIFT_LOW) <= Constants.LIFT_TOLERANCE * Constants.LIFT_LOW) {
             return LiftStatus.LOW_BASKET;
         } else if (liftPosition >= -35 && liftPosition <= 35) {
             return LiftStatus.DOWN;

@@ -1,128 +1,71 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
 public class IntakeSubsystem {
 
-    public Servo intakeArm; // GoBilda
-    public DcMotor intakeWheel; // REV Hex Core
-    TouchSensor intakeTouch;
-//    private final BucketSubsystem bucketSub;
-    private final Sensors sensors;
+    public static class Constants {
+        // Servo Positions
+        public static final double ARM_POSE_DOWN = 0.20;
+        public static final double ARM_POSE_UP = 0.75;
 
-    /* Motor and Servo Positions    */
-    /* Position to pick up pieces (for picking up pieces) and releasing */
-    public static final double ARM_POSE_DOWN = 0.20; //
-    public static final double ARM_POSE_UP = 0.75; //
+        // Motor Powers
+        public static final double WHEEL_INTAKE = 1.0;
+        public static final double WHEEL_RELEASE = -1.0;
+        public static final double POWER_REDUCTION = 0.10;
 
-    /* The intake wheel power for picking up and releasing pieces */
-    public static final double WHEEL_INTAKE = 1.0;
-    public static final double WHEEL_RELEASE = -1.0;
-
-    /* Distance when sensor mounted on side */
-    public double SAMPLE_DISTANCE = 3.70;
-
-//    public DistanceSensor intakeSensor;
-
-    public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors) {
-
-        intakeArm = hardwareMap.servo.get("intakeArm");
-        intakeWheel = hardwareMap.get(DcMotor.class,"intakeWheel");
-
-        intakeWheel.setDirection(DcMotor.Direction.REVERSE);
-
-        this.sensors = sensors;
-
-//        intakeSensor = hardwareMap.get(DistanceSensor.class, "intakeSensor");
-
+        // Tolerances
+        public static final double ARM_POSITION_TOLERANCE = 0.05;
     }
 
-    /* Use for turning on the Intake Wheel */
-    public void powerIntakeWheel(double power) {
+    public final Servo intakeArm;
+    public final DcMotor intakeWheel;
+    private final Sensors sensors;
 
+    public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors) {
+        intakeArm = hardwareMap.servo.get("intakeArm");
+        intakeWheel = hardwareMap.get(DcMotor.class, "intakeWheel");
+        intakeWheel.setDirection(DcMotor.Direction.REVERSE);
+        this.sensors = sensors;
+    }
+
+    public void powerIntakeWheel(double power) {
         intakeWheel.setPower(power);
     }
 
-    /* Set Intake Arm to intake position */
     public void setIntakeArm(double position) {
-
         intakeArm.setPosition(position);
     }
 
     public void groupIntakeArmUp() {
-        /* Check the status of the bucket servo, bucket lift, and intake wheel power
-        to make sure they are in the DOWN and OFF states */
-
-        if (
-//                bucketSub.getBucketStatus() == BucketSubsystem.BucketStatus.DOWN &&
-//                bucketSub.getLiftStatus() == BucketSubsystem.LiftStatus.DOWN &&
-                intakeWheel.getPower() <= 0.05) {
-
-            // Move the intake arm to ARM_POSE_UP
-            intakeArm.setPosition(ARM_POSE_UP);
+        if (intakeWheel.getPower() <= 0.05) {
+            intakeArm.setPosition(Constants.ARM_POSE_UP);
         }
     }
-
-
-    double POWER_REDUCTION = 0.10;
 
     public void smartPowerIntakeWheel(double rightTrigger, double leftTrigger) {
         double wheelPower = rightTrigger - leftTrigger;
 
-        /* Check to see if a Sample is grabbed.
-        If it is grabbed, reduce the positive power (intake)
-        Only reduce the power for positive power value AND if the sample is grabbed
-        Maintain full power for negative power values to outtake pieces
-        */
         if (sensors.getSampleStatus() == Sensors.SampleStatus.SAMPLE_GRABBED && wheelPower > 0) {
-            wheelPower *= POWER_REDUCTION; // Reduce power to 20% if sample is acquired
+            wheelPower *= Constants.POWER_REDUCTION;
         }
         intakeWheel.setPower(wheelPower);
     }
 
-    public void rotateIntakeArmDown(double position) {
-
-        intakeArm.setPosition(ARM_POSE_DOWN);
-    }
-
-    /* Set all parameters for the intake position
-     * Rotate arm into the intake (down) position
-     * Power the wheel for intake
-     * */
     public void groupIntakePosition() {
-        // Assume or check that slides are at "out" position
-        intakeArm.setPosition(ARM_POSE_DOWN);
-        intakeWheel.setPower(WHEEL_INTAKE);
-
+        intakeArm.setPosition(Constants.ARM_POSE_DOWN);
+        intakeWheel.setPower(Constants.WHEEL_INTAKE);
     }
 
-    // Set all parameters for the release position
     public void groupReleasePosition() {
-        intakeArm.setPosition(ARM_POSE_UP);
-        intakeWheel.setPower(WHEEL_RELEASE);
-
+        intakeArm.setPosition(Constants.ARM_POSE_UP);
+        intakeWheel.setPower(Constants.WHEEL_RELEASE);
     }
 
-    // A method that increments a servo position by a given amount (0.05) with every button press
-    public void incrementIntakeArm(double turd) {
-        // take current
-    }
-
-    public enum intakeArmStatus {
-        ARM_DOWN,
-        ARM_UP,
-        UNKNOWN
-    }
-
-    // Keep mechanism-related enums and states
     public enum IntakeArmStatus {
         ARM_DOWN("Arm in down position"),
         ARM_UP("Arm in up position"),
@@ -137,29 +80,24 @@ public class IntakeSubsystem {
 
     public IntakeArmStatus getIntakeArmStatus() {
         double currentPosition = intakeArm.getPosition();
-        double tolerance = 0.05;
+        double tolerance = Constants.ARM_POSITION_TOLERANCE;
 
-        if (Math.abs(currentPosition - ARM_POSE_DOWN) <= tolerance * ARM_POSE_DOWN) {
+        if (Math.abs(currentPosition - Constants.ARM_POSE_DOWN) <= tolerance * Constants.ARM_POSE_DOWN) {
             return IntakeArmStatus.ARM_DOWN;
-        } else if (Math.abs(currentPosition - ARM_POSE_UP) <= tolerance * ARM_POSE_UP) {
+        } else if (Math.abs(currentPosition - Constants.ARM_POSE_UP) <= tolerance * Constants.ARM_POSE_UP) {
             return IntakeArmStatus.ARM_UP;
         } else {
             return IntakeArmStatus.UNKNOWN;
         }
     }
 
-    // Example of using both together
     public void autoIntake() {
         if (sensors.getSampleStatus() == Sensors.SampleStatus.NO_SAMPLE) {
-            // No sample detected, keep intake running
-            setIntakeArm(ARM_POSE_DOWN);
-            powerIntakeWheel(WHEEL_INTAKE);
+            setIntakeArm(Constants.ARM_POSE_DOWN);
+            powerIntakeWheel(Constants.WHEEL_INTAKE);
         } else {
-            // Sample acquired, stop intake
             powerIntakeWheel(0);
-            setIntakeArm(ARM_POSE_UP);
+            setIntakeArm(Constants.ARM_POSE_UP);
         }
-
     }
-
-} // End of IntakeSubsystem class
+}

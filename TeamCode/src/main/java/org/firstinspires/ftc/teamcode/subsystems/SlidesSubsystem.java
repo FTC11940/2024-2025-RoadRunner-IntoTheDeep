@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,60 +9,58 @@ import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
 public class SlidesSubsystem {
 
+    public static class Constants {
+        // Motor positions
+        public static final int SLIDE_OUT_POSE = 300;
+        public static final int SLIDE_IN_POSE = 0;
+
+        // Motor settings
+        public static final double DEFAULT_POWER = 0.5;
+        public static final double POWER_INCREMENT = 0.1;
+        public static final double POSITION_TOLERANCE = 0.05;
+
+        // Timing
+        public static final double RESET_DELAY = 0.1;
+    }
+
     public final DcMotorEx slide;
-    public TouchSensor slideTouch;
+    private final TouchSensor slideTouch;
+    private final ElapsedTime delayTimer;
 
-    public final double POWER_INCREMENT = 0.1;
-
-    public static final int SLIDE_OUT_POSE = 300;
-    public static final int SLIDE_IN_POSE = 0;
-
-    /* Constructor for the SlidesSubsystem class */
     public SlidesSubsystem(HardwareMap hardwareMap, Sensors sensors) {
-        slide = hardwareMap.get(DcMotorEx.class,"slide");
+        slide = hardwareMap.get(DcMotorEx.class, "slide");
+        slideTouch = hardwareMap.get(TouchSensor.class, "slideTouch");
+        delayTimer = new ElapsedTime();
+
         slide.setDirection(DcMotor.Direction.REVERSE);
         slide.setPower(0);
-
-        slideTouch = hardwareMap.get(TouchSensor.class,"slideTouch");
-
     }
 
-
-    /*  Move the slides to set positions to be determined with set points defined with variables */
     public void setSlidePose(int position) {
         slide.setTargetPosition(position);
-
-        // Set run mode to RUN_TO_POSITION
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slide.setPower(0.5);
+        slide.setPower(Constants.DEFAULT_POWER);
     }
 
-    /* Method to move a motor incrementally while a button is held
-    * Mostly for testing purposes */
     public void powerSlide(double power) {
-
         slide.setPower(power);
     }
 
-    public void stopMotor(int power) {
-
+    public void stopMotor() {
         slide.setPower(0);
     }
 
-    /* Generic reset the slide motor encoder */
     public void resetSlideEncoder() {
         slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        sleepy(0.1);
+        sleepy(Constants.RESET_DELAY);
         slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    private ElapsedTime delayTimer = new ElapsedTime();
-
-    public void sleepy(double seconds) {
+    private void sleepy(double seconds) {
         delayTimer.reset();
         while (delayTimer.seconds() < seconds) {
         }
-    } // end of sleepy method
+    }
 
     public enum SlideStatus {
         SLIDES_IN,
@@ -74,23 +70,21 @@ public class SlidesSubsystem {
 
     public SlideStatus getSlideStatus() {
         int slidePosition = slide.getCurrentPosition();
-        double tolerance = 0.05; // 5% tolerance
+        double tolerance = Constants.POSITION_TOLERANCE;
 
-        if (Math.abs(slidePosition - SLIDE_IN_POSE) <= tolerance * SLIDE_IN_POSE) {
-            return SlideStatus.SLIDES_IN; // Corrected return value
-        } else if (Math.abs(slidePosition - SLIDE_OUT_POSE) <= tolerance * SLIDE_OUT_POSE) {
-            return SlideStatus.SLIDES_OUT; // Corrected return value
+        if (Math.abs(slidePosition - Constants.SLIDE_IN_POSE) <= tolerance * Constants.SLIDE_IN_POSE) {
+            return SlideStatus.SLIDES_IN;
+        } else if (Math.abs(slidePosition - Constants.SLIDE_OUT_POSE) <= tolerance * Constants.SLIDE_OUT_POSE) {
+            return SlideStatus.SLIDES_OUT;
         } else {
             return SlideStatus.UNKNOWN;
         }
     }
 
-    /* Reset the slide motor encoder when the slide touch sensor is pressed */
     public void resetSlideEncoderOnTouch() {
         if (slideTouch.isPressed()) {
             slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-
-} //end of class
+}
