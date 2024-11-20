@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
@@ -18,6 +20,7 @@ public class BucketSubsystem {
         public static final int LIFT_LOW = 1400;
         public static final int LIFT_DOWN = 0;
         public static final double LIFT_TOLERANCE = 0.03;
+        public static final double APPROX_LIFT_POSE = 10;
 
     }
 
@@ -35,7 +38,11 @@ public class BucketSubsystem {
 
         bucketServo = hardwareMap.get(Servo.class, "bucket");
         lift = hardwareMap.get(DcMotor.class, "lift");
+
+        // Configs for the lift motor
         lift.setDirection(DcMotor.Direction.REVERSE);
+        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     // Method to set the IntakeSubsystem reference after initialization
@@ -58,15 +65,38 @@ public class BucketSubsystem {
     public void setLift(int pose, double power) {
         // Only move lift if intake arm is down
         if (intakeSub.getIntakeArmStatus() == ARM_DOWN) {
+            // Check if we're already at the target position
+            if (Math.abs(lift.getCurrentPosition() - pose) < Constants.APPROX_LIFT_POSE) {
+                lift.setPower(0); // Stop the motor if we're close enough
+                return;
+            }
+
             lift.setTargetPosition(pose);
             lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            lift.setPower(power);
+
+            // Set power only when moving
+            if (Math.abs(lift.getCurrentPosition() - pose) > Constants.APPROX_LIFT_POSE) {
+                lift.setPower(power);
+            } else {
+                lift.setPower(0);
+            }
         } else {
-            // Optional: Add telemetry or logging here to indicate why lift didn't move
+            // Stop the motor if arm is up
+            lift.setPower(0);
             telemetry.addData("Lift Error", "Cannot move lift while arm is up");
             telemetry.update();
         }
     }
+
+    // Add a new method to update the lift status periodically
+    public void updateLift() {
+        // If the motor is not actively moving to a position, ensure power is off
+        if (!lift.isBusy() ||
+                Math.abs(lift.getCurrentPosition() - lift.getTargetPosition()) < Constants.APPROX_LIFT_POSE) {
+            lift.setPower(0);
+        }
+    }
+
     public void setLiftHigh() { setLift(Constants.LIFT_HIGH, 0.60); }
 
     public void setLiftLow() {

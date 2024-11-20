@@ -182,7 +182,12 @@ public class RobotContainer extends LinearOpMode {
             telemetry.addData("Slide Touch",sensors.isSlideTouchPressed());
 
 
+            // Updates position of the lift motor periodically
+            bucketSub.updateLift();
+
             telemetry.update();
+
+
 
         } // end of while loop
 
