@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constant
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_INTAKE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_RELEASE;
 import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.Constants.SLIDE_IN_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.Constants.SLIDE_OUT_POSE;
 
 import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
 
@@ -60,7 +61,7 @@ public class RobotContainer extends LinearOpMode {
         /* Reset the motor encoder position after starting the OpMode */
         slidesSub.resetSlideEncoder();
         climbSub.resetClimberEncoder();
-        bucketSub.resetLiftEncoder();
+        // bucketSub.resetLiftEncoder();
 
         // While loop to keep the robot running
         while (opModeIsActive()) {
@@ -98,13 +99,17 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad1.left_bumper) {
-                slidesSub.setSlidePose(SLIDE_IN_POSE);
-            } else if (gamepad1.right_bumper) {
-                slidesSub.powerSlide(0.5);
+                slidesSub.setSlidePose(SLIDE_IN_POSE, 0.5);
+            } else {
+                slidesSub.powerSlide(0);
+
+            if (gamepad1.right_bumper) {
+                slidesSub.setSlidePose(SLIDE_OUT_POSE,0.75);
             } else {
                 slidesSub.powerSlide(0);
             }
 
+            }
             // Use the right trigger to power the intake wheel (for picking up pieces)
             // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
 

@@ -5,13 +5,15 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
 public class SlidesSubsystem {
 
     public static class Constants {
         // Motor positions
-        public static final int SLIDE_OUT_POSE = 300;
+        public static final int SLIDE_OUT_POSE = 500;
         public static final int SLIDE_IN_POSE = 0;
 
         // Motor settings
@@ -36,10 +38,16 @@ public class SlidesSubsystem {
         slide.setPower(0);
     }
 
-    public void setSlidePose(int position) {
+    public void setSlidePose(int position, double power) {
         slide.setTargetPosition(position);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slide.setPower(Constants.DEFAULT_POWER);
+        slide.setPower(power);
+    }
+
+    public void setSlideOut(int position, double power) {
+        slide.setTargetPosition(position);
+        slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slide.setPower(power);
     }
 
     public void powerSlide(double power) {

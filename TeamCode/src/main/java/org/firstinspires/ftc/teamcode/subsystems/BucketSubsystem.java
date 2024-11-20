@@ -14,13 +14,18 @@ import org.firstinspires.ftc.teamcode.sensors.Sensors;
 public class BucketSubsystem {
 
     public static class Constants {
-        public static final double BUCKET_DOWN = 0.88;
+
+        public static final double BUCKET_DOWN = 0.90; //
+
         public static final double BUCKET_UP = 0.15;
         public static final int LIFT_HIGH = 3000;
         public static final int LIFT_LOW = 1400;
         public static final int LIFT_DOWN = 0;
         public static final double LIFT_TOLERANCE = 0.03;
         public static final double APPROX_LIFT_POSE = 10;
+
+        public static final double LIFT_HOLD_POWER = 0.15;  // Power to maintain position
+        public static final double LIFT_MOVING_POWER = 0.60; // Default power when moving
 
     }
 
@@ -63,37 +68,42 @@ public class BucketSubsystem {
      */
 
     public void setLift(int pose, double power) {
-        // Only move lift if intake arm is down
-        if (intakeSub.getIntakeArmStatus() == ARM_DOWN) {
-            // Check if we're already at the target position
-            if (Math.abs(lift.getCurrentPosition() - pose) < Constants.APPROX_LIFT_POSE) {
-                lift.setPower(0); // Stop the motor if we're close enough
-                return;
-            }
-
-            lift.setTargetPosition(pose);
-            lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // Set power only when moving
-            if (Math.abs(lift.getCurrentPosition() - pose) > Constants.APPROX_LIFT_POSE) {
-                lift.setPower(power);
-            } else {
-                lift.setPower(0);
-            }
-        } else {
-            // Stop the motor if arm is up
+        if (intakeSub.getIntakeArmStatus() != ARM_DOWN) {
             lift.setPower(0);
             telemetry.addData("Lift Error", "Cannot move lift while arm is up");
             telemetry.update();
+            return;
         }
+
+        // Check if we need to apply holding power
+        boolean needsHoldingPower = pose == Constants.LIFT_HIGH || pose == Constants.LIFT_LOW;
+
+        // If we're very close to target position
+        if (Math.abs(lift.getCurrentPosition() - pose) < Constants.APPROX_LIFT_POSE) {
+            // Apply holding power if at HIGH or LOW position, otherwise use zero power
+            lift.setPower(needsHoldingPower ? Constants.LIFT_HOLD_POWER : 0);
+            return;
+        }
+
+        // Moving to new position
+        lift.setTargetPosition(pose);
+        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lift.setPower(power);
     }
 
-    // Add a new method to update the lift status periodically
     public void updateLift() {
-        // If the motor is not actively moving to a position, ensure power is off
-        if (!lift.isBusy() ||
-                Math.abs(lift.getCurrentPosition() - lift.getTargetPosition()) < Constants.APPROX_LIFT_POSE) {
-            lift.setPower(0);
+        int currentPosition = lift.getCurrentPosition();
+        int targetPosition = lift.getTargetPosition();
+
+        // If not actively moving (within tolerance of target)
+        if (!lift.isBusy() || Math.abs(currentPosition - targetPosition) < Constants.APPROX_LIFT_POSE) {
+            // Check if we're at a position that needs holding power
+            if (Math.abs(currentPosition - Constants.LIFT_HIGH) < Constants.APPROX_LIFT_POSE ||
+                    Math.abs(currentPosition - Constants.LIFT_LOW) < Constants.APPROX_LIFT_POSE) {
+                lift.setPower(Constants.LIFT_HOLD_POWER);
+            } else {
+                lift.setPower(0);
+            }
         }
     }
 
