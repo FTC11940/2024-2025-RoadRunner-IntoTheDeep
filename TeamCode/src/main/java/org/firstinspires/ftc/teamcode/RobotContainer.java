@@ -65,7 +65,9 @@ public class RobotContainer extends LinearOpMode {
 
         // While loop to keep the robot running
         while (opModeIsActive()) {
-
+            // Add at the start of your while loop in RobotContainer:
+            telemetry.addData("Right Trigger", String.format("%.2f", gamepad1.right_trigger));
+            telemetry.addData("Left Trigger", String.format("%.2f", gamepad1.left_trigger));
             /*
              * DRIVER INPUT MAPPING
              * Map methods (actions) from the subsystems to gamepad inputs
@@ -81,7 +83,10 @@ public class RobotContainer extends LinearOpMode {
 
             /* Set the intake arm to intake or release position*/
 
-            intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
+//            intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
+
+            // Fix?
+            double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
 
             if (gamepad1.a) {
                 intakeSub.setIntakeArm(ARM_POSE_DOWN);
@@ -92,10 +97,10 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad1.x) {
-                bucketSub.setBucket(BUCKET_DOWN);
+                bucketSub.setBucketDown();
             }
             if (gamepad1.y) {
-                bucketSub.setBucket(BUCKET_UP);
+                bucketSub.setBucketUp();
             }
 
             if (gamepad1.left_bumper) {
@@ -164,8 +169,14 @@ public class RobotContainer extends LinearOpMode {
 //                slidesSub.setSlidePose(SLIDE_POSE_OUT);
             }
 
-            /* Add telemetry for slide encoder */
-            telemetry.addData("Intake Wheel Power",intakeSub.intakeWheel.getPower());
+
+            /* Intake Wheel Power */
+            telemetry.addData("Intake Wheel Power", String.format("%.2f",
+                    intakeSub.intakeWheel.getPower()));
+
+            telemetry.addData("Intake Status", String.format("Wheel: %.2f, Arm: %s",
+                    intakeSub.intakeWheel.getPower(),
+                    intakeSub.getIntakeArmStatus().getDescription()));
 
             /* Add telemetry for intake arm status */
             telemetry.addData("Intake Arm", String.format("%s, (%.2f)",
@@ -186,6 +197,17 @@ public class RobotContainer extends LinearOpMode {
             /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
             telemetry.addData("Slide Touch",sensors.isSlideTouchPressed());
 
+//            telemetry.addData("Intake Power Method 1", intakeSub.getIntakeWheelPower());
+//            telemetry.addData("Intake Power Method 2", String.format("%.2f", intakeSub.getIntakeWheelPower()));
+//            telemetry.addData("Intake Power Method 3", intakeSub.intakeWheel.getPower());
+
+            // Also add this debug line
+            telemetry.addData("Intake Wheel Null Check", (intakeSub.intakeWheel != null) ? "Motor OK" : "Motor NULL");
+
+            telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
+            telemetry.addData("Actual Wheel Power", String.format("%.2f", intakeSub.getIntakeWheelPower()));
+            telemetry.addData("Triggers", String.format("R:%.2f L:%.2f",
+                    gamepad1.right_trigger, gamepad1.left_trigger));
 
             // Updates position of the lift motor periodically
             bucketSub.updateLift();

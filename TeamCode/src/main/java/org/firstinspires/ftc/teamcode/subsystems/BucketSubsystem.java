@@ -26,6 +26,7 @@ public class BucketSubsystem {
 
         public static final double LIFT_HOLD_POWER = 0.15;  // Power to maintain position
         public static final double LIFT_MOVING_POWER = 0.60; // Default power when moving
+        public static final double BUCKET_POSITION_TOLERANCE = 0.05;
 
     }
 
@@ -59,13 +60,14 @@ public class BucketSubsystem {
         bucketServo.setPosition(pose);
     }
 
-    /*
-    public void setLift(int pose) {
-        lift.setTargetPosition(pose);
-        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lift.setPower(0.60);
+    // Add methods to make bucket control more explicit
+    public void setBucketDown() {
+        setBucket(Constants.BUCKET_DOWN);
     }
-     */
+
+    public void setBucketUp() {
+        setBucket(Constants.BUCKET_UP);
+    }
 
     public void setLift(int pose, double power) {
         if (intakeSub.getIntakeArmStatus() != ARM_DOWN) {
@@ -136,11 +138,22 @@ public class BucketSubsystem {
         UNKNOWN
     }
 
+
     public BucketStatus getBucketStatus() {
-        double servoPosition = bucketServo.getPosition();
-        return servoPosition == Constants.BUCKET_DOWN ? BucketStatus.DOWN :
-                servoPosition == Constants.BUCKET_UP ? BucketStatus.UP :
-                        BucketStatus.UNKNOWN;
+        double currentPosition = bucketServo.getPosition();
+
+        // Check if position is within tolerance range of UP or DOWN positions
+        if (Math.abs(currentPosition - Constants.BUCKET_DOWN) <= Constants.BUCKET_POSITION_TOLERANCE) {
+            return BucketStatus.DOWN;
+        } else if (Math.abs(currentPosition - Constants.BUCKET_UP) <= Constants.BUCKET_POSITION_TOLERANCE) {
+            return BucketStatus.UP;
+        }
+        return BucketStatus.UNKNOWN;
+    }
+
+    // Add helper method to check if bucket is in a specific position
+    public boolean isBucketInPosition(double targetPosition) {
+        return Math.abs(bucketServo.getPosition() - targetPosition) <= Constants.BUCKET_POSITION_TOLERANCE;
     }
 
     public enum LiftStatus {

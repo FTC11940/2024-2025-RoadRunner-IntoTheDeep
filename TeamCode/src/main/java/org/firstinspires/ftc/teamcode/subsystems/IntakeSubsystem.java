@@ -47,13 +47,17 @@ public class IntakeSubsystem {
         }
     }
 
-    public void smartPowerIntakeWheel(double rightTrigger, double leftTrigger) {
+    public double smartPowerIntakeWheel(double rightTrigger, double leftTrigger) {
         double wheelPower = rightTrigger - leftTrigger;
 
         if (sensors.getSampleStatus() == Sensors.SampleStatus.SAMPLE_GRABBED && wheelPower > 0) {
             wheelPower *= Constants.POWER_REDUCTION;
         }
+
         intakeWheel.setPower(wheelPower);
+
+        // Return the actual power for telemetry
+        return intakeWheel.getPower();
     }
 
     public void groupIntakePosition() {
@@ -82,9 +86,10 @@ public class IntakeSubsystem {
         double currentPosition = intakeArm.getPosition();
         double tolerance = Constants.ARM_POSITION_TOLERANCE;
 
-        if (Math.abs(currentPosition - Constants.ARM_POSE_DOWN) <= tolerance * Constants.ARM_POSE_DOWN) {
+        // Use absolute tolerance instead of multiplying by target position
+        if (Math.abs(currentPosition - Constants.ARM_POSE_DOWN) <= tolerance) {
             return IntakeArmStatus.ARM_DOWN;
-        } else if (Math.abs(currentPosition - Constants.ARM_POSE_UP) <= tolerance * Constants.ARM_POSE_UP) {
+        } else if (Math.abs(currentPosition - Constants.ARM_POSE_UP) <= tolerance) {
             return IntakeArmStatus.ARM_UP;
         } else {
             return IntakeArmStatus.UNKNOWN;
@@ -100,4 +105,10 @@ public class IntakeSubsystem {
             setIntakeArm(Constants.ARM_POSE_UP);
         }
     }
+
+    public double getIntakeWheelPower() {
+        return intakeWheel.getPower();
+    }
+
+
 }
