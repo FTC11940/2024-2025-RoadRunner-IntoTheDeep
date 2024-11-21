@@ -60,14 +60,15 @@ public class RobotContainer extends LinearOpMode {
 
         /* Reset the motor encoder position after starting the OpMode */
         slidesSub.resetSlideEncoder();
-        climbSub.resetClimberEncoder();
-        // bucketSub.resetLiftEncoder();
+//        climbSub.resetClimberEncoder();
+        bucketSub.resetLiftEncoder();
 
         // While loop to keep the robot running
         while (opModeIsActive()) {
-            // Add at the start of your while loop in RobotContainer:
-            telemetry.addData("Right Trigger", String.format("%.2f", gamepad1.right_trigger));
-            telemetry.addData("Left Trigger", String.format("%.2f", gamepad1.left_trigger));
+
+            slidesSub.resetSlideEncoderOnTouch();
+
+
             /*
              * DRIVER INPUT MAPPING
              * Map methods (actions) from the subsystems to gamepad inputs
