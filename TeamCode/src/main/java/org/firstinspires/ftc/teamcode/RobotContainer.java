@@ -102,12 +102,12 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad1.left_bumper) {
-                slidesSub.setSlidePose(SLIDE_IN_POSE, 0.5);
+                slidesSub.setSlideIn();
             } else {
                 slidesSub.powerSlide(0);
 
             if (gamepad1.right_bumper) {
-                slidesSub.setSlidePose(SLIDE_OUT_POSE,0.75);
+                slidesSub.setSlideOut();
             } else {
                 slidesSub.powerSlide(0);
             }
