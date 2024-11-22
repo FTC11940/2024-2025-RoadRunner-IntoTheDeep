@@ -20,11 +20,15 @@ public class IntakeSubsystem {
 
         // Tolerances
         public static final double ARM_POSITION_TOLERANCE = 0.05;
+
+        // Safety Limits
+        public static final int LIFT_SAFE_THRESHOLD = 500;
     }
 
     public final Servo intakeArm;
     public final DcMotor intakeWheel;
     private final Sensors sensors;
+    private BucketSubsystem bucketSub; // Add reference to BucketSubsystem
 
     public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors) {
         intakeArm = hardwareMap.servo.get("intakeArm");
@@ -33,16 +37,38 @@ public class IntakeSubsystem {
         this.sensors = sensors;
     }
 
+    // Add method to set BucketSubsystem reference
+    public void setBucketSubsystem(BucketSubsystem bucketSub) {
+        this.bucketSub = bucketSub;
+    }
+
+    // Helper method to check if it's safe to move arm up
+    private boolean isSafeToMoveArmUp() {
+        if (bucketSub == null) {
+            return false; // If bucketSub not set, don't allow movement for safety
+        }
+
+        // Check if bucket is up or lift is too high
+        boolean bucketIsUp = bucketSub.getBucketStatus() == BucketSubsystem.BucketStatus.UP;
+        boolean liftTooHigh = bucketSub.lift.getCurrentPosition() > Constants.LIFT_SAFE_THRESHOLD;
+
+        return !bucketIsUp && !liftTooHigh;
+    }
+
     public void powerIntakeWheel(double power) {
         intakeWheel.setPower(power);
     }
 
     public void setIntakeArm(double position) {
+        // Only allow moving to up position if it's safe
+        if (position >= Constants.ARM_POSE_UP && !isSafeToMoveArmUp()) {
+            return; // Silently fail for now
+        }
         intakeArm.setPosition(position);
     }
 
     public void groupIntakeArmUp() {
-        if (intakeWheel.getPower() <= 0.05) {
+        if (intakeWheel.getPower() <= 0.05 && isSafeToMoveArmUp()) {
             intakeArm.setPosition(Constants.ARM_POSE_UP);
         }
     }
@@ -55,8 +81,6 @@ public class IntakeSubsystem {
         }
 
         intakeWheel.setPower(wheelPower);
-
-        // Return the actual power for telemetry
         return intakeWheel.getPower();
     }
 
@@ -66,8 +90,10 @@ public class IntakeSubsystem {
     }
 
     public void groupReleasePosition() {
-        intakeArm.setPosition(Constants.ARM_POSE_UP);
-        intakeWheel.setPower(Constants.WHEEL_RELEASE);
+        if (isSafeToMoveArmUp()) {
+            intakeArm.setPosition(Constants.ARM_POSE_UP);
+            intakeWheel.setPower(Constants.WHEEL_RELEASE);
+        }
     }
 
     public enum IntakeArmStatus {
@@ -86,7 +112,6 @@ public class IntakeSubsystem {
         double currentPosition = intakeArm.getPosition();
         double tolerance = Constants.ARM_POSITION_TOLERANCE;
 
-        // Use absolute tolerance instead of multiplying by target position
         if (Math.abs(currentPosition - Constants.ARM_POSE_DOWN) <= tolerance) {
             return IntakeArmStatus.ARM_DOWN;
         } else if (Math.abs(currentPosition - Constants.ARM_POSE_UP) <= tolerance) {
@@ -102,13 +127,13 @@ public class IntakeSubsystem {
             powerIntakeWheel(Constants.WHEEL_INTAKE);
         } else {
             powerIntakeWheel(0);
-            setIntakeArm(Constants.ARM_POSE_UP);
+            if (isSafeToMoveArmUp()) {
+                setIntakeArm(Constants.ARM_POSE_UP);
+            }
         }
     }
 
     public double getIntakeWheelPower() {
         return intakeWheel.getPower();
     }
-
-
 }

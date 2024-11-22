@@ -54,13 +54,14 @@ public class RobotContainer extends LinearOpMode {
 
         // Added by Claude
         bucketSub.setIntakeSubsystem(intakeSub);
+        intakeSub.setBucketSubsystem(bucketSub);
+
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
 
         /* Reset the motor encoder position after starting the OpMode */
         slidesSub.resetSlideEncoder();
-//        climbSub.resetClimberEncoder();
         bucketSub.resetLiftEncoder();
 
         // While loop to keep the robot running
@@ -82,11 +83,7 @@ public class RobotContainer extends LinearOpMode {
                     )
             );
 
-            /* Set the intake arm to intake or release position*/
 
-//            intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
-
-            // Fix?
             double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
 
             if (gamepad1.a) {
@@ -170,47 +167,31 @@ public class RobotContainer extends LinearOpMode {
 //                slidesSub.setSlidePose(SLIDE_POSE_OUT);
             }
 
+            telemetry.clearAll(); // Clear previous telemetry data
 
-            /* Intake Wheel Power */
-            telemetry.addData("Intake Wheel Power", String.format("%.2f",
-                    intakeSub.intakeWheel.getPower()));
-
+// Intake Subsystem
             telemetry.addData("Intake Status", String.format("Wheel: %.2f, Arm: %s",
-                    intakeSub.intakeWheel.getPower(),
-                    intakeSub.getIntakeArmStatus().getDescription()));
+                    intakeSub.intakeWheel.getPower(), intakeSub.getIntakeArmStatus().getDescription()));
 
-            /* Add telemetry for intake arm status */
-            telemetry.addData("Intake Arm", String.format("%s, (%.2f)",
-                    intakeSub.getIntakeArmStatus(), intakeSub.intakeArm.getPosition()));
-
-            /* Add telemetry for slide encoder */
-            telemetry.addData("Slide", String.format("%s, (%d)",
+// Slide Subsystem
+            telemetry.addData("Slide Status", String.format("%s, (%d)",
                     slidesSub.getSlideStatus(), slidesSub.slide.getCurrentPosition()));
+            telemetry.addData("Slide Touch Sensor", sensors.isSlideTouchPressed());
 
-            /* Add telemetry for climber encoder */
-            telemetry.addData("Bucket", String.format("%s, (%.2f)",
+// Bucket Subsystem
+            telemetry.addData("Bucket Status", String.format("%s, (%.2f)",
                     bucketSub.getBucketStatus(), bucketSub.bucketServo.getPosition()));
-
-            /* Add telemetry for lift encoder */
-            telemetry.addData("Lift", String.format("%s, (%d)",
+            telemetry.addData("Lift Status", String.format("%s, (%d)",
                     bucketSub.getLiftStatus(), bucketSub.lift.getCurrentPosition()));
 
-            /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
-            telemetry.addData("Slide Touch",sensors.isSlideTouchPressed());
-
-//            telemetry.addData("Intake Power Method 1", intakeSub.getIntakeWheelPower());
-//            telemetry.addData("Intake Power Method 2", String.format("%.2f", intakeSub.getIntakeWheelPower()));
-//            telemetry.addData("Intake Power Method 3", intakeSub.intakeWheel.getPower());
-
-            // Also add this debug line
-            telemetry.addData("Intake Wheel Null Check", (intakeSub.intakeWheel != null) ? "Motor OK" : "Motor NULL");
-
+// Other Data
             telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
-            telemetry.addData("Actual Wheel Power", String.format("%.2f", intakeSub.getIntakeWheelPower()));
-            telemetry.addData("Triggers", String.format("R:%.2f L:%.2f",
+            telemetry.addData("Triggers", String.format("R: %.2f, L: %.2f",
                     gamepad1.right_trigger, gamepad1.left_trigger));
 
-            // Updates position of the lift motor periodically
+            telemetry.update(); // Send telemetry data to DriverStation
+
+// Updates position of the lift motor periodically
             bucketSub.updateLift();
 
             telemetry.update();
