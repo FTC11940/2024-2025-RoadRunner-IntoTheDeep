@@ -6,7 +6,9 @@ import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constant
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_INTAKE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_RELEASE;
 import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.Constants.SLIDE_IN_POSE;
+import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.Constants.SLIDE_OUT_POSE;
 
+import org.firstinspires.ftc.teamcode.drive.RoadrunnerOneThreeDeads;
 import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
 
 import android.annotation.SuppressLint;
@@ -48,22 +50,27 @@ public class RobotContainer extends LinearOpMode {
         BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap, telemetry);
         IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
-        DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
+//        DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
+        RoadrunnerOneThreeDeads localizer = new RoadrunnerOneThreeDeads(hardwareMap, telemetry);
         ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
 
         // Added by Claude
         bucketSub.setIntakeSubsystem(intakeSub);
+        intakeSub.setBucketSubsystem(bucketSub);
+
 
         // Required to initialize the subsystems when starting the OpMode
         waitForStart();
 
         /* Reset the motor encoder position after starting the OpMode */
         slidesSub.resetSlideEncoder();
-        climbSub.resetClimberEncoder();
         bucketSub.resetLiftEncoder();
 
         // While loop to keep the robot running
         while (opModeIsActive()) {
+
+            slidesSub.resetSlideEncoderOnTouch();
+
 
             /*
              * DRIVER INPUT MAPPING
@@ -78,9 +85,8 @@ public class RobotContainer extends LinearOpMode {
                     )
             );
 
-            /* Set the intake arm to intake or release position*/
 
-            intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
+            double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
 
             if (gamepad1.a) {
                 intakeSub.setIntakeArm(ARM_POSE_DOWN);
@@ -91,20 +97,24 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad1.x) {
-                bucketSub.setBucket(BUCKET_DOWN);
+                bucketSub.setBucketDown();
             }
             if (gamepad1.y) {
-                bucketSub.setBucket(BUCKET_UP);
+                bucketSub.setBucketUp();
             }
 
             if (gamepad1.left_bumper) {
-                slidesSub.setSlidePose(SLIDE_IN_POSE);
-            } else if (gamepad1.right_bumper) {
-                slidesSub.powerSlide(0.5);
+                slidesSub.setSlideIn();
+            } else {
+                slidesSub.powerSlide(0);
+
+            if (gamepad1.right_bumper) {
+                slidesSub.setSlideOut();
             } else {
                 slidesSub.powerSlide(0);
             }
 
+            }
             // Use the right trigger to power the intake wheel (for picking up pieces)
             // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
 
@@ -159,30 +169,42 @@ public class RobotContainer extends LinearOpMode {
 //                slidesSub.setSlidePose(SLIDE_POSE_OUT);
             }
 
-            /* Add telemetry for slide encoder */
-            telemetry.addData("Intake Wheel Power",intakeSub.intakeWheel.getPower());
+            telemetry.clearAll(); // Clear previous telemetry data
 
-            /* Add telemetry for intake arm status */
-            telemetry.addData("Intake Arm", String.format("%s, (%.2f)",
-                    intakeSub.getIntakeArmStatus(), intakeSub.intakeArm.getPosition()));
+// Intake Subsystem
+            telemetry.addData("Intake Status", String.format("Wheel: %.2f, Arm: %s",
+                    intakeSub.intakeWheel.getPower(), intakeSub.getIntakeArmStatus().getDescription()));
 
-            /* Add telemetry for slide encoder */
-            telemetry.addData("Slide", String.format("%s, (%d)",
+// Slide Subsystem
+            telemetry.addData("Slide Status", String.format("%s, (%d)",
                     slidesSub.getSlideStatus(), slidesSub.slide.getCurrentPosition()));
+            telemetry.addData("Slide Touch Sensor", sensors.isSlideTouchPressed());
 
-            /* Add telemetry for climber encoder */
-            telemetry.addData("Bucket", String.format("%s, (%.2f)",
+// Bucket Subsystem
+            telemetry.addData("Bucket Status", String.format("%s, (%.2f)",
                     bucketSub.getBucketStatus(), bucketSub.bucketServo.getPosition()));
-
-            /* Add telemetry for lift encoder */
-            telemetry.addData("Lift", String.format("%s, (%d)",
+            telemetry.addData("Lift Status", String.format("%s, (%d)",
                     bucketSub.getLiftStatus(), bucketSub.lift.getCurrentPosition()));
 
-            /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
-            telemetry.addData("Slide Touch",sensors.isSlideTouchPressed());
+// Other Data
+            telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
+            telemetry.addData("Triggers", String.format("R: %.2f, L: %.2f",
+                    gamepad1.right_trigger, gamepad1.left_trigger));
 
+            telemetry.update(); // Send telemetry data to DriverStation
+
+
+            localizer.update();
+
+            // Updates position of the lift motor periodically
+
+// Updates position of the lift motor periodically
+
+            bucketSub.updateLift();
 
             telemetry.update();
+
+
 
         } // end of while loop
 
