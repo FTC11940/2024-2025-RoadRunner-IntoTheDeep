@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constant
 import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.Constants.SLIDE_IN_POSE;
 import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.Constants.SLIDE_OUT_POSE;
 
+import org.firstinspires.ftc.teamcode.drive.RoadrunnerOneThreeDeads;
 import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
 
 import android.annotation.SuppressLint;
@@ -49,7 +50,8 @@ public class RobotContainer extends LinearOpMode {
         BucketSubsystem bucketSub = new BucketSubsystem(hardwareMap, telemetry);
         IntakeSubsystem intakeSub = new IntakeSubsystem(hardwareMap, sensors);
         SlidesSubsystem slidesSub = new SlidesSubsystem(hardwareMap, sensors);
-        DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
+//        DriveSubsystem driveSub = new DriveSubsystem(hardwareMap);
+        RoadrunnerOneThreeDeads localizer = new RoadrunnerOneThreeDeads(hardwareMap, telemetry);
         ClimbSubsystem climbSub = new ClimbSubsystem(hardwareMap);
 
         // Added by Claude
@@ -186,6 +188,8 @@ public class RobotContainer extends LinearOpMode {
             /* Add telemetry for slide touch sensor to reset the encoder to zero when it touches */
             telemetry.addData("Slide Touch",sensors.isSlideTouchPressed());
 
+
+            localizer.update();
 
             // Updates position of the lift motor periodically
             bucketSub.updateLift();
