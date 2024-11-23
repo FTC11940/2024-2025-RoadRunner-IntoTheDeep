@@ -44,10 +44,15 @@ public class SlidesSubsystem {
         slide.setPower(power);
     }
 
-    public void setSlideOut(int position, double power) {
-        slide.setTargetPosition(position);
+    public void setSlideOut() {
+        slide.setTargetPosition(Constants.SLIDE_OUT_POSE);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slide.setPower(power);
+        slide.setPower(0.75);
+    }
+    public void setSlideIn() {
+        slide.setTargetPosition(Constants.SLIDE_IN_POSE);
+        slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slide.setPower(0.5);
     }
 
     public void powerSlide(double power) {
