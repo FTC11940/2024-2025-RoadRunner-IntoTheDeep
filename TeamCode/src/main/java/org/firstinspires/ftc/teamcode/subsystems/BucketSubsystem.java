@@ -14,7 +14,7 @@ public class BucketSubsystem {
 
     public static class Constants {
         public static final double BUCKET_DOWN = 0.90;
-        public static final double BUCKET_MID = 0.475;
+        public static final double BUCKET_MID = 0.575;
         public static final double BUCKET_UP = 0.15;
         public static final int LIFT_HIGH = 3000;
         public static final int LIFT_LOW = 1400;
