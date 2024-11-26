@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.IntakeArmStatus.ARM_DOWN;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.IntakeArmStatus.ARM_UP;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -56,7 +57,7 @@ public class BucketSubsystem {
             return false;
         }
 
-        boolean armIsUp = intakeSub.getIntakeArmStatus() == IntakeSubsystem.IntakeArmStatus.ARM_UP;
+        boolean armIsUp = intakeSub.getIntakeArmStatus() == ARM_UP;
 
         if (armIsUp) {
             telemetry.addData("Bucket Safety", "Cannot move bucket up while arm is up");
@@ -86,9 +87,32 @@ public class BucketSubsystem {
         }
     }
 
-    public void setLift(int pose, double power) {
+    public void setSimpleLift(int pose, double power) {
         // Can't move lift if arm isn't down
         if (intakeSub != null && intakeSub.getIntakeArmStatus() != ARM_DOWN) {
+            lift.setPower(0);
+            telemetry.addData("Lift Error", "Cannot move lift while arm is up");
+            telemetry.update();
+            return;
+        }
+
+        boolean needsHoldingPower = pose == Constants.LIFT_HIGH || pose == Constants.LIFT_LOW;
+
+        if (Math.abs(lift.getCurrentPosition() - pose) < Constants.APPROX_LIFT_POSE) {
+            lift.setPower(needsHoldingPower ? Constants.LIFT_HOLD_POWER : 0);
+            return;
+        }
+
+        lift.setTargetPosition(pose);
+        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lift.setPower(power);
+    }
+
+    public void setLift(int pose, double power) {
+        // Can't move lift if arm isn't down
+//        if (intakeSub != null && intakeSub.getIntakeArmStatus() != ARM_DOWN) {
+
+        if (intakeSub.getIntakeArmStatus() == ARM_UP) {
             lift.setPower(0);
             telemetry.addData("Lift Error", "Cannot move lift while arm is up");
             telemetry.update();
