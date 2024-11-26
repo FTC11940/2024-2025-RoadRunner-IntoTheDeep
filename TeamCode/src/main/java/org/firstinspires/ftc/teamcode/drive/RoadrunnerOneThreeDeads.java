@@ -41,6 +41,10 @@ public class RoadrunnerOneThreeDeads extends ThreeTrackingWheelLocalizer {
         perpEncoder.setDirection(Encoder.Direction.REVERSE);
     }
 
+    public RoadrunnerOneThreeDeads(HardwareMap hardwareMap, Telemetry telemetry) {
+        super();
+    }
+
     @NonNull
     @Override
     public List<Double> getWheelPositions() {

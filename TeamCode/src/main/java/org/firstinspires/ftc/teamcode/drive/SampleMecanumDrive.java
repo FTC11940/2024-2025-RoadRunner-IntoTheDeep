@@ -6,6 +6,8 @@ import com.acmerobotics.roadrunner.drive.MecanumDrive;
 import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
 import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.BaseTrajectoryBuilder;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -127,6 +129,13 @@ public class SampleMecanumDrive extends MecanumDrive {
     @Override
     protected double getRawExternalHeading() {
         return 0;
+    }
+
+    public <T> BaseTrajectoryBuilder<TrajectorySequenceRunner> trajectoryBuilder(Pose2d startPose) {
+        return null;
+    }
+
+    public void followTrajectory(Trajectory forwardTrajectory) {
     }
 
     // Note: You'll need to modify other methods like setMode(), setPIDFCoefficients()
