@@ -153,6 +153,8 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
                             )
                     );
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + mode);
             }
 
             if (lastKp != MOTOR_VELO_PID.p || lastKd != MOTOR_VELO_PID.d

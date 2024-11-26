@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
@@ -108,7 +109,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         );
     }
 
-    private void setMode(DcMotor.RunMode runMode) {
+    public void setMode(DcMotor.RunMode runMode) {
     }
 
     private void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior zeroPowerBehavior) {
@@ -136,6 +137,12 @@ public class SampleMecanumDrive extends MecanumDrive {
     }
 
     public void followTrajectory(Trajectory forwardTrajectory) {
+    }
+
+    public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients motorVeloPid) {
+    }
+
+    public void setWeightedDrivePower(Pose2d pose2d) {
     }
 
     // Note: You'll need to modify other methods like setMode(), setPIDFCoefficients()
