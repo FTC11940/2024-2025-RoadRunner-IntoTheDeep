@@ -100,6 +100,7 @@ public class IntakeSubsystem {
     public enum IntakeArmStatus {
         ARM_DOWN("Arm in down position"),
         ARM_UP("Arm in up position"),
+        ARM_MID("Arm in mid position"),
         UNKNOWN("Arm position unknown");
 
         private final String description;
@@ -117,6 +118,8 @@ public class IntakeSubsystem {
             return IntakeArmStatus.ARM_DOWN;
         } else if (Math.abs(currentPosition - Constants.ARM_POSE_UP) <= tolerance) {
             return IntakeArmStatus.ARM_UP;
+        } else if (Math.abs(currentPosition - Constants.ARM_POSE_MID) <= tolerance) {
+            return IntakeArmStatus.ARM_MID;
         } else {
             return IntakeArmStatus.UNKNOWN;
         }
