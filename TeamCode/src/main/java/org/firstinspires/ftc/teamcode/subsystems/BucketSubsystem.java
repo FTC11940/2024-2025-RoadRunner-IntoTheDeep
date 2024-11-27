@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.IntakeAr
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.IntakeArmStatus.ARM_UP;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -28,7 +29,7 @@ public class BucketSubsystem {
     }
 
     public final Servo bucketServo;
-    public final DcMotor lift;
+    public final DcMotorEx lift;
     private final Telemetry telemetry;
     private final ElapsedTime delayTimer = new ElapsedTime();
     private Sensors sensors;
@@ -39,7 +40,7 @@ public class BucketSubsystem {
         this.telemetry = telemetry;
 
         bucketServo = hardwareMap.get(Servo.class, "bucket");
-        lift = hardwareMap.get(DcMotor.class, "lift");
+        lift = hardwareMap.get(DcMotorEx.class, "lift");
 
         lift.setDirection(DcMotor.Direction.REVERSE);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

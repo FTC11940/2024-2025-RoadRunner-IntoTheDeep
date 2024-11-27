@@ -185,10 +185,15 @@ public class RobotContainer extends LinearOpMode {
             telemetry.addData("Slide Touch Sensor", sensors.isSlideTouchPressed());
 
 // Bucket Subsystem
+            telemetry.addLine("--- BUCKET SUBSYSTEM ---");
+
             telemetry.addData("Bucket Status", String.format("%s, (%.2f)",
                     bucketSub.getBucketStatus(), bucketSub.bucketServo.getPosition()));
             telemetry.addData("Lift Status", String.format("%s, (%d)",
                     bucketSub.getLiftStatus(), bucketSub.lift.getCurrentPosition()));
+            // New telemetry for lift motor amp draw
+            telemetry.addData("Lift Motor Power", String.format("%.2f A",
+                    bucketSub.lift.getPower()));
 
 // Other Data
             telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
