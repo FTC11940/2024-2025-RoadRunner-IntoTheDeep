@@ -12,6 +12,7 @@ public class IntakeSubsystem {
         // Servo Positions
         public static final double ARM_POSE_DOWN = 0.20;
         public static final double ARM_POSE_UP = 0.75;
+        public static final double ARM_POSE_MID = 0.475;
 
         // Motor Powers
         public static final double WHEEL_INTAKE = 1.0;

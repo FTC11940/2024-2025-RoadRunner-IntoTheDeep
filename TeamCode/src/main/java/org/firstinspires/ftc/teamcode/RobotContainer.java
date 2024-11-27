@@ -1,26 +1,25 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.Constants.BUCKET_DOWN;
+import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.Constants.BUCKET_MID;
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.Constants.BUCKET_UP;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.ARM_POSE_DOWN;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.ARM_POSE_MID;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.ARM_POSE_UP;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_INTAKE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_RELEASE;
-import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.Constants.SLIDE_IN_POSE;
-import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.Constants.SLIDE_OUT_POSE;
-
-import org.firstinspires.ftc.teamcode.drive.RoadrunnerOneThreeDeads;
-import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
 
 import android.annotation.SuppressLint;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.drive.RoadrunnerOneThreeDeads;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
@@ -93,14 +92,14 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad1.b) {
-                intakeSub.groupIntakeArmUp();
+                intakeSub.setIntakeArm(ARM_POSE_MID);
             }
 
-            if (gamepad1.x) {
+            /*if (gamepad1.x) {
                 bucketSub.setBucketDown();
-            }
+            }*/
             if (gamepad1.y) {
-                bucketSub.setBucketUp();
+                intakeSub.setIntakeArm(ARM_POSE_UP);
             }
 
             if (gamepad1.left_bumper) {
@@ -118,7 +117,7 @@ public class RobotContainer extends LinearOpMode {
             // Use the right trigger to power the intake wheel (for picking up pieces)
             // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
 
-            if (gamepad1.dpad_right) {
+            /*if (gamepad1.dpad_right) {
                 bucketSub.setLiftHigh();
             }
             if (gamepad1.dpad_left) {
@@ -126,7 +125,7 @@ public class RobotContainer extends LinearOpMode {
             }
             if (gamepad1.dpad_down) {
                 bucketSub.setLiftDown();
-            }
+            }*\
 
             /*
              * OPERATOR INPUT MAPPING
@@ -137,16 +136,21 @@ public class RobotContainer extends LinearOpMode {
             if (gamepad2.a) {
                 bucketSub.setBucket(BUCKET_DOWN);
             }
-            if (gamepad2.b) {
+            if (gamepad2.y) {
                 bucketSub.setBucket(BUCKET_UP);
+            }
+            if (gamepad2.b) {
+                bucketSub.setBucket(BUCKET_MID);
             }
 
             if (gamepad2.dpad_up) {
-//                climbSub.setClimber(Constants.CLIMB_UP);
-            } else if (gamepad2.dpad_down) {
-//                climbSub.setClimber(climbSub.CLIMB_DOWN);
-            } else {
-//                climbSub.setClimber(0);
+                bucketSub.setLiftHigh();
+            }
+            if (gamepad2.dpad_left) {
+                bucketSub.setLiftLow();
+            }
+            if (gamepad2.dpad_down) {
+                bucketSub.setLiftDown();
             }
 
             /* Use the right bumper to Power Intake Wheel (for picking up pieces)

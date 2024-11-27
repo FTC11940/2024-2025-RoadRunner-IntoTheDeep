@@ -81,11 +81,11 @@ public class RoadrunnerOneThreeDeads extends ThreeTrackingWheelLocalizer {
         super.update();
 
         // Add telemetry for encoder positions
-        telemetry.addData("Left Encoder", leftEncoder.getCurrentPosition());
-        telemetry.addData("Right Encoder", rightEncoder.getCurrentPosition());
-        telemetry.addData("Perp Encoder", perpEncoder.getCurrentPosition());
+//        telemetry.addData("Left Encoder", leftEncoder.getCurrentPosition());
+//        telemetry.addData("Right Encoder", rightEncoder.getCurrentPosition());
+//        telemetry.addData("Perp Encoder", perpEncoder.getCurrentPosition());
 
-        telemetry.update(); // Send telemetry data to Driver Station
+//        telemetry.update(); // Send telemetry data to Driver Station
     }
 
     public double encoderTicksToInches(double ticks) {
