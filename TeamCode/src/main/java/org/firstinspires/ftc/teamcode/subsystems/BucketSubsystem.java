@@ -177,6 +177,7 @@ public class BucketSubsystem {
 
     public enum BucketStatus {
         DOWN("Bucket down"),
+        MID("Bucket mid position"),
         UP("Bucket up"),
         UNKNOWN("Position unknown");
 
@@ -192,6 +193,8 @@ public class BucketSubsystem {
 
         if (Math.abs(currentPosition - Constants.BUCKET_DOWN) <= Constants.BUCKET_POSITION_TOLERANCE) {
             return BucketStatus.DOWN;
+        } else if (Math.abs(currentPosition - Constants.BUCKET_MID) <= Constants.BUCKET_POSITION_TOLERANCE) {
+            return BucketStatus.MID;
         } else if (Math.abs(currentPosition - Constants.BUCKET_UP) <= Constants.BUCKET_POSITION_TOLERANCE) {
             return BucketStatus.UP;
         }
