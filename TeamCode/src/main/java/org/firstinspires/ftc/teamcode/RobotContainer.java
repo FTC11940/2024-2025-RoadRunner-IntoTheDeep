@@ -96,7 +96,6 @@ public class RobotContainer extends LinearOpMode {
             }
 
             /*if (gamepad1.x) {
-                bucketSub.setBucketDown();
             }*/
             if (gamepad1.y) {
                 intakeSub.setIntakeArm(ARM_POSE_UP);
@@ -114,18 +113,6 @@ public class RobotContainer extends LinearOpMode {
             }
 
             }
-            // Use the right trigger to power the intake wheel (for picking up pieces)
-            // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
-
-            /*if (gamepad1.dpad_right) {
-                bucketSub.setLiftHigh();
-            }
-            if (gamepad1.dpad_left) {
-                bucketSub.setLiftLow();
-            }
-            if (gamepad1.dpad_down) {
-                bucketSub.setLiftDown();
-            }*\
 
             /*
              * OPERATOR INPUT MAPPING
@@ -148,6 +135,9 @@ public class RobotContainer extends LinearOpMode {
             }
             if (gamepad2.dpad_left) {
                 bucketSub.setLiftLow();
+            }
+            if (gamepad2.back) {
+                bucketSub.tareLift();
             }
             if (gamepad2.dpad_down) {
                 bucketSub.setLiftDown();
@@ -175,30 +165,32 @@ public class RobotContainer extends LinearOpMode {
 
             telemetry.clearAll(); // Clear previous telemetry data
 
-// Intake Subsystem
-            telemetry.addData("Intake Status", String.format("Wheel: %.2f, Arm: %s",
-                    intakeSub.intakeWheel.getPower(), intakeSub.getIntakeArmStatus().getDescription()));
+            // Intake Subsystem
+            telemetry.addLine("--- INTAKE ---");
+            telemetry.addData("Wheel Power", String.format("%.2f", intakeSub.intakeWheel.getPower()));
+            telemetry.addData("", intakeSub.getIntakeArmStatus().getDescription());
+            telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
+            telemetry.addData("Triggers", String.format("R: %.2f, L: %.2f",
+                    gamepad1.right_trigger, gamepad1.left_trigger));
 
-// Slide Subsystem
-            telemetry.addData("Slide Status", String.format("%s, (%d)",
+            // Slide Subsystem
+            telemetry.addLine("--- SLIDE ---");
+            telemetry.addData("Slide", String.format("%s, (%d)",
                     slidesSub.getSlideStatus(), slidesSub.slide.getCurrentPosition()));
             telemetry.addData("Slide Touch Sensor", sensors.isSlideTouchPressed());
 
-// Bucket Subsystem
-            telemetry.addLine("--- BUCKET SUBSYSTEM ---");
+            // Bucket Subsystem
+            telemetry.addLine("--- BUCKET ---");
 
             telemetry.addData("Bucket Status", String.format("%s, (%.2f)",
                     bucketSub.getBucketStatus(), bucketSub.bucketServo.getPosition()));
             telemetry.addData("Lift Status", String.format("%s, (%d)",
                     bucketSub.getLiftStatus(), bucketSub.lift.getCurrentPosition()));
-            // New telemetry for lift motor amp draw
             telemetry.addData("Lift Motor Power", String.format("%.2f A",
                     bucketSub.lift.getPower()));
 
-// Other Data
-            telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
-            telemetry.addData("Triggers", String.format("R: %.2f, L: %.2f",
-                    gamepad1.right_trigger, gamepad1.left_trigger));
+            // Other Data
+
 
             telemetry.update(); // Send telemetry data to DriverStation
 
@@ -206,8 +198,6 @@ public class RobotContainer extends LinearOpMode {
             localizer.update();
 
             // Updates position of the lift motor periodically
-
-// Updates position of the lift motor periodically
 
             bucketSub.updateLift();
 

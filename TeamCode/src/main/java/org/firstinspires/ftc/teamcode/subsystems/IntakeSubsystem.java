@@ -98,10 +98,10 @@ public class IntakeSubsystem {
     }
 
     public enum IntakeArmStatus {
-        ARM_DOWN("Arm in down position"),
-        ARM_UP("Arm in up position"),
-        ARM_MID("Arm in mid position"),
-        UNKNOWN("Arm position unknown");
+        ARM_DOWN("Arm is DOWN"),
+        ARM_UP("Arm is UP"),
+        ARM_MID("Arm is MID"),
+        UNKNOWN("Arm position Unknown");
 
         private final String description;
         IntakeArmStatus(String description) {
