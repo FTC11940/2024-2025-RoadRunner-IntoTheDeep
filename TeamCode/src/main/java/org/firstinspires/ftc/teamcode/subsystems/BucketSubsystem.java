@@ -190,9 +190,6 @@ public class BucketSubsystem {
                     Math.abs(currentPosition - Constants.LIFT_LOW) < Constants.APPROX_LIFT_POSE) {
                 // Hold position for HIGH and LOW positions
                 lift.setPower(Constants.LIFT_HOLD_POWER);
-             } else if (Math.abs(currentPosition) < 300) {
-                // Stop motor when at DOWN position
-                 lift.setPower(0);
             } else {
                 lift.setPower(0);
             }
@@ -214,6 +211,26 @@ public class BucketSubsystem {
     public void setLiftDown() {
         if (isSafeToBucketUp()) {
             setLift(Constants.LIFT_DOWN,0.80);
+            // After reaching down position, ensure motor is stopped
+            if (Math.abs(lift.getCurrentPosition()) < Constants.APPROX_LIFT_POSE) {
+                lift.setPower(0);
+            }
+        }
+    }
+
+    public void moveLiftUp() {
+        if (isSafeToBucketUp()) {
+            int currentPosition = lift.getCurrentPosition();
+            setLift(currentPosition + 50, 0.60);
+        }
+    }
+
+    public void moveLiftDown() {
+        if (isSafeToBucketUp()) {
+            int currentPosition = lift.getCurrentPosition();
+            setLift(currentPosition - 50, 0.60);
+        } else{
+            lift.setPower(0); // Set power to 0 when not in use
         }
     }
 

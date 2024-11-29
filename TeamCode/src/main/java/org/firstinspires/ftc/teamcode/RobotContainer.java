@@ -85,7 +85,7 @@ public class RobotContainer extends LinearOpMode {
             );
 
 
-            double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
+            double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger,gamepad1.left_trigger);
 
             if (gamepad1.a) {
                 intakeSub.setIntakeArm(ARM_POSE_DOWN);
@@ -106,11 +106,11 @@ public class RobotContainer extends LinearOpMode {
             } else {
                 slidesSub.powerSlide(0);
 
-            if (gamepad1.right_bumper) {
-                slidesSub.setSlideOut();
-            } else {
-                slidesSub.powerSlide(0);
-            }
+                if (gamepad1.right_bumper) {
+                    slidesSub.setSlideOut();
+                } else {
+                    slidesSub.powerSlide(0);
+                }
 
             }
 
@@ -130,17 +130,25 @@ public class RobotContainer extends LinearOpMode {
                 bucketSub.setBucket(BUCKET_MID);
             }
 
+            // Lift Functions
+            /* Bind cammands related to the bucketSub (BucketSubstem) to the gamepad buttons
+             The dpad_up should move the lift up increments of 50 encoder ticks and set to hold power,
+             the dpad_down should move the lift down increments of 50 encoder ticks and set power to zero,
+             the dpad_left should move the lift to the low basket position with holding power after reaching the pose,
+             the dpad_right should move the lift to the high basket position with holding power after reaching the pose*/
+
             if (gamepad2.dpad_up) {
-                bucketSub.setLiftHigh();
-            }
-            if (gamepad2.dpad_left) {
+                bucketSub.moveLiftUp();
+            } else if (gamepad2.dpad_left) {
                 bucketSub.setLiftLow();
+            } else if (gamepad2.dpad_right) {
+                bucketSub.setLiftHigh();
+            } else if (gamepad2.dpad_down) { // Changed to else if
+                bucketSub.moveLiftDown();
             }
+
             if (gamepad2.back) {
                 bucketSub.tareLift();
-            }
-            if (gamepad2.dpad_down) {
-                bucketSub.setLiftDown();
             }
 
             /* Use the right bumper to Power Intake Wheel (for picking up pieces)
