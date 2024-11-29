@@ -62,51 +62,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private VoltageSensor batteryVoltageSensor;
 
     public SampleMecanumDrive(HardwareMap hardwareMap) {
-        super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
-        follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
-
-        LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
-
-        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
-
-        for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
-            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
-        }
-
-        // IMU initialization
-        imu = hardwareMap.get(IMU.class, "imu");
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                LOGO_FACING_DIR, USB_FACING_DIR));
-        imu.initialize(parameters);
-
-        // Motor initialization
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftBack");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightBack");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
-
-        // Motor directions
-        leftFront.setDirection(DcMotorEx.Direction.REVERSE);
-        leftRear.setDirection(DcMotorEx.Direction.REVERSE);
-
-        motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
-
-        // Set Run Mode to RUN_WITHOUT_ENCODER
-        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // Set Zero Power Behavior
-        setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        // Removed encoder-specific PIDF configuration
-
-        trajectorySequenceRunner = new TrajectorySequenceRunner(
-                follower, HEADING_PID, batteryVoltageSensor,
-                // Removed encoder position and velocity tracking
-                new ArrayList<>(), new ArrayList<>(),
-                new ArrayList<>(), new ArrayList<>()
-        );
     }
 
     public void setMode(DcMotor.RunMode runMode) {
