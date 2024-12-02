@@ -18,7 +18,7 @@ public class DriveConstants {
     /*
      * Motor constants for GoBuilda 5203 motors
      */
-    public static final double TICKS_PER_REV = 28; // Core Hex Motor encoder ticks
+    public static final double TICKS_PER_REV = 383.6 ; //
     public static final double MAX_RPM = 312; // Free run speed of GoBuilda 5203 motors
 
     /*
