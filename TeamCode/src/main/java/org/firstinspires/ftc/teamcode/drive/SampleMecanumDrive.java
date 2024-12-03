@@ -7,7 +7,6 @@ import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
 import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.BaseTrajectoryBuilder;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.hardware.lynx.LynxModule;
@@ -19,6 +18,8 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
 import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
 
@@ -136,13 +137,17 @@ public class SampleMecanumDrive extends MecanumDrive {
         return null;
     }
 
-    public void followTrajectory(Trajectory forwardTrajectory) {
+    public void followTrajectory(TrajectorySequence forwardTrajectory) {
     }
 
     public void setPIDFCoefficients(DcMotor.RunMode runMode, PIDFCoefficients motorVeloPid) {
     }
 
     public void setWeightedDrivePower(Pose2d pose2d) {
+    }
+
+    public TrajectorySequenceBuilder trajectorySequenceBuilder(Pose2d startPose) {
+        return null;
     }
 
     // Note: You'll need to modify other methods like setMode(), setPIDFCoefficients()
