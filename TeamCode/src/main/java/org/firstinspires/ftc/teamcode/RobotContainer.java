@@ -152,7 +152,7 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad2.start) {
-                climbSub.powerClimber(0.5);
+                climbSub.powerClimber(1);
                 } else {
                 climbSub.stopClimber();
             }
