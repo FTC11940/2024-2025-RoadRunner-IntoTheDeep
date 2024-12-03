@@ -151,6 +151,11 @@ public class RobotContainer extends LinearOpMode {
                 bucketSub.tareLift();
             }
 
+            if (gamepad2.start) {
+                climbSub.powerClimber(0.5);
+                } else {
+                climbSub.stopClimber();
+            }
             /* Use the right bumper to Power Intake Wheel (for picking up pieces)
              * Use the left bumper to reverse Power Intake Wheel (for dropping pieces into the bucket) */
 
