@@ -1,26 +1,25 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.Constants.BUCKET_DOWN;
+import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.Constants.BUCKET_MID;
 import static org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem.Constants.BUCKET_UP;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.ARM_POSE_DOWN;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.ARM_POSE_MID;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.ARM_POSE_UP;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_INTAKE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_RELEASE;
-import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.Constants.SLIDE_IN_POSE;
-import static org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem.Constants.SLIDE_OUT_POSE;
-
-import org.firstinspires.ftc.teamcode.drive.RoadrunnerOneThreeDeads;
-import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
 
 import android.annotation.SuppressLint;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.drive.RoadrunnerOneThreeDeads;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
+import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
@@ -86,21 +85,20 @@ public class RobotContainer extends LinearOpMode {
             );
 
 
-            double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger, gamepad1.left_trigger);
+            double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger,gamepad1.left_trigger);
 
             if (gamepad1.a) {
                 intakeSub.setIntakeArm(ARM_POSE_DOWN);
             }
 
             if (gamepad1.b) {
-                intakeSub.groupIntakeArmUp();
+                intakeSub.setIntakeArm(ARM_POSE_MID);
             }
 
-            if (gamepad1.x) {
-                bucketSub.setBucketDown();
-            }
+            /*if (gamepad1.x) {
+            }*/
             if (gamepad1.y) {
-                bucketSub.setBucketUp();
+                intakeSub.setIntakeArm(ARM_POSE_UP);
             }
 
             if (gamepad1.left_bumper) {
@@ -108,24 +106,12 @@ public class RobotContainer extends LinearOpMode {
             } else {
                 slidesSub.powerSlide(0);
 
-            if (gamepad1.right_bumper) {
-                slidesSub.setSlideOut();
-            } else {
-                slidesSub.powerSlide(0);
-            }
+                if (gamepad1.right_bumper) {
+                    slidesSub.setSlideOut();
+                } else {
+                    slidesSub.powerSlide(0);
+                }
 
-            }
-            // Use the right trigger to power the intake wheel (for picking up pieces)
-            // Use the left trigger to reverse the intake wheel (for dropping pieces into the bucket)
-
-            if (gamepad1.dpad_right) {
-                bucketSub.setLiftHigh();
-            }
-            if (gamepad1.dpad_left) {
-                bucketSub.setLiftLow();
-            }
-            if (gamepad1.dpad_down) {
-                bucketSub.setLiftDown();
             }
 
             /*
@@ -137,18 +123,39 @@ public class RobotContainer extends LinearOpMode {
             if (gamepad2.a) {
                 bucketSub.setBucket(BUCKET_DOWN);
             }
-            if (gamepad2.b) {
+            if (gamepad2.y) {
                 bucketSub.setBucket(BUCKET_UP);
             }
-
-            if (gamepad2.dpad_up) {
-//                climbSub.setClimber(Constants.CLIMB_UP);
-            } else if (gamepad2.dpad_down) {
-//                climbSub.setClimber(climbSub.CLIMB_DOWN);
-            } else {
-//                climbSub.setClimber(0);
+            if (gamepad2.b) {
+                bucketSub.setBucket(BUCKET_MID);
             }
 
+            // Lift Functions
+            /* Bind cammands related to the bucketSub (BucketSubstem) to the gamepad buttons
+             The dpad_up should move the lift up increments of 50 encoder ticks and set to hold power,
+             the dpad_down should move the lift down increments of 50 encoder ticks and set power to zero,
+             the dpad_left should move the lift to the low basket position with holding power after reaching the pose,
+             the dpad_right should move the lift to the high basket position with holding power after reaching the pose*/
+
+            if (gamepad2.dpad_up) {
+                bucketSub.moveLiftUp();
+            } else if (gamepad2.dpad_left) {
+                bucketSub.setLiftLow();
+            } else if (gamepad2.dpad_right) {
+                bucketSub.setLiftHigh();
+            } else if (gamepad2.dpad_down) { // Changed to else if
+                bucketSub.moveLiftDown();
+            }
+
+            if (gamepad2.back) {
+                bucketSub.tareLift();
+            }
+
+            if (gamepad2.start) {
+                climbSub.powerClimber(1);
+                } else {
+                climbSub.stopClimber();
+            }
             /* Use the right bumper to Power Intake Wheel (for picking up pieces)
              * Use the left bumper to reverse Power Intake Wheel (for dropping pieces into the bucket) */
 
@@ -171,25 +178,32 @@ public class RobotContainer extends LinearOpMode {
 
             telemetry.clearAll(); // Clear previous telemetry data
 
-// Intake Subsystem
-            telemetry.addData("Intake Status", String.format("Wheel: %.2f, Arm: %s",
-                    intakeSub.intakeWheel.getPower(), intakeSub.getIntakeArmStatus().getDescription()));
+            // Intake Subsystem
+            telemetry.addLine("--- INTAKE ---");
+            telemetry.addData("Wheel Power", String.format("%.2f", intakeSub.intakeWheel.getPower()));
+            telemetry.addData("", intakeSub.getIntakeArmStatus().getDescription());
+            telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
+            telemetry.addData("Triggers", String.format("R: %.2f, L: %.2f",
+                    gamepad1.right_trigger, gamepad1.left_trigger));
 
-// Slide Subsystem
-            telemetry.addData("Slide Status", String.format("%s, (%d)",
+            // Slide Subsystem
+            telemetry.addLine("--- SLIDE ---");
+            telemetry.addData("Slide", String.format("%s, (%d)",
                     slidesSub.getSlideStatus(), slidesSub.slide.getCurrentPosition()));
             telemetry.addData("Slide Touch Sensor", sensors.isSlideTouchPressed());
 
-// Bucket Subsystem
+            // Bucket Subsystem
+            telemetry.addLine("--- BUCKET ---");
+
             telemetry.addData("Bucket Status", String.format("%s, (%.2f)",
                     bucketSub.getBucketStatus(), bucketSub.bucketServo.getPosition()));
             telemetry.addData("Lift Status", String.format("%s, (%d)",
                     bucketSub.getLiftStatus(), bucketSub.lift.getCurrentPosition()));
+            telemetry.addData("Lift Motor Power", String.format("%.2f A",
+                    bucketSub.lift.getPower()));
 
-// Other Data
-            telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
-            telemetry.addData("Triggers", String.format("R: %.2f, L: %.2f",
-                    gamepad1.right_trigger, gamepad1.left_trigger));
+            // Other Data
+
 
             telemetry.update(); // Send telemetry data to DriverStation
 
@@ -197,8 +211,6 @@ public class RobotContainer extends LinearOpMode {
             localizer.update();
 
             // Updates position of the lift motor periodically
-
-// Updates position of the lift motor periodically
 
             bucketSub.updateLift();
 

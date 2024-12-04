@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.IntakeArmStatus.ARM_DOWN;
+import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.IntakeArmStatus.ARM_UP;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -12,50 +14,87 @@ import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
 public class BucketSubsystem {
 
+    // Constants
     public static class Constants {
+        // Bucket positions
         public static final double BUCKET_DOWN = 0.90;
+        public static final double BUCKET_MID = 0.575;
         public static final double BUCKET_UP = 0.15;
+        public static final double BUCKET_POSITION_TOLERANCE = 0.05;
+
+        // Lift positions
         public static final int LIFT_HIGH = 3000;
         public static final int LIFT_LOW = 1400;
         public static final int LIFT_DOWN = 0;
         public static final double LIFT_TOLERANCE = 0.03;
         public static final double APPROX_LIFT_POSE = 10;
+
+        // Lift powers
         public static final double LIFT_HOLD_POWER = 0.15;
         public static final double LIFT_MOVING_POWER = 0.60;
-        public static final double BUCKET_POSITION_TOLERANCE = 0.05;
     }
 
+    // Hardware
     public final Servo bucketServo;
-    public final DcMotor lift;
+    public final DcMotorEx lift;
     private final Telemetry telemetry;
     private final ElapsedTime delayTimer = new ElapsedTime();
     private Sensors sensors;
     private IntakeSubsystem intakeSub;
 
+    // Enums
+    public enum BucketStatus {
+        DOWN("Bucket down"),
+        MID("Bucket mid position"), 
+        UP("Bucket up"),
+        UNKNOWN("Position unknown");
+
+        private final String description;
+        BucketStatus(String description) {
+            this.description = description;
+        }
+        public String getDescription() { return description; }
+    }
+
+    public enum LiftStatus {
+        HIGH_BASKET("High basket position"),
+        LOW_BASKET("Low basket position"),
+        DOWN("Down position"),
+        UNKNOWN("Position unknown");
+
+        private final String description;
+        LiftStatus(String description) {
+            this.description = description;
+        }
+        public String getDescription() { return description; }
+    }
+
+    // Constructor
     public BucketSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
         this.sensors = new Sensors(hardwareMap);
         this.telemetry = telemetry;
 
         bucketServo = hardwareMap.get(Servo.class, "bucket");
-        lift = hardwareMap.get(DcMotor.class, "lift");
+        lift = hardwareMap.get(DcMotorEx.class, "lift");
 
         lift.setDirection(DcMotor.Direction.REVERSE);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
+    // Subsystem connections
     public void setIntakeSubsystem(IntakeSubsystem intakeSub) {
         this.intakeSub = intakeSub;
     }
 
-    // Helper method to check if it's safe to move bucket up
+    // Bucket methods
     private boolean isSafeToBucketUp() {
         if (intakeSub == null) {
             telemetry.addData("Bucket Safety", "Cannot verify safety - intake subsystem not connected");
             return false;
         }
 
-        boolean armIsUp = intakeSub.getIntakeArmStatus() == IntakeSubsystem.IntakeArmStatus.ARM_UP;
+        boolean armIsUp = intakeSub.getIntakeArmStatus() == ARM_UP;
 
         if (armIsUp) {
             telemetry.addData("Bucket Safety", "Cannot move bucket up while arm is up");
@@ -66,7 +105,6 @@ public class BucketSubsystem {
     }
 
     public void setBucket(double pose) {
-        // If trying to move bucket up and it's not safe, don't move
         if (Math.abs(pose - Constants.BUCKET_UP) < Constants.BUCKET_POSITION_TOLERANCE) {
             if (!isSafeToBucketUp()) {
                 return;
@@ -85,9 +123,46 @@ public class BucketSubsystem {
         }
     }
 
-    public void setLift(int pose, double power) {
-        // Can't move lift if arm isn't down
+    public BucketStatus getBucketStatus() {
+        double currentPosition = bucketServo.getPosition();
+
+        if (Math.abs(currentPosition - Constants.BUCKET_DOWN) <= Constants.BUCKET_POSITION_TOLERANCE) {
+            return BucketStatus.DOWN;
+        } else if (Math.abs(currentPosition - Constants.BUCKET_MID) <= Constants.BUCKET_POSITION_TOLERANCE) {
+            return BucketStatus.MID;
+        } else if (Math.abs(currentPosition - Constants.BUCKET_UP) <= Constants.BUCKET_POSITION_TOLERANCE) {
+            return BucketStatus.UP;
+        }
+        return BucketStatus.UNKNOWN;
+    }
+
+    public boolean isBucketInPosition(double targetPosition) {
+        return Math.abs(bucketServo.getPosition() - targetPosition) <= Constants.BUCKET_POSITION_TOLERANCE;
+    }
+
+    // Lift methods
+    public void setSimpleLift(int pose, double power) {
         if (intakeSub != null && intakeSub.getIntakeArmStatus() != ARM_DOWN) {
+            lift.setPower(0);
+            telemetry.addData("Lift Error", "Cannot move lift while arm is up");
+            telemetry.update();
+            return;
+        }
+
+        boolean needsHoldingPower = pose == Constants.LIFT_HIGH || pose == Constants.LIFT_LOW;
+
+        if (Math.abs(lift.getCurrentPosition() - pose) < Constants.APPROX_LIFT_POSE) {
+            lift.setPower(needsHoldingPower ? Constants.LIFT_HOLD_POWER : 0);
+            return;
+        }
+
+        lift.setTargetPosition(pose);
+        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lift.setPower(power);
+    }
+
+    public void setLift(int pose, double power) {
+        if (intakeSub.getIntakeArmStatus() == ARM_UP) {
             lift.setPower(0);
             telemetry.addData("Lift Error", "Cannot move lift while arm is up");
             telemetry.update();
@@ -113,6 +188,7 @@ public class BucketSubsystem {
         if (!lift.isBusy() || Math.abs(currentPosition - targetPosition) < Constants.APPROX_LIFT_POSE) {
             if (Math.abs(currentPosition - Constants.LIFT_HIGH) < Constants.APPROX_LIFT_POSE ||
                     Math.abs(currentPosition - Constants.LIFT_LOW) < Constants.APPROX_LIFT_POSE) {
+                // Hold position for HIGH and LOW positions
                 lift.setPower(Constants.LIFT_HOLD_POWER);
             } else {
                 lift.setPower(0);
@@ -133,60 +209,40 @@ public class BucketSubsystem {
     }
 
     public void setLiftDown() {
-        setLift(Constants.LIFT_DOWN, 0.80);
+        if (isSafeToBucketUp()) {
+            setLift(Constants.LIFT_DOWN,0.80);
+            // After reaching down position, ensure motor is stopped
+            if (Math.abs(lift.getCurrentPosition()) < Constants.APPROX_LIFT_POSE) {
+                lift.setPower(0);
+            }
+        }
+    }
+
+    public void moveLiftUp() {
+        if (isSafeToBucketUp()) {
+            int currentPosition = lift.getCurrentPosition();
+            setLift(currentPosition + 50, 0.60);
+        }
+    }
+
+    public void moveLiftDown() {
+        if (isSafeToBucketUp()) {
+            int currentPosition = lift.getCurrentPosition();
+            setLift(currentPosition - 50, 0.80);
+        } else{
+            lift.setPower(0); // Set power to 0 when not in use
+        }
+    }
+
+    public void tareLift() {
+        resetLiftEncoder();
+        lift.setPower(0);
     }
 
     public void resetLiftEncoder() {
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleepy(0.1);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
-    private void sleepy(double seconds) {
-        delayTimer.reset();
-        while (delayTimer.seconds() < seconds) {
-            // Wait
-        }
-    }
-
-    public enum BucketStatus {
-        DOWN("Bucket down"),
-        UP("Bucket up"),
-        UNKNOWN("Position unknown");
-
-        private final String description;
-        BucketStatus(String description) {
-            this.description = description;
-        }
-        public String getDescription() { return description; }
-    }
-
-    public BucketStatus getBucketStatus() {
-        double currentPosition = bucketServo.getPosition();
-
-        if (Math.abs(currentPosition - Constants.BUCKET_DOWN) <= Constants.BUCKET_POSITION_TOLERANCE) {
-            return BucketStatus.DOWN;
-        } else if (Math.abs(currentPosition - Constants.BUCKET_UP) <= Constants.BUCKET_POSITION_TOLERANCE) {
-            return BucketStatus.UP;
-        }
-        return BucketStatus.UNKNOWN;
-    }
-
-    public boolean isBucketInPosition(double targetPosition) {
-        return Math.abs(bucketServo.getPosition() - targetPosition) <= Constants.BUCKET_POSITION_TOLERANCE;
-    }
-
-    public enum LiftStatus {
-        HIGH_BASKET("High basket position"),
-        LOW_BASKET("Low basket position"),
-        DOWN("Down position"),
-        UNKNOWN("Position unknown");
-
-        private final String description;
-        LiftStatus(String description) {
-            this.description = description;
-        }
-        public String getDescription() { return description; }
     }
 
     public LiftStatus getLiftStatus() {
@@ -200,6 +256,14 @@ public class BucketSubsystem {
             return LiftStatus.DOWN;
         } else {
             return LiftStatus.UNKNOWN;
+        }
+    }
+
+    // Utility methods
+    private void sleepy(double seconds) {
+        delayTimer.reset();
+        while (delayTimer.seconds() < seconds) {
+            // Wait
         }
     }
 }

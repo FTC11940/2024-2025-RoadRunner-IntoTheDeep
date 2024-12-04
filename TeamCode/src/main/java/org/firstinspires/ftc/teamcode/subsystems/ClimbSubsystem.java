@@ -46,6 +46,9 @@ public class ClimbSubsystem {
 
     public void powerClimber(double power) {
         climberOneMotor.setPower(power);
+    }
+
+    public void stopClimber() {
         climberOneMotor.setPower(0);
     }
 

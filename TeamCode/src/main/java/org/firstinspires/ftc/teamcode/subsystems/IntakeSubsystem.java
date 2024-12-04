@@ -12,6 +12,7 @@ public class IntakeSubsystem {
         // Servo Positions
         public static final double ARM_POSE_DOWN = 0.20;
         public static final double ARM_POSE_UP = 0.75;
+        public static final double ARM_POSE_MID = 0.475;
 
         // Motor Powers
         public static final double WHEEL_INTAKE = 1.0;
@@ -97,9 +98,10 @@ public class IntakeSubsystem {
     }
 
     public enum IntakeArmStatus {
-        ARM_DOWN("Arm in down position"),
-        ARM_UP("Arm in up position"),
-        UNKNOWN("Arm position unknown");
+        ARM_DOWN("Arm is DOWN"),
+        ARM_UP("Arm is UP"),
+        ARM_MID("Arm is MID"),
+        UNKNOWN("Arm position Unknown");
 
         private final String description;
         IntakeArmStatus(String description) {
@@ -116,6 +118,8 @@ public class IntakeSubsystem {
             return IntakeArmStatus.ARM_DOWN;
         } else if (Math.abs(currentPosition - Constants.ARM_POSE_UP) <= tolerance) {
             return IntakeArmStatus.ARM_UP;
+        } else if (Math.abs(currentPosition - Constants.ARM_POSE_MID) <= tolerance) {
+            return IntakeArmStatus.ARM_MID;
         } else {
             return IntakeArmStatus.UNKNOWN;
         }
