@@ -145,6 +145,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     }
 
     public void update() {
+
     }
 
     // Note: You'll need to modify other methods like setMode(), setPIDFCoefficients()
