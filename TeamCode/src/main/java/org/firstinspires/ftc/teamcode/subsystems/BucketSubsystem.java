@@ -228,7 +228,7 @@ public class BucketSubsystem {
     public void moveLiftDown() {
         if (isSafeToBucketUp()) {
             int currentPosition = lift.getCurrentPosition();
-            setLift(currentPosition - 50, 0.80);
+            setLift(currentPosition - 50, 0.60);
         } else{
             lift.setPower(0); // Set power to 0 when not in use
         }
