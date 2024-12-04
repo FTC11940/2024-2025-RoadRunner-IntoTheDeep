@@ -17,7 +17,7 @@ public class TenForwardAuton extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         // Initialize our localizer
-        RoadrunnerOneThreeDeads localizer = new RoadrunnerOneThreeDeads(hardwareMap, telemetry);
+        RoadrunnerOneThreeDeads localizer = new RoadrunnerOneThreeDeads(telemetry);
         drive.setLocalizer(localizer);
 
         // Start pose - assuming robot starts at the origin (0, 0) facing forward (0 degrees)

@@ -144,6 +144,9 @@ public class SampleMecanumDrive extends MecanumDrive {
     public void setWeightedDrivePower(Pose2d pose2d) {
     }
 
+    public void update() {
+    }
+
     // Note: You'll need to modify other methods like setMode(), setPIDFCoefficients()
     // to handle non-encoder operation if they are used elsewhere in your code
 

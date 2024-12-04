@@ -15,13 +15,13 @@ import java.util.List;
 public class RoadrunnerOneThreeDeads extends ThreeTrackingWheelLocalizer {
     // Precise Odometry Specifications
     public static double TICKS_PER_REV = 8192; // GoBilda 8192 CPR Encoder
-    public static double WHEEL_RADIUS = 1.46 / 2; // 1.46 inch diameter
+    public static double WHEEL_RADIUS = 1.875 / 2; // 1.46 inch diameter
 
     // Precise Robot Measurements
     public static double LATERAL_DISTANCE = 10.25; // Distance between parallel wheels
     public static double PERPENDICULAR_WHEEL_OFFSET = 5.5; // Perpendicular wheel offset
 
-    private Encoder leftEncoder, rightEncoder, perpEncoder;
+    private Encoder Tomb1, Tomb2, TombP;
 
     public RoadrunnerOneThreeDeads(HardwareMap hardwareMap) {
         super(Arrays.asList(
@@ -31,17 +31,17 @@ public class RoadrunnerOneThreeDeads extends ThreeTrackingWheelLocalizer {
         ));
 
         // Initialize dedicated odometry encoders
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftOdoEncoder"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightOdoEncoder"));
-        perpEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "perpOdoEncoder"));
+        Tomb1 = new Encoder(hardwareMap.get(DcMotorEx.class, "leftOdoEncoder"));
+        Tomb2 = new Encoder(hardwareMap.get(DcMotorEx.class, "rightOdoEncoder"));
+        TombP = new Encoder(hardwareMap.get(DcMotorEx.class, "perpOdoEncoder"));
 
         // Set encoder directions carefully
-        leftEncoder.setDirection(Encoder.Direction.REVERSE);
-        rightEncoder.setDirection(Encoder.Direction.FORWARD);
-        perpEncoder.setDirection(Encoder.Direction.REVERSE);
+        Tomb1.setDirection(Encoder.Direction.REVERSE);
+        Tomb2.setDirection(Encoder.Direction.FORWARD);
+        TombP.setDirection(Encoder.Direction.REVERSE);
     }
 
-    public RoadrunnerOneThreeDeads(HardwareMap hardwareMap, Telemetry telemetry) {
+    public RoadrunnerOneThreeDeads(Telemetry telemetry) {
         super();
     }
 
@@ -49,9 +49,9 @@ public class RoadrunnerOneThreeDeads extends ThreeTrackingWheelLocalizer {
     @Override
     public List<Double> getWheelPositions() {
         return Arrays.asList(
-                encoderTicksToInches(leftEncoder.getCurrentPosition()),
-                encoderTicksToInches(rightEncoder.getCurrentPosition()),
-                encoderTicksToInches(perpEncoder.getCurrentPosition())
+                encoderTicksToInches(Tomb1.getCurrentPosition()),
+                encoderTicksToInches(Tomb2.getCurrentPosition()),
+                encoderTicksToInches(TombP.getCurrentPosition())
         );
     }
 
@@ -59,9 +59,9 @@ public class RoadrunnerOneThreeDeads extends ThreeTrackingWheelLocalizer {
     @Override
     public List<Double> getWheelVelocities() {
         return Arrays.asList(
-                encoderTicksToInches(leftEncoder.getRawVelocity()),
-                encoderTicksToInches(rightEncoder.getRawVelocity()),
-                encoderTicksToInches(perpEncoder.getRawVelocity())
+                encoderTicksToInches(Tomb1.getRawVelocity()),
+                encoderTicksToInches(Tomb2.getRawVelocity()),
+                encoderTicksToInches(TombP.getRawVelocity())
         );
     }
 

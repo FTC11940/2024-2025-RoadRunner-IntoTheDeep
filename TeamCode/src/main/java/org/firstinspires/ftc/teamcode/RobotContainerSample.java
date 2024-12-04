@@ -18,7 +18,6 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
 
@@ -52,7 +51,7 @@ public class RobotContainerSample extends LinearOpMode {
         intakeSub = new IntakeSubsystem(hardwareMap, sensors);
         slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         driveSub = new SampleMecanumDrive(hardwareMap);
-        roadRunner = new RoadrunnerOneThreeDeads(hardwareMap, telemetry);
+        roadRunner = new RoadrunnerOneThreeDeads(telemetry);
         climbSub = new ClimbSubsystem(hardwareMap);
 
         // Added by Claude

@@ -9,14 +9,10 @@ import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constant
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_INTAKE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_RELEASE;
 
-import android.annotation.SuppressLint;
-
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.RoadrunnerOneThreeDeads;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
@@ -54,7 +50,7 @@ public class RobotContainer extends LinearOpMode {
         intakeSub = new IntakeSubsystem(hardwareMap, sensors);
         slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         driveSub = new DriveSubsystem(hardwareMap);
-        roadRunner = new RoadrunnerOneThreeDeads(hardwareMap, telemetry);
+        roadRunner = new RoadrunnerOneThreeDeads(telemetry);
         climbSub = new ClimbSubsystem(hardwareMap);
 
         // Added by Claude
