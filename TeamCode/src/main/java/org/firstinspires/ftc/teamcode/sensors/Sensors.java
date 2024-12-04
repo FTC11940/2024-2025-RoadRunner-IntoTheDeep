@@ -11,14 +11,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class Sensors {
 
     public TouchSensor slideTouch;
-
+    public TouchSensor liftTouch;
     public DistanceSensor intakeSensor;
 
     public Sensors(HardwareMap hardwareMap) {
 
         slideTouch = hardwareMap.get(TouchSensor.class,"slideTouch");
-
         intakeSensor = hardwareMap.get(DistanceSensor.class,"intakeSensor");
+        liftTouch = hardwareMap.get(TouchSensor.class,"liftTouch");
     }
 
     public boolean isSlideTouchPressed() {

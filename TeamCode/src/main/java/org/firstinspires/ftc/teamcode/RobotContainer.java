@@ -73,6 +73,7 @@ public class RobotContainer extends LinearOpMode {
         while (opModeIsActive()) {
 
             slidesSub.resetSlideEncoderOnTouch();
+            bucketSub.resetLiftEncoderOnTouch();
 
 
             /*
@@ -208,8 +209,6 @@ public class RobotContainer extends LinearOpMode {
 
 
 //            roadRunner.update();
-
-            // Updates position of the lift motor periodically
 
             bucketSub.updateLift();
 

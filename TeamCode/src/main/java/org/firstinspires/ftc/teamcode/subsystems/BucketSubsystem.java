@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -41,6 +42,12 @@ public class BucketSubsystem {
     private final ElapsedTime delayTimer = new ElapsedTime();
     private Sensors sensors;
     private IntakeSubsystem intakeSub;
+    private final TouchSensor liftTouch;
+
+
+    public void setSensors(Sensors sensors) {
+        this.sensors = sensors;
+    }
 
     // Enums
     public enum BucketStatus {
@@ -76,6 +83,7 @@ public class BucketSubsystem {
 
         bucketServo = hardwareMap.get(Servo.class, "bucket");
         lift = hardwareMap.get(DcMotorEx.class, "lift");
+        liftTouch = hardwareMap.get(TouchSensor.class, "liftTouch");
 
         lift.setDirection(DcMotor.Direction.REVERSE);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -237,6 +245,13 @@ public class BucketSubsystem {
     public void tareLift() {
         resetLiftEncoder();
         lift.setPower(0);
+    }
+
+    public void resetLiftEncoderOnTouch() {
+        if (liftTouch.isPressed()) {
+            lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
     }
 
     public void resetLiftEncoder() {
