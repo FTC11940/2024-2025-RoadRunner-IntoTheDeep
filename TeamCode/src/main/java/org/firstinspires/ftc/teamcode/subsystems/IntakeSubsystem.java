@@ -24,6 +24,11 @@ public class IntakeSubsystem {
 
         // Safety Limits
         public static final int LIFT_SAFE_THRESHOLD = 500;
+
+        private static final double TRIGGER_DEADBAND = 0.05;
+        private static final double POWER_CHANGE_THRESHOLD = 0.01;
+
+        public static double lastPower = 0;
     }
 
     public final Servo intakeArm;
@@ -75,13 +80,21 @@ public class IntakeSubsystem {
     }
 
     public double smartPowerIntakeWheel(double rightTrigger, double leftTrigger) {
-        double wheelPower = rightTrigger - leftTrigger;
+        // Apply deadband
+        double rightPower = Math.abs(rightTrigger) > Constants.TRIGGER_DEADBAND ? rightTrigger : 0;
+        double leftPower = Math.abs(leftTrigger) > Constants.TRIGGER_DEADBAND ? leftTrigger : 0;
 
-        if (sensors.getSampleStatus() == Sensors.SampleStatus.SAMPLE_GRABBED && wheelPower > 0) {
-            wheelPower *= Constants.POWER_REDUCTION;
+        double targetPower = rightPower - leftPower;
+
+        // Only update power if change exceeds threshold
+        if (Math.abs(targetPower - Constants.lastPower) > Constants.POWER_CHANGE_THRESHOLD) {
+            if (sensors.getSampleStatus() == Sensors.SampleStatus.SAMPLE_GRABBED && targetPower > 0) {
+                targetPower *= Constants.POWER_REDUCTION;
+            }
+            intakeWheel.setPower(targetPower);
+            Constants.lastPower = targetPower;
         }
 
-        intakeWheel.setPower(wheelPower);
         return intakeWheel.getPower();
     }
 

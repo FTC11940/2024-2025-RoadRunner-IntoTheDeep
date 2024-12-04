@@ -50,7 +50,7 @@ public class RobotContainer extends LinearOpMode {
         /* Subsystems */
 //        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         sensors = new Sensors(hardwareMap);
-        bucketSub = new BucketSubsystem(hardwareMap, telemetry);
+        bucketSub = new BucketSubsystem(hardwareMap, sensors);
         intakeSub = new IntakeSubsystem(hardwareMap, sensors);
         slidesSub = new SlidesSubsystem(hardwareMap, sensors);
         driveSub = new DriveSubsystem(hardwareMap);
@@ -75,7 +75,6 @@ public class RobotContainer extends LinearOpMode {
             slidesSub.resetSlideEncoderOnTouch();
             bucketSub.resetLiftEncoderOnTouch();
 
-
             /*
              * DRIVER INPUT MAPPING
              * Map methods (actions) from the subsystems to gamepad inputs
@@ -83,9 +82,17 @@ public class RobotContainer extends LinearOpMode {
              */
             handleDriveControls();
 
+            // double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger,gamepad1.left_trigger);
+
+            if (gamepad1.right_trigger > 0.05) {
+                intakeSub.powerIntakeWheel(WHEEL_INTAKE);
+            } else if (gamepad1.left_trigger > 0.05) {
+                intakeSub.powerIntakeWheel(WHEEL_RELEASE);
+            } else {
+                intakeSub.powerIntakeWheel(0);
+            }
 
 
-            double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger,gamepad1.left_trigger);
 
             if (gamepad1.a) {
                 intakeSub.setIntakeArm(ARM_POSE_DOWN);
@@ -106,9 +113,9 @@ public class RobotContainer extends LinearOpMode {
             } else {
                 slidesSub.powerSlide(0);
 
-                if (gamepad1.right_bumper) {
+            if (gamepad1.right_bumper) {
                     slidesSub.setSlideOut();
-                } else {
+            } else {
                     slidesSub.powerSlide(0);
                 }
 
@@ -144,7 +151,8 @@ public class RobotContainer extends LinearOpMode {
             } else if (gamepad2.dpad_right) {
                 bucketSub.setLiftHigh();
             } else if (gamepad2.dpad_down) { // Changed to else if
-                bucketSub.moveLiftDown();
+//                bucketSub.moveLiftDown();
+                bucketSub.setLiftDown();
             }
 
             if (gamepad2.back) {
@@ -182,7 +190,7 @@ public class RobotContainer extends LinearOpMode {
             telemetry.addLine("--- INTAKE ---");
             telemetry.addData("Wheel Power", String.format("%.2f", intakeSub.intakeWheel.getPower()));
             telemetry.addData("", intakeSub.getIntakeArmStatus().getDescription());
-            telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
+//            telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
             telemetry.addData("Triggers", String.format("R: %.2f, L: %.2f",
                     gamepad1.right_trigger, gamepad1.left_trigger));
 
@@ -201,6 +209,7 @@ public class RobotContainer extends LinearOpMode {
                     bucketSub.getLiftStatus(), bucketSub.lift.getCurrentPosition()));
             telemetry.addData("Lift Motor Power", String.format("%.2f A",
                     bucketSub.lift.getPower()));
+            telemetry.addData("Lift Touch Sensor", sensors.isLiftTouchPressed());
 
             // Other Data
 

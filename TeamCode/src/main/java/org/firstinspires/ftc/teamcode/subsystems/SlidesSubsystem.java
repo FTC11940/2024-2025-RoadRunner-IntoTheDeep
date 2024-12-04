@@ -13,7 +13,7 @@ public class SlidesSubsystem {
 
     public static class Constants {
         // Motor positions
-        public static final int SLIDE_OUT_POSE = 500;
+        public static final int SLIDE_OUT_POSE = 800; // increase from 500
         public static final int SLIDE_IN_POSE = 0;
 
         // Motor settings
@@ -47,12 +47,12 @@ public class SlidesSubsystem {
     public void setSlideOut() {
         slide.setTargetPosition(Constants.SLIDE_OUT_POSE);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slide.setPower(0.75);
+        slide.setPower(1.0); // increase from 0.75
     }
     public void setSlideIn() {
         slide.setTargetPosition(Constants.SLIDE_IN_POSE);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slide.setPower(0.5);
+        slide.setPower(0.75); // increase from 0.5
     }
 
     public void powerSlide(double power) {

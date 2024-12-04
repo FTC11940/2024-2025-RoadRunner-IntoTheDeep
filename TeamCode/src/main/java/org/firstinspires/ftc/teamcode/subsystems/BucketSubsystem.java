@@ -38,15 +38,24 @@ public class BucketSubsystem {
     // Hardware
     public final Servo bucketServo;
     public final DcMotorEx lift;
-    private final Telemetry telemetry;
+//    private final Telemetry telemetry;
     private final ElapsedTime delayTimer = new ElapsedTime();
     private Sensors sensors;
+    private TouchSensor liftTouch;
     private IntakeSubsystem intakeSub;
-    private final TouchSensor liftTouch;
 
+    // Constructor
+    public BucketSubsystem(HardwareMap hardwareMap, Sensors sensors) {
+        // this.sensors = new Sensors(hardwareMap);
+        //this.telemetry = telemetry;
 
-    public void setSensors(Sensors sensors) {
-        this.sensors = sensors;
+        bucketServo = hardwareMap.get(Servo.class, "bucket");
+        lift = hardwareMap.get(DcMotorEx.class, "lift");
+        liftTouch = hardwareMap.get(TouchSensor.class, "liftTouch");
+
+        lift.setDirection(DcMotor.Direction.REVERSE);
+        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     // Enums
@@ -76,19 +85,7 @@ public class BucketSubsystem {
         public String getDescription() { return description; }
     }
 
-    // Constructor
-    public BucketSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
-        this.sensors = new Sensors(hardwareMap);
-        this.telemetry = telemetry;
 
-        bucketServo = hardwareMap.get(Servo.class, "bucket");
-        lift = hardwareMap.get(DcMotorEx.class, "lift");
-        liftTouch = hardwareMap.get(TouchSensor.class, "liftTouch");
-
-        lift.setDirection(DcMotor.Direction.REVERSE);
-        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    }
 
     // Subsystem connections
     public void setIntakeSubsystem(IntakeSubsystem intakeSub) {
@@ -98,15 +95,13 @@ public class BucketSubsystem {
     // Bucket methods
     private boolean isSafeToBucketUp() {
         if (intakeSub == null) {
-            telemetry.addData("Bucket Safety", "Cannot verify safety - intake subsystem not connected");
+//            telemetry.addData("Bucket Safety", "Cannot verify safety - intake subsystem not connected");
             return false;
         }
 
         boolean armIsUp = intakeSub.getIntakeArmStatus() == ARM_UP;
 
         if (armIsUp) {
-            telemetry.addData("Bucket Safety", "Cannot move bucket up while arm is up");
-            telemetry.update();
             return false;
         }
         return true;
@@ -122,6 +117,7 @@ public class BucketSubsystem {
     }
 
     public void setBucketDown() {
+
         setBucket(Constants.BUCKET_DOWN);
     }
 
@@ -152,8 +148,6 @@ public class BucketSubsystem {
     public void setSimpleLift(int pose, double power) {
         if (intakeSub != null && intakeSub.getIntakeArmStatus() != ARM_DOWN) {
             lift.setPower(0);
-            telemetry.addData("Lift Error", "Cannot move lift while arm is up");
-            telemetry.update();
             return;
         }
 
@@ -172,8 +166,6 @@ public class BucketSubsystem {
     public void setLift(int pose, double power) {
         if (intakeSub.getIntakeArmStatus() == ARM_UP) {
             lift.setPower(0);
-            telemetry.addData("Lift Error", "Cannot move lift while arm is up");
-            telemetry.update();
             return;
         }
 
@@ -247,18 +239,25 @@ public class BucketSubsystem {
         lift.setPower(0);
     }
 
-    public void resetLiftEncoderOnTouch() {
-        if (liftTouch.isPressed()) {
-            lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-    }
-
     public void resetLiftEncoder() {
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleepy(0.1);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
+    public void resetLiftEncoderOnTouch() {
+
+        if (liftTouch.isPressed()) {
+        /*
+            lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+         */
+            resetLiftEncoder();
+            lift.setPower(0);
+        }
+
+    }
+
 
     public LiftStatus getLiftStatus() {
         int liftPosition = lift.getCurrentPosition();
