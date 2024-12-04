@@ -30,8 +30,8 @@ public class DriveConstants {
     /*
      * Physical constants for your robot
      */
-    public static double WHEEL_RADIUS = 2; // in (adjust if your wheel size is different)
-    public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
+    public static double WHEEL_RADIUS = .42; // in (adjust if your wheel size is different)
+    public static double GEAR_RATIO = 13.72; // output (wheel) speed / input (motor) speed
     public static double TRACK_WIDTH = 14.4; // in (distance between wheel centers)
 
     /*
