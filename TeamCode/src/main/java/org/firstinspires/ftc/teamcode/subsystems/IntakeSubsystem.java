@@ -8,32 +8,14 @@ import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
 public class IntakeSubsystem {
 
-    public static class Constants {
-        // Servo Positions
-        public static final double ARM_POSE_DOWN = 0.20;
-        public static final double ARM_POSE_UP = 0.75;
-        public static final double ARM_POSE_MID = 0.475;
-
-        // Motor Powers
-        public static final double WHEEL_INTAKE = 1.0;
-        public static final double WHEEL_RELEASE = -1.0;
-        public static final double POWER_REDUCTION = 0.10;
-
-        // Tolerances
-        public static final double ARM_POSITION_TOLERANCE = 0.05;
-
-        // Safety Limits
-        public static final int LIFT_SAFE_THRESHOLD = 500;
-    }
-
     public final Servo intakeArm;
     public final DcMotor intakeWheel;
     private final Sensors sensors;
     private BucketSubsystem bucketSub; // Add reference to BucketSubsystem
 
-    public IntakeSubsystem(HardwareMap hardwareMap, Sensors sensors) {
+    public IntakeSubsystem(HardwareMap hardwareMap,Sensors sensors) {
         intakeArm = hardwareMap.servo.get("intakeArm");
-        intakeWheel = hardwareMap.get(DcMotor.class, "intakeWheel");
+        intakeWheel = hardwareMap.get(DcMotor.class,"intakeWheel");
         intakeWheel.setDirection(DcMotor.Direction.REVERSE);
         this.sensors = sensors;
     }
@@ -74,16 +56,39 @@ public class IntakeSubsystem {
         }
     }
 
-    public double smartPowerIntakeWheel(double rightTrigger, double leftTrigger) {
-        double wheelPower = rightTrigger - leftTrigger;
+    public void smartPowerIntakeWheel(double power) {
+        /* If Sensors.getSampleStatus() is SAMPLE_DETECTED, set power to 0.1 */
+        if (sensors.getSampleStatus() == Sensors.SampleStatus.SAMPLE_DETECTED) {
+            intakeWheel.setPower(0.15);
+            /* Else set power to 1.0 */
+        } else {
+            intakeWheel.setPower(1.0);
+        }
+    }
 
-        if (sensors.getSampleStatus() == Sensors.SampleStatus.SAMPLE_GRABBED && wheelPower > 0) {
-            wheelPower *= Constants.POWER_REDUCTION;
+    public double smartPowerIntakeTrigger(double inPower, double outPower) {
+        // Return early if power inputs are too small
+        if (Math.abs(inPower) < 0.05 && Math.abs(outPower) < 0.05) {
+            powerIntakeWheel(0);
+            return 0;
         }
 
-        intakeWheel.setPower(wheelPower);
-        return intakeWheel.getPower();
+        double power;
+        if (inPower > outPower) {
+            // Intake direction
+            if (sensors.getSampleStatus() == Sensors.SampleStatus.SAMPLE_GRABBED) {
+                power = 0.15; // Hold sample with reduced power
+            } else {
+                power = inPower; // Full intake power
+            }
+        } else {
+            power = -outPower; // Release direction
+        }
+
+        powerIntakeWheel(power);
+        return power;
     }
+
 
     public void groupIntakePosition() {
         intakeArm.setPosition(Constants.ARM_POSE_DOWN);
@@ -97,18 +102,6 @@ public class IntakeSubsystem {
         }
     }
 
-    public enum IntakeArmStatus {
-        ARM_DOWN("Arm in down position"),
-        ARM_UP("Arm in up position"),
-        UNKNOWN("Arm position unknown");
-
-        private final String description;
-        IntakeArmStatus(String description) {
-            this.description = description;
-        }
-        public String getDescription() { return description; }
-    }
-
     public IntakeArmStatus getIntakeArmStatus() {
         double currentPosition = intakeArm.getPosition();
         double tolerance = Constants.ARM_POSITION_TOLERANCE;
@@ -117,6 +110,8 @@ public class IntakeSubsystem {
             return IntakeArmStatus.ARM_DOWN;
         } else if (Math.abs(currentPosition - Constants.ARM_POSE_UP) <= tolerance) {
             return IntakeArmStatus.ARM_UP;
+        } else if (Math.abs(currentPosition - Constants.ARM_POSE_MID) <= tolerance) {
+            return IntakeArmStatus.ARM_MID;
         } else {
             return IntakeArmStatus.UNKNOWN;
         }
@@ -137,4 +132,33 @@ public class IntakeSubsystem {
     public double getIntakeWheelPower() {
         return intakeWheel.getPower();
     }
-}
+
+    public enum IntakeArmStatus {
+        ARM_DOWN("Arm is DOWN"),
+        ARM_UP("Arm is UP"),
+        ARM_MID("Arm is MID"),
+        UNKNOWN("Arm position Unknown");
+
+        private final String description;
+
+        IntakeArmStatus(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
+        public static class Constants {
+            // Move from IntakeConstants to static Constants
+            public static final double ARM_POSE_DOWN = 0.20;
+            public static final double ARM_POSE_UP = 0.75;
+            public static final double ARM_POSE_MID = 0.475;
+            public static final double WHEEL_INTAKE = 1.0;
+            public static final double WHEEL_RELEASE = -1.0;
+            public static final double POWER_REDUCTION = 0.10;
+            public static final double ARM_POSITION_TOLERANCE = 0.05;
+            public static final int LIFT_SAFE_THRESHOLD = 500;
+        }
+} // end
