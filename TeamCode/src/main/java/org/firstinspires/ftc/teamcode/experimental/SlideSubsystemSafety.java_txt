@@ -1,33 +1,20 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.experimental;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
+import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 
 
 public class SlideSubsystemSafety {
 
-    public static class Constants {
-        public static final int SLIDE_IN_POSE = 0;
-        public static final int SLIDE_OUT_POSE = 2000;
-        public static final double SLIDE_TOLERANCE = 0.03;
-
-        // New constant for safe arm position
-        public static final double ARM_SAFE_POSITION = 0.475; // Halfway between down (0.20) and up (0.75)
-    }
-
     public final DcMotor slide;
     private final Sensors sensors;
     private IntakeSubsystem intakeSub; // Add reference to IntakeSubsystem
-
-    public SlideSubsystemSafety(HardwareMap hardwareMap, Sensors sensors) {
+    public SlideSubsystemSafety(HardwareMap hardwareMap,Sensors sensors) {
         this.sensors = sensors;
-        slide = hardwareMap.get(DcMotor.class, "slide");
+        slide = hardwareMap.get(DcMotor.class,"slide");
         slide.setDirection(DcMotor.Direction.REVERSE);
         slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -53,7 +40,7 @@ public class SlideSubsystemSafety {
         }
     }
 
-    public void setSlidePose(int pose, double power) {
+    public void setSlidePose(int pose,double power) {
         // If trying to extend slides (move away from SLIDE_IN_POSE)
         if (pose > Constants.SLIDE_IN_POSE) {
             // First ensure arm is in safe position
@@ -103,18 +90,6 @@ public class SlideSubsystemSafety {
         }
     }
 
-    public enum SlideStatus {
-        IN("Slides retracted"),
-        OUT("Slides extended"),
-        UNKNOWN("Position unknown");
-
-        private final String description;
-        SlideStatus(String description) {
-            this.description = description;
-        }
-        public String getDescription() { return description; }
-    }
-
     public SlideStatus getSlideStatus() {
         int slidePosition = slide.getCurrentPosition();
 
@@ -125,5 +100,30 @@ public class SlideSubsystemSafety {
         } else {
             return SlideStatus.UNKNOWN;
         }
+    }
+
+    public enum SlideStatus {
+        IN("Slides retracted"),
+        OUT("Slides extended"),
+        UNKNOWN("Position unknown");
+
+        private final String description;
+
+        SlideStatus(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
+    public static class Constants {
+        public static final int SLIDE_IN_POSE = 0;
+        public static final int SLIDE_OUT_POSE = 2000;
+        public static final double SLIDE_TOLERANCE = 0.03;
+
+        // New constant for safe arm position
+        public static final double ARM_SAFE_POSITION = 0.475; // Halfway between down (0.20) and up (0.75)
     }
 }

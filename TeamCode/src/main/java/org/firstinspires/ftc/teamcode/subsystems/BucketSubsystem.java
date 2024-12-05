@@ -15,77 +15,27 @@ import org.firstinspires.ftc.teamcode.sensors.Sensors;
 
 public class BucketSubsystem {
 
-    // Constants
-    public static class Constants {
-        // Bucket positions
-        public static final double BUCKET_DOWN = 0.90;
-        public static final double BUCKET_MID = 0.575;
-        public static final double BUCKET_UP = 0.15;
-        public static final double BUCKET_POSITION_TOLERANCE = 0.05;
-
-        // Lift positions
-        public static final int LIFT_HIGH = 3000;
-        public static final int LIFT_LOW = 1400;
-        public static final int LIFT_DOWN = 0;
-        public static final double LIFT_TOLERANCE = 0.03;
-        public static final double APPROX_LIFT_POSE = 10;
-
-        // Lift powers
-        public static final double LIFT_HOLD_POWER = 0.15;
-        public static final double LIFT_MOVING_POWER = 0.60;
-    }
-
     // Hardware
     public final Servo bucketServo;
     public final DcMotorEx lift;
-//    private final Telemetry telemetry;
     private final ElapsedTime delayTimer = new ElapsedTime();
+    private final TouchSensor liftTouch;
     private Sensors sensors;
-    private TouchSensor liftTouch;
     private IntakeSubsystem intakeSub;
 
     // Constructor
-    public BucketSubsystem(HardwareMap hardwareMap, Sensors sensors) {
+    public BucketSubsystem(HardwareMap hardwareMap,Sensors sensors) {
         // this.sensors = new Sensors(hardwareMap);
         //this.telemetry = telemetry;
 
-        bucketServo = hardwareMap.get(Servo.class, "bucket");
-        lift = hardwareMap.get(DcMotorEx.class, "lift");
-        liftTouch = hardwareMap.get(TouchSensor.class, "liftTouch");
+        bucketServo = hardwareMap.get(Servo.class,"bucket");
+        lift = hardwareMap.get(DcMotorEx.class,"lift");
+        liftTouch = hardwareMap.get(TouchSensor.class,"liftTouch");
 
         lift.setDirection(DcMotor.Direction.REVERSE);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
-
-    // Enums
-    public enum BucketStatus {
-        DOWN("Bucket down"),
-        MID("Bucket mid position"), 
-        UP("Bucket up"),
-        UNKNOWN("Position unknown");
-
-        private final String description;
-        BucketStatus(String description) {
-            this.description = description;
-        }
-        public String getDescription() { return description; }
-    }
-
-    public enum LiftStatus {
-        HIGH_BASKET("High basket position"),
-        LOW_BASKET("Low basket position"),
-        DOWN("Down position"),
-        UNKNOWN("Position unknown");
-
-        private final String description;
-        LiftStatus(String description) {
-            this.description = description;
-        }
-        public String getDescription() { return description; }
-    }
-
-
 
     // Subsystem connections
     public void setIntakeSubsystem(IntakeSubsystem intakeSub) {
@@ -101,10 +51,7 @@ public class BucketSubsystem {
 
         boolean armIsUp = intakeSub.getIntakeArmStatus() == ARM_UP;
 
-        if (armIsUp) {
-            return false;
-        }
-        return true;
+        return !armIsUp;
     }
 
     public void setBucket(double pose) {
@@ -145,7 +92,7 @@ public class BucketSubsystem {
     }
 
     // Lift methods
-    public void setSimpleLift(int pose, double power) {
+    public void setSimpleLift(int pose,double power) {
         if (intakeSub != null && intakeSub.getIntakeArmStatus() != ARM_DOWN) {
             lift.setPower(0);
             return;
@@ -163,7 +110,7 @@ public class BucketSubsystem {
         lift.setPower(power);
     }
 
-    public void setLift(int pose, double power) {
+    public void setLift(int pose,double power) {
         if (intakeSub.getIntakeArmStatus() == ARM_UP) {
             lift.setPower(0);
             return;
@@ -186,8 +133,7 @@ public class BucketSubsystem {
         int targetPosition = lift.getTargetPosition();
 
         if (!lift.isBusy() || Math.abs(currentPosition - targetPosition) < Constants.APPROX_LIFT_POSE) {
-            if (Math.abs(currentPosition - Constants.LIFT_HIGH) < Constants.APPROX_LIFT_POSE ||
-                    Math.abs(currentPosition - Constants.LIFT_LOW) < Constants.APPROX_LIFT_POSE) {
+            if (Math.abs(currentPosition - Constants.LIFT_HIGH) < Constants.APPROX_LIFT_POSE || Math.abs(currentPosition - Constants.LIFT_LOW) < Constants.APPROX_LIFT_POSE) {
                 // Hold position for HIGH and LOW positions
                 lift.setPower(Constants.LIFT_HOLD_POWER);
             } else {
@@ -198,19 +144,19 @@ public class BucketSubsystem {
 
     public void setLiftHigh() {
         if (isSafeToBucketUp()) {
-            setLift(Constants.LIFT_HIGH, 0.60);
+            setLift(Constants.LIFT_HIGH,0.60);
         }
     }
 
     public void setLiftLow() {
         if (isSafeToBucketUp()) {
-            setLift(Constants.LIFT_LOW, 0.80);
+            setLift(Constants.LIFT_LOW,0.80);
         }
     }
 
     public void setLiftDown() {
         if (isSafeToBucketUp()) {
-            setLift(Constants.LIFT_DOWN,0.80);
+            setLift(Constants.LIFT_DOWN,0.60);
             // After reaching down position, ensure motor is stopped
             if (Math.abs(lift.getCurrentPosition()) < Constants.APPROX_LIFT_POSE) {
                 lift.setPower(0);
@@ -221,15 +167,15 @@ public class BucketSubsystem {
     public void moveLiftUp() {
         if (isSafeToBucketUp()) {
             int currentPosition = lift.getCurrentPosition();
-            setLift(currentPosition + 50, 0.60);
+            setLift(currentPosition + 50,0.60);
         }
     }
 
     public void moveLiftDown() {
         if (isSafeToBucketUp()) {
             int currentPosition = lift.getCurrentPosition();
-            setLift(currentPosition - 50, 0.80);
-        } else{
+            setLift(currentPosition - 50,0.80);
+        } else {
             lift.setPower(0); // Set power to 0 when not in use
         }
     }
@@ -243,21 +189,16 @@ public class BucketSubsystem {
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         sleepy(0.1);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lift.setPower(0);
     }
 
     public void resetLiftEncoderOnTouch() {
-
         if (liftTouch.isPressed()) {
-        /*
-            lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-         */
             resetLiftEncoder();
-            lift.setPower(0);
+//            lift.setPower(0);
         }
 
     }
-
 
     public LiftStatus getLiftStatus() {
         int liftPosition = lift.getCurrentPosition();
@@ -279,5 +220,59 @@ public class BucketSubsystem {
         while (delayTimer.seconds() < seconds) {
             // Wait
         }
+    }
+
+    // Enums
+    public enum BucketStatus {
+        DOWN("Bucket down"),
+        MID("Bucket mid position"),
+        UP("Bucket up"),
+        UNKNOWN("Position unknown");
+
+        private final String description;
+
+        BucketStatus(String description) {
+
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
+
+    public enum LiftStatus {
+        HIGH_BASKET("High basket position"),LOW_BASKET("Low basket position"),DOWN("Down position"),UNKNOWN("Position unknown");
+
+        private final String description;
+
+        LiftStatus(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
+    // Constants
+    public static class Constants {
+        // Bucket positions
+        public static final double BUCKET_DOWN = 0.90;
+        public static final double BUCKET_MID = 0.575;
+        public static final double BUCKET_UP = 0.15;
+        public static final double BUCKET_POSITION_TOLERANCE = 0.05;
+
+        // Lift positions
+        public static final int LIFT_HIGH = 3000;
+        public static final int LIFT_LOW = 1400;
+        public static final int LIFT_DOWN = 0;
+        public static final double LIFT_TOLERANCE = 0.03;
+        public static final double APPROX_LIFT_POSE = 10;
+
+        // Lift powers
+        public static final double LIFT_HOLD_POWER = 0.15;
+        public static final double LIFT_MOVING_POWER = 0.60;
     }
 }

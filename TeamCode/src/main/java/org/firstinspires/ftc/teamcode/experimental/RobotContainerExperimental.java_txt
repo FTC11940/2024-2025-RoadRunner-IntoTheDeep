@@ -9,7 +9,6 @@ import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constant
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_INTAKE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_RELEASE;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -18,22 +17,22 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.experimental.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
 
 // @Disabled
 
-@TeleOp(group = "drive", name = "TeleOp Sample Mecanum")
+@TeleOp(group = "drive", name = "TeleOp")
 
-public class RobotContainerSample extends LinearOpMode {
+public class RobotContainer_txt extends LinearOpMode {
 
     private Sensors sensors;
-//    private SampleMecanumDrive drive;
+    private SampleMecanumDrive driveSub;
     private BucketSubsystem bucketSub;
     private IntakeSubsystem intakeSub;
     private SlidesSubsystem slidesSub;
-    private SampleMecanumDrive driveSub;
+//    private DriveSubsystem driveSub;
     private RoadrunnerOneThreeDeads roadRunner;
     private ClimbSubsystem climbSub;
 
@@ -51,7 +50,7 @@ public class RobotContainerSample extends LinearOpMode {
         bucketSub = new BucketSubsystem(hardwareMap, sensors);
         intakeSub = new IntakeSubsystem(hardwareMap, sensors);
         slidesSub = new SlidesSubsystem(hardwareMap, sensors);
-        driveSub = new SampleMecanumDrive(hardwareMap);
+        driveSub = new DriveSubsystem(hardwareMap);
         roadRunner = new RoadrunnerOneThreeDeads(hardwareMap, telemetry);
         climbSub = new ClimbSubsystem(hardwareMap);
 
@@ -71,7 +70,7 @@ public class RobotContainerSample extends LinearOpMode {
         while (opModeIsActive()) {
 
             slidesSub.resetSlideEncoderOnTouch();
-
+            bucketSub.resetLiftEncoderOnTouch();
 
             /*
              * DRIVER INPUT MAPPING
@@ -80,9 +79,17 @@ public class RobotContainerSample extends LinearOpMode {
              */
             handleDriveControls();
 
+            // double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger,gamepad1.left_trigger);
+
+            if (gamepad1.right_trigger > 0.05) {
+                intakeSub.powerIntakeWheel(WHEEL_INTAKE);
+            } else if (gamepad1.left_trigger > 0.05) {
+                intakeSub.powerIntakeWheel(WHEEL_RELEASE);
+            } else {
+                intakeSub.powerIntakeWheel(0);
+            }
 
 
-            double wheelPower = intakeSub.smartPowerIntakeWheel(gamepad1.right_trigger,gamepad1.left_trigger);
 
             if (gamepad1.a) {
                 intakeSub.setIntakeArm(ARM_POSE_DOWN);
@@ -92,7 +99,7 @@ public class RobotContainerSample extends LinearOpMode {
                 intakeSub.setIntakeArm(ARM_POSE_MID);
             }
 
-            /* if (gamepad1.x) {
+            /*if (gamepad1.x) {
             }*/
             if (gamepad1.y) {
                 intakeSub.setIntakeArm(ARM_POSE_UP);
@@ -103,9 +110,9 @@ public class RobotContainerSample extends LinearOpMode {
             } else {
                 slidesSub.powerSlide(0);
 
-                if (gamepad1.right_bumper) {
+            if (gamepad1.right_bumper) {
                     slidesSub.setSlideOut();
-                } else {
+            } else {
                     slidesSub.powerSlide(0);
                 }
 
@@ -141,7 +148,8 @@ public class RobotContainerSample extends LinearOpMode {
             } else if (gamepad2.dpad_right) {
                 bucketSub.setLiftHigh();
             } else if (gamepad2.dpad_down) { // Changed to else if
-                bucketSub.moveLiftDown();
+//                bucketSub.moveLiftDown();
+                bucketSub.setLiftDown();
             }
 
             if (gamepad2.back) {
@@ -179,7 +187,7 @@ public class RobotContainerSample extends LinearOpMode {
             telemetry.addLine("--- INTAKE ---");
             telemetry.addData("Wheel Power", String.format("%.2f", intakeSub.intakeWheel.getPower()));
             telemetry.addData("", intakeSub.getIntakeArmStatus().getDescription());
-            telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
+//            telemetry.addData("Calculated Wheel Power", String.format("%.2f", wheelPower));
             telemetry.addData("Triggers", String.format("R: %.2f, L: %.2f",
                     gamepad1.right_trigger, gamepad1.left_trigger));
 
@@ -198,6 +206,7 @@ public class RobotContainerSample extends LinearOpMode {
                     bucketSub.getLiftStatus(), bucketSub.lift.getCurrentPosition()));
             telemetry.addData("Lift Motor Power", String.format("%.2f A",
                     bucketSub.lift.getPower()));
+            telemetry.addData("Lift Touch Sensor", sensors.isLiftTouchPressed());
 
             // Other Data
 
@@ -206,8 +215,6 @@ public class RobotContainerSample extends LinearOpMode {
 
 
 //            roadRunner.update();
-
-            // Updates position of the lift motor periodically
 
             bucketSub.updateLift();
 
@@ -232,14 +239,7 @@ public class RobotContainerSample extends LinearOpMode {
             turn *= 0.5;
         }
 
-        driveSub.setWeightedDrivePower(
-                new Pose2d(
-                        -gamepad1.left_stick_y,
-                        -gamepad1.left_stick_x,
-                        -gamepad1.right_stick_x
-                )
-        );
-
+        driveSub.drive(forward, strafe, turn);
     }
 
 } // end of the class
