@@ -64,6 +64,7 @@ public class SlidesSubsystem {
         }
     }
 
+    /**
     public void controlSlides(Gamepad gamepad) {
         if (gamepad.left_trigger > TRIGGER_THRESHOLD) {
             // Map trigger input from 0.5 to 1.0 power for smoother control
@@ -72,6 +73,16 @@ public class SlidesSubsystem {
         } else if (gamepad.right_trigger > TRIGGER_THRESHOLD) {
             double power = mapTriggerToPower(gamepad.right_trigger);
             setSlideIn(power);
+        } else {
+            stopSlides();
+        }
+    }*/
+
+    public void controlSlides(Gamepad gamepad) {
+        if (gamepad.left_bumper) {
+            setSlideOut(1.0);
+        } else if (gamepad.right_bumper) {
+            setSlideIn(0.6);
         } else {
             stopSlides();
         }

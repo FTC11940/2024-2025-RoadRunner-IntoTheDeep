@@ -79,11 +79,11 @@ public class RobotContainer extends LinearOpMode {
             ));
             // Keep right trigger for slow drive mode as you have
             // Could add left trigger for medium speed (75%)
-                        if (gamepad1.left_trigger > 0.5) {
-                            gamepad1.left_stick_y *= 0.75;
-                            gamepad1.left_stick_x *= 0.75;
-                            gamepad1.left_stick_x *= 0.75;
-                        }
+            /* if (gamepad1.left_trigger > 0.5) {
+                            gamepad1.left_stick_y *= 0.15;
+                            gamepad1.left_stick_x *= 0.15;
+                            gamepad1.left_stick_x *= 0.15;
+            }*/
 
             // Intake arm controls
             if (gamepad1.a) intakeSub.setIntakeArm(ARM_POSE_DOWN);

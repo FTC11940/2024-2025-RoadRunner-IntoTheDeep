@@ -259,9 +259,9 @@ public class BucketSubsystem {
     // Constants
     public static class Constants {
         // Bucket positions
-        public static final double BUCKET_DOWN = 0.90;
-        public static final double BUCKET_MID = 0.575;
-        public static final double BUCKET_UP = 0.15;
+        public static final double BUCKET_DOWN = 1.20; // 0.90
+        public static final double BUCKET_MID = 0.9; // 0.575
+        public static final double BUCKET_UP = 0.5; // 0.15
         public static final double BUCKET_POSITION_TOLERANCE = 0.05;
 
         // Lift positions
