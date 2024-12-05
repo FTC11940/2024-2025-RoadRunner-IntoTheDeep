@@ -9,14 +9,15 @@ import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constant
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_INTAKE;
 import static org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem.Constants.WHEEL_RELEASE;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.drive.RoadrunnerOneThreeDeads;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.sensors.Sensors;
 import org.firstinspires.ftc.teamcode.subsystems.BucketSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClimbSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
 
@@ -27,11 +28,10 @@ import org.firstinspires.ftc.teamcode.subsystems.SlidesSubsystem;
 public class RobotContainer extends LinearOpMode {
 
     private Sensors sensors;
-//    private SampleMecanumDrive drive;
     private BucketSubsystem bucketSub;
     private IntakeSubsystem intakeSub;
     private SlidesSubsystem slidesSub;
-    private DriveSubsystem driveSub;
+    private SampleMecanumDrive driveSub;
     private RoadrunnerOneThreeDeads roadRunner;
     private ClimbSubsystem climbSub;
 
@@ -44,12 +44,11 @@ public class RobotContainer extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         /* Subsystems */
-//        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         sensors = new Sensors(hardwareMap);
         bucketSub = new BucketSubsystem(hardwareMap, telemetry);
         intakeSub = new IntakeSubsystem(hardwareMap, sensors);
         slidesSub = new SlidesSubsystem(hardwareMap, sensors);
-        driveSub = new DriveSubsystem(hardwareMap);
+        driveSub = new SampleMecanumDrive(hardwareMap);
         roadRunner = new RoadrunnerOneThreeDeads(telemetry);
         climbSub = new ClimbSubsystem(hardwareMap);
 
@@ -90,7 +89,7 @@ public class RobotContainer extends LinearOpMode {
                 intakeSub.setIntakeArm(ARM_POSE_MID);
             }
 
-            /*if (gamepad1.x) {
+            /* if (gamepad1.x) {
             }*/
             if (gamepad1.y) {
                 intakeSub.setIntakeArm(ARM_POSE_UP);
@@ -147,7 +146,7 @@ public class RobotContainer extends LinearOpMode {
             }
 
             if (gamepad2.start) {
-                climbSub.powerClimber(1);
+                climbSub.powerClimber(0.5);
                 } else {
                 climbSub.stopClimber();
             }
@@ -230,7 +229,14 @@ public class RobotContainer extends LinearOpMode {
             turn *= 0.5;
         }
 
-        driveSub.drive(forward, strafe, turn);
+        driveSub.setWeightedDrivePower(
+                new Pose2d(
+                        -gamepad1.left_stick_y,
+                        -gamepad1.left_stick_x,
+                        -gamepad1.right_stick_x
+                )
+        );
+
     }
 
 } // end of the class
