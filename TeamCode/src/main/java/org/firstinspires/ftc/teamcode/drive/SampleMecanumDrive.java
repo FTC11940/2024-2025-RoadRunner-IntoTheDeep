@@ -31,6 +31,11 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.*;
 import static org.firstinspires.ftc.teamcode.drive.SampleTankDrive.getAccelerationConstraint;
 import static org.firstinspires.ftc.teamcode.drive.SampleTankDrive.getVelocityConstraint;
 
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
+
+
 import androidx.annotation.NonNull;
 
 @Config

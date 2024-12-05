@@ -1,0 +1,45 @@
+package org.firstinspires.ftc.teamcode.auton;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+
+@Autonomous(name = "Square")
+public class SquareAuton extends LinearOpMode {
+    @Override
+    public void runOpMode() throws InterruptedException {
+        // Initialize the drive system
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+        // Create a starting pose at (0, 0) with 0 heading
+        Pose2d startPose = new Pose2d(0, 0, 0);
+        drive.setPoseEstimate(startPose);
+
+        // Build the trajectory sequence for a 24x24 inch square
+        TrajectorySequence squareTrajectory = drive.trajectorySequenceBuilder(startPose)
+                // First side: Move forward 24 inches
+                .lineToConstantHeading(new Vector2d(24, 0))
+
+                // Second side: Strafe left 24 inches
+                .lineToConstantHeading(new Vector2d(24, 24))
+
+                // Third side: Move backward 24 inches
+                .lineToConstantHeading(new Vector2d(0, 24))
+
+                // Fourth side: Strafe right 24 inches to return to start
+                .lineToConstantHeading(new Vector2d(0, 0))
+                .build();
+
+        // Wait for the driver to press PLAY
+        waitForStart();
+
+        if (isStopRequested()) return;
+
+        // Run the trajectory
+        drive.followTrajectorySequence(squareTrajectory);
+    }
+}
